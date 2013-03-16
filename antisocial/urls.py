@@ -9,8 +9,10 @@ site_media_root = os.path.join(os.path.dirname(__file__), "../media")
 
 urlpatterns = patterns(
     '',
-    (r'^accounts/', include('userena.urls')),
     (r'^$', 'antisocial.main.views.index'),
+    (r'^subscriptions/$', 'antisocial.main.views.subscriptions'),
+    (r'^subscriptions/add/$', 'antisocial.main.views.add_subscription'),
+    (r'^accounts/', include('userena.urls')),
     (r'^admin/', include(admin.site.urls)),
     (r'smoketest/', include('smoketest.urls')),
     (r'^site_media/(?P<path>.*)$',

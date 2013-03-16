@@ -32,6 +32,7 @@
       <div class="container">
         <ul class="nav">
           <li><a class="brand" href="/">antisocial</a></li>
+					<li><a href="/subscriptions/">my subscriptions</a></li>
           {% block topnavbarleftitems %}{% endblock %}
         </ul>
 
@@ -61,11 +62,8 @@
   <div class="container" id="outer-container">
 
     <div class="container-fluid" id="content">
-      <div class="row-fluid">
-        <div class="span2" id="sidebar">
-{% block sidebar %}{% endblock %}
-        </div>
-        <div class="span10" id="right-content">
+      <div class="row">
+        <div class="span12" id="right-content">
 {% block pagetitle %}{% endblock %}
 {% block content %}{% endblock %}
         </div>

@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="hero-unit">
-<h1>It works</h1>
-<p>Congratulations! Now start coding.</p>
+
+{% if unread %}
+{% for ue in unread %}
+<div class="row">
+	<div class="span3">{{ue.entry.feed.title}}</div>
+	<div class="span7"><a href="{{ue.entry.link}}">{{ue.entry.title}}</a></div>
+	<div class="span2">{{ue.entry.published}}</div>
 </div>
+{% endfor %}
+{% else %}
+<p>You have no unread items</p>
+{% endif %}
+
 {% endblock %}

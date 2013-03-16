@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Your Feed Subscriptions</h2>
+
+<form action="add/" method="post">
+<div class="input-append">
+<input type="text" name="url" class="input-xxlarge" placeholder="feed url" />
+<input type="submit" value="add" class="btn" />
+</div>
+</form>
+
+{% if subscriptions %}
+<table class="table">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Entries</th>
+			<th>GUID</th>
+			<th>Last Fetched</th>
+			<th>Last Failed</th>
+			<th>Next Fetch</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+
+	<tbody>
+{% for s in subscriptions %}
+  <tr>
+		<td>{{s.feed.title}}</td>
+		<td>{{s.feed.entry_set.count}}</td>
+		<td>{{s.feed.guid}}</td>
+		<td>{{s.feed.last_fetched}}</td>
+		<td>{{s.feed.last_failed}}</td>
+		<td>{{s.feed.next_fetch}}</td>
+		<td>{{s.feed.backoff}}</td>
+	</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+
+{% endblock %}
