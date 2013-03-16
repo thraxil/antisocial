@@ -112,6 +112,10 @@ INSTALLED_APPS = [
     'smoketest',
     'django_extensions',
     'antisocial.main',
+    'userena',
+    'guardian',
+    'easy_thumbnails',
+    'antisocial.profile',
 ]
 
 LETTUCE_APPS = (
@@ -144,6 +148,18 @@ STATICMEDIA_MOUNTS = (
 
 COMPRESS_URL = "/site_media/"
 COMPRESS_ROOT = "media/"
+
+AUTHENTICATION_BACKENDS = (
+    'userena.backends.UserenaAuthenticationBackend',
+    'guardian.backends.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+ANONYMOUS_USER_ID = -1
+AUTH_PROFILE_MODULE = 'profile.Profile'
+
+LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_URL = '/accounts/signin/'
+LOGOUT_URL = '/accounts/signout/'
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 SESSION_COOKIE_HTTPONLY = True

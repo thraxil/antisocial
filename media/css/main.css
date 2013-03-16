@@ -22,6 +22,7 @@ body {
 }
 
 body > .container {
+  margin-top: 50px;
   background-color: #fff;
   min-height: 100%;
 }
