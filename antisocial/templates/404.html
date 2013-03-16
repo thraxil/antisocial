@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% comment %}
+###### FOR BASE TEMPLATE--
+   base_three_col.html : layout is [ sidebar_left -- content -- sidebar_right ]
+   base_two_col_right.html : layout is [ content -- sidebar_right ]
+   base_two_col_left.html : layout is [ sidebar_left -- content ]
+   base_one_col.html : layout is [ content ]
+{% endcomment %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block usernav %}
+<ul id="usernav">
+	<li><a href="#">Login</a></li>
+</ul><!-- id="usernav" -->
+{% endblock %}
+
+
+
+
+{% block pagetitle %}
+<h1 class="pageheader">404: Page Not Found</h1>
+{% endblock %}
+
+{% block content %}
+<p>
+We're sorry.  The page you're looking for doesn't exist at this address.
+</p>
+{% endblock %}

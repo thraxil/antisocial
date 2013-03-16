@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Choose a Login Option...</h2>
+
+<form method="get" action="{{ wind_base }}login" class="well">
+<input type="hidden" name="service" value="{{ wind_service }}" />
+<input type="hidden" name="destination" value="http://{{ request.get_host }}/accounts/windlogin/?next={{ next }}" />
+<p>If you have a Columbia University Network ID
+        (UNI)... </p><input type="submit" value="LOG IN" class="btn btn-primary"/></p>
+</form>
+
+<form method="post" action="." class="well">
+<p>If you have a project account...</p>
+
+<label for="id_username">Username: {{ form.username }}</label>
+<label for="id_password">Password: {{ form.password }}</label>
+
+<input type="submit" value="LOG IN" class="btn btn-primary" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+{% endblock %}
+
+

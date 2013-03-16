@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% comment %}
+###### FOR BASE TEMPLATE--
+   base_three_col.html : layout is [ sidebar_left -- content -- sidebar_right ]
+   base_two_col_right.html : layout is [ content -- sidebar_right ]
+   base_two_col_left.html : layout is [ sidebar_left -- content ]
+   base_one_col.html : layout is [ content ]
+{% endcomment %}
+
+
+{% load markup %}
+{% load thumbnail %}
+
+{% block title %}{{ flatpage.title }}{% endblock %}
+
+{% block usernav %}
+<div id="usernav">
+<ul>
+	<li><a href="#">Login</a></li>
+</ul><!-- id="usernav" -->
+</div>
+{% endblock %}
+
+
+{% block sidebarleft %}
+	<div class="block sidebar">
+		<h2>Left block 1</h2>
+		<div class="content">
+			<ul>
+				<li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
+				<li><a href="http://example.com">Donec egestas ante non augue iaculis blandit.</a></li>
+				<li>Nunc lacus sapien, sagittis ut, fringilla sit amet, sagittis non, metus.</li>
+				<li>Aliquam vel massa non erat venenatis placerat.</li>
+			</ul>
+		</div><!-- class="content" -->
+	</div><!-- class="block, sidebar" -->			
+	
+	<div class="block sidebar">
+		<h2>Left block 2</h2>
+		<div class="content">
+			<ul>
+				<li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
+				<li><a href="http://example.com">Donec egestas ante non augue iaculis blandit.</a></li>
+				<li>Nunc lacus sapien, sagittis ut, fringilla sit amet, sagittis non, metus.</li>
+				<li>Aliquam vel massa non erat venenatis placerat.</li>
+			</ul>
+		</div><!-- class="content" -->
+	</div><!-- class="block, sidebar" -->			
+{% endblock %}
+
+
+{% block sidebarright %}
+	<div class="block sidebar">
+		<h2>Right block 1</h2>
+		<div class="content">
+			<ol>
+				<li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
+				<li><a href="http://example.com">Donec egestas ante non augue iaculis blandit.</a></li>
+				<li>Nunc lacus sapien, sagittis ut, fringilla sit amet, sagittis non, metus.</li>
+				<li>Aliquam vel massa non erat venenatis placerat.</li>
+			</ol>
+		</div><!-- class="content" -->
+	</div><!-- class="block, sidebar" -->
+
+	<div class="block sidebar">
+		<h2>Right block 2</h2>
+		<div class="content">
+			<ol>
+				<li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
+				<li><a href="http://example.com">Donec egestas ante non augue iaculis blandit.</a></li>
+				<li>Nunc lacus sapien, sagittis ut, fringilla sit amet, sagittis non, metus.</li>
+				<li>Aliquam vel massa non erat venenatis placerat.</li>
+			</ol>
+		</div><!-- class="content" -->
+	</div><!-- class="block, sidebar" -->
+{% endblock %}
+
+
+{% block pagetitle %}
+<h1 class="pageheader">{{ flatpage.title }}</h1>
+{% endblock %}
+
+{% block content %}
+{{ flatpage.content}}<!-- temporary removal of |markdown -->
+{% endblock %}

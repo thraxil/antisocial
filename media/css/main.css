@@ -1,0 +1,54 @@
+header#masthead
+{
+	 height: 150px;
+   background-color: #9af;
+}
+
+header h1 {
+	display: none;
+}
+
+header h4 {
+	display: none;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+  background-color: #eee;
+  height: 100%;
+}
+
+body > .container {
+  background-color: #fff;
+  min-height: 100%;
+}
+
+#content {
+  min-height: 100%;
+}
+
+.navbar-top {
+  margin-bottom: 0px;
+}
+
+#primarynav .navbar-inner {
+	background-color: blue;
+	background-image: none;
+}
+
+#primarynav li.active a {
+	background-color: #8ae;
+	color: black;
+}
+
+#primarynav a {
+  color: white;
+	background-color: #679;
+}
+
+#primarynav a:hover {
+  color: blue;
+}

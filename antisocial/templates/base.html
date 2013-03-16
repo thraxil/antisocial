@@ -1,0 +1,128 @@
+{% load compress %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>antisocial: {% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="antisocial">
+  <meta name="author" content="CCNMTL">
+
+{% compress css %}
+    <link href="/site_media/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/site_media/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/site_media/css/main.css" rel="stylesheet">
+{% endcompress %}
+	<link rel="shortcut icon" href="/site_media/img/favicon.ico" type="image/x-icon" />
+	{% block css %}{% endblock %}
+  <script src="/site_media/js/jquery-1.7.2.min.js"></script>
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+	{% block feeds %}{% endblock %}
+</head>
+<body>
+
+{% block topnavbar %}
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <ul class="nav">
+          <li><a class="brand" href="/">antisocial</a></li>
+          {% block topnavbarleftitems %}{% endblock %}
+        </ul>
+
+        <p class="navbar-text pull-right">
+          {% block topnavbarrightitems %}{% endblock %}
+{% block usernav %}
+          {% if request.user.is_anonymous %}
+          <a href="/accounts/login/?next=/" class="btn btn-success">login</a>
+          {% else %}
+          logged in as {{request.user.first_name}} {{request.user.last_name}}
+          <a href="/logout/" class="btn btn-inverse">logout</a>
+          {% endif %}
+{% endblock %}
+       </p>
+
+       </div>
+     </div>
+  </div>
+{% endblock %}
+
+  <div class="container" id="outer-container">
+{% block masthead %}
+    <header class="subhead hidden-phone" id="masthead">
+      <h1><a href="./" title="antisocial">antisocial</a></h1>
+      <h4 id="logo-ccnmtl">
+        <a href="http://ccnmtl.columbia.edu" target="_blank"
+          title="Columbia Center for New Media Teaching and Learning">
+          <span>Produced by the Columbia Center for New Media Teaching
+          and Learning</span>
+        </a>
+      </h4>
+    </header>
+
+{% block primarynav %}
+    <div class="navbar" id="primarynav">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+          {% block primarynavtabs %}
+            <li class="active"><a href="/one/">One</a></li>
+						<li><a href="/two/">Two</a></li>
+          {% endblock %}
+					{% block primarynavtabsextra %}{% endblock %}
+          </ul>
+
+          <ul class="nav pull-right">
+            {% block primarynavrightextra %}{% endblock %}
+						<li><a href="/three/">Three</a></li>
+						<li><a href="/four/">Four</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% endblock %}
+
+    <div class="container-fluid" id="content">
+      <div class="row-fluid">
+        <div class="span2" id="sidebar">
+{% block sidebar %}{% endblock %}
+        </div>
+        <div class="span10" id="right-content">
+{% block pagetitle %}{% endblock %}
+{% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% block footer %}
+  <footer class="footer navbar-fixed-bottom hidden-phone">
+    <img src="/site_media/img/logo_ccnmtl_sidebar.gif" class="printonly pull-right" />
+  </footer>
+{% endblock %}
+
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
+{% compress js %}
+<script src="/site_media/bootstrap/js/bootstrap.js"></script>
+{% endcompress %}
+
+{% block js %}{% endblock %}
+
+{% if STAGING_ENV %}
+<div class="alert alert-error" style="position: fixed; bottom: 0px;">
+<h4>Warning: Staging Site</h4>
+<p>You are viewing a staging version of this site, not the production site.</p>
+<p>This site was last updated on: <b>{{STAGING_DEPLOY_TIME}}</b></p>
+</div>
+{% endif %}
+</body>
+</html>
