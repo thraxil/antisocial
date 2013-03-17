@@ -31,3 +31,4 @@ requirements/src/logilab-common-0.59.0.tar.gz
 requirements/src/logilab-astng-0.24.1.tar.gz
 requirements/src/pylint-0.26.0.tar.gz
 requirements/src/six-1.2.0.tar.gz
+requirements/src/opml-0.5.tar.gz

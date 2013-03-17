@@ -11,6 +11,14 @@
 </div>
 </form>
 
+<form action="import/" method="post" enctype="multipart/form-data">
+	<p>Import Google Reader export file (zip)</p>
+	<div class="input-append">
+		<input type="file" name="zip" id="zip" />
+		<input type="submit" value="import" class="btn" />
+	</div>
+</form>
+
 {% if subscriptions %}
 <table class="table">
 	<thead>
@@ -28,12 +36,12 @@
 	<tbody>
 {% for s in subscriptions %}
   <tr>
-		<td><a href="{{s.feed.get_absolute_url}}">{{s.feed.title}}</a></td>
+		<td><a href="{{s.feed.get_absolute_url}}">{{s.feed.title|truncatechars:50}}</a></td>
 		<td>{{s.feed.entry_set.count}}</td>
-		<td>{{s.feed.guid}}</td>
-		<td>{{s.feed.last_fetched}}</td>
-		<td>{{s.feed.last_failed}}</td>
-		<td>{{s.feed.next_fetch}}</td>
+		<td>{{s.feed.guid|truncatechars:50}}</td>
+		<td><nobr>{{s.feed.last_fetched}}</nobr></td>
+		<td><nobr>{{s.feed.last_failed}}</nobr></td>
+		<td><nobr>{{s.feed.next_fetch}}</nobr></td>
 		<td>{{s.feed.backoff}}</td>
 	</tr>
 {% endfor %}
