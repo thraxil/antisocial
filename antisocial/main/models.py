@@ -57,15 +57,16 @@ class Feed(models.Model):
             self.backoff = 0
             self.save()
             print "fetch successful"
+            if 'entries' in d:
+                for entry in d.entries:
+                    self.update_entry(entry)
+
         except:
-            print "fetch failed"
+            print "fetch failed: %s" % self.url
             self.last_failed = now
             self.backoff = self.backoff + 1
             self.save()
         self.schedule_next_fetch()
-        if 'entries' in d:
-            for entry in d.entries:
-                self.update_entry(entry)
 
     def update_entry(self, entry):
         print "update entry"
@@ -93,18 +94,22 @@ class Feed(models.Model):
         elif 'updated_parsed' in entry:
             published = datetime.fromtimestamp(
                 mktime(entry.updated_parsed))
-        e = Entry.objects.create(
-            feed=self,
-            guid=guid,
-            link=entry.get('link', u"")[:256],
-            title=entry.get('title', u"no title")[:256],
-            description=entry.get(
-                'description',
-                entry.get('summary', u"")),
-            author=entry.get('author', u"")[:256],
-            published=published,
-        )
-        e.fanout()
+        try:
+            e = Entry.objects.create(
+                feed=self,
+                guid=guid[:256],
+                link=entry.get('link', u"")[:200],
+                title=entry.get('title', u"no title")[:256],
+                description=entry.get(
+                    'description',
+                    entry.get('summary', u"")),
+                author=entry.get('author', u"")[:256],
+                published=published,
+            )
+            e.fanout()
+        except Exception, e:
+            print "exception while adding entry:"
+            print str(e)
 
     def get_absolute_url(self):
         return "/subscriptions/%d/" % self.id
