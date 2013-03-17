@@ -23,7 +23,7 @@ def entries(request):
     unread_entries = UEntry.objects.select_related().filter(
         user=request.user,
         read=False,
-    ).order_by("entry__published")[:40]
+    ).order_by("entry__published")[:100]
     return HttpResponse(
         dumps([ue.as_dict() for ue in unread_entries]),
         mimetype="application/json"

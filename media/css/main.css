@@ -55,7 +55,7 @@ body > .container {
 }
 
 .title {
-		border-top: #000 solid 1px;
+	border-top: #000 solid 1px;
   background-color: #eee;
 }
 
@@ -65,6 +65,10 @@ body > .container {
 
 .feed-title {
 
+}
+
+.current {
+   margin-bottom: 50px;
 }
 
 .current .expanded {

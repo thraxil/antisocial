@@ -178,7 +178,7 @@ class UEntry(models.Model):
             guid=self.entry.guid,
             description=self.entry.description,
             author=self.entry.author,
-            published=str(self.entry.published),
+            published=str(self.entry.published)[:16],
             feed_title=self.entry.feed.title,
             feed_id=self.entry.feed.id,
         )

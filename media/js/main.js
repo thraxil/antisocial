@@ -34,5 +34,8 @@ require([
 				if (c == 'K') {
 						app.prev();
 				}
+				if (c == 'R') {
+						app.reload();
+				};
 		});
 });
