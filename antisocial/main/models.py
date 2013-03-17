@@ -138,6 +138,19 @@ class Subscription(models.Model):
     feed = models.ForeignKey(Feed)
     user = models.ForeignKey(User)
 
+    def all_entries(self):
+        return UEntry.objects.filter(
+            entry__feed=self.feed,
+            user=self.user,
+        )
+
+    def unread_entries(self):
+        return UEntry.objects.filter(
+            entry__feed=self.feed,
+            user=self.user,
+            read=False,
+        )
+
 
 class UEntry(models.Model):
     entry = models.ForeignKey(Entry)

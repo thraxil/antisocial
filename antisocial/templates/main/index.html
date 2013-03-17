@@ -3,6 +3,8 @@
 {% block content %}
 {% if not request.user.is_anonymous %}
 
+<p>Unread: <b>{{ unread_count }}</b></p>
+
 {% if unread %}
 {% for ue in unread %}
 <div class="row">

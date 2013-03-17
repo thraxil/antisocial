@@ -17,10 +17,15 @@ def index(request):
     if request.user and request.user.is_anonymous():
         return dict()
     return dict(
-        unread=UEntry.objects.filter(
+        unread=UEntry.objects.select_related().filter(
             user=request.user,
             read=False,
-        ).order_by("entry__published"))
+        ).order_by("entry__published")[:40],
+        unread_count=UEntry.objects.filter(
+            user=request.user,
+            read=False,
+        ).count()
+    )
 
 
 @login_required
@@ -34,7 +39,19 @@ def subscriptions(request):
 @render_to('main/subscription.html')
 def subscription(request, id):
     feed = get_object_or_404(Feed, id=id)
-    return dict(feed=feed)
+    subs = feed.subscription_set.filter(user=request.user)[0]
+    return dict(feed=feed, subscription=subs)
+
+
+@login_required
+def subscription_mark_read(request, id):
+    feed = get_object_or_404(Feed, id=id)
+    subs = feed.subscription_set.filter(user=request.user)[0]
+    for ue in subs.unread_entries():
+        ue.read = True
+        ue.save()
+    return HttpResponseRedirect(subs.feed.get_absolute_url())
+
 
 # feeds known to segfault feedparser
 BLACKLIST = [

@@ -16,6 +16,16 @@
 	<dd>{{feed.next_fetch}}</dd>
 	<dt>backoff</dt>
 	<dd>{{feed.backoff}}</dd>
+	<dt>Total Entries</dt>
+	<dd>{{subscription.all_entries.count}}</dd>
+	<dt>Unread Entries</dt>
+	<dd>{{subscription.unread_entries.count}}
+{% if subscription.unread_entries.count %}
+		<form class="form-inline" action="mark_read/" method="post">
+			<input type="submit" value="mark all read" class="btn" />
+		</form>
+{% endif %}
+	</dd>
 </dl>
 
 {% for entry in feed.entry_set.all %}
