@@ -4,21 +4,14 @@
 
 <h2>Your Feed Subscriptions</h2>
 
-<form action="add/" method="post">
-<div class="input-append">
-<input type="text" name="url" class="input-xxlarge" placeholder="feed url" />
-<input type="submit" value="add" class="btn" />
-</div>
-</form>
+<ul class="nav nav-tabs" id="myTab">
+  <li class="active"><a href="#status">Status</a></li>
+  <li><a href="#add">Add Feed</a></li>
+  <li><a href="#import">Import OPML</a></li>
+</ul>
 
-<form action="import/" method="post" enctype="multipart/form-data">
-	<p>Import Google Reader export file (zip)</p>
-	<div class="input-append">
-		<input type="file" name="zip" id="zip" />
-		<input type="submit" value="import" class="btn" />
-	</div>
-</form>
-
+<div class="tab-content">
+  <div class="tab-pane active" id="status">
 {% if subscriptions %}
 <table class="table">
 	<thead>
@@ -49,4 +42,31 @@
 </table>
 {% endif %}
 
+</div>
+  <div class="tab-pane" id="add">
+<form action="add/" method="post">
+<div class="input-append">
+<input type="text" name="url" class="input-xxlarge" placeholder="feed url" />
+<input type="submit" value="add" class="btn" />
+</div>
+</form>
+
+</div>
+  <div class="tab-pane" id="import"><form action="import/" method="post" enctype="multipart/form-data">
+	<p>Import Google Reader export file (zip)</p>
+	<div class="input-append">
+		<input type="file" name="zip" id="zip" />
+		<input type="submit" value="import" class="btn" />
+	</div>
+</form>
+
+</div>
+</div>
+
+<script>
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+});
+</script>
 {% endblock %}

@@ -32,7 +32,7 @@ def index(request):
 @render_to('main/subscriptions.html')
 def subscriptions(request):
     subscriptions = Subscription.objects.select_related().filter(
-        user=request.user)
+        user=request.user).order_by("feed__next_fetch")
     return dict(subscriptions=subscriptions)
 
 

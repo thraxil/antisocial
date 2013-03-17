@@ -38,34 +38,46 @@ class Feed(models.Model):
         self.next_fetch = now + delta
         self.save()
 
+    def fetch_failed(self):
+        print "fetch failed: %s" % self.url
+        now = datetime.utcnow().replace(tzinfo=utc)
+        self.last_failed = now
+        self.backoff = self.backoff + 1
+        self.save()
+
+    def try_fetch(self):
+        d = feedparser.parse(self.url)
+        if 'status' in d and d.status == 404:
+            self.fetch_failed()
+            return
+        if 'bozo' in d and d.bozo:
+            self.fetch_failed()
+            return
+        if 'title' in d.feed and d.feed.title != self.title:
+            self.title = d.feed.title
+        guid = d.feed.get(
+            'guid',
+            d.feed.get(
+                'id',
+                d.feed.get('link', self.url)
+            )
+        )
+        if guid != self.guid:
+            self.guid = guid
+        self.backoff = 0
+        self.save()
+        print "fetch successful"
+        if 'entries' in d:
+            for entry in d.entries:
+                self.update_entry(entry)
+
     def fetch(self):
         now = datetime.utcnow().replace(tzinfo=utc)
         self.last_fetched = now
         try:
-            d = feedparser.parse(self.url)
-            if 'title' in d.feed and d.feed.title != self.title:
-                self.title = d.feed.title
-            guid = d.feed.get(
-                'guid',
-                d.feed.get(
-                    'id',
-                    d.feed.get('link', self.url)
-                )
-            )
-            if guid != self.guid:
-                self.guid = guid
-            self.backoff = 0
-            self.save()
-            print "fetch successful"
-            if 'entries' in d:
-                for entry in d.entries:
-                    self.update_entry(entry)
-
+            self.try_fetch()
         except:
-            print "fetch failed: %s" % self.url
-            self.last_failed = now
-            self.backoff = self.backoff + 1
-            self.save()
+            self.fetch_failed()
         self.schedule_next_fetch()
 
     def update_entry(self, entry):
