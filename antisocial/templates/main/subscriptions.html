@@ -28,7 +28,7 @@
 	<tbody>
 {% for s in subscriptions %}
   <tr>
-		<td>{{s.feed.title}}</td>
+		<td><a href="{{s.feed.get_absolute_url}}">{{s.feed.title}}</a></td>
 		<td>{{s.feed.entry_set.count}}</td>
 		<td>{{s.feed.guid}}</td>
 		<td>{{s.feed.last_fetched}}</td>

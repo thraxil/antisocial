@@ -2,12 +2,15 @@ from annoying.decorators import render_to
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
+from django.shortcuts import get_object_or_404
 import feedparser
 from antisocial.main.models import Feed, Subscription, UEntry
 
 
 @render_to('main/index.html')
 def index(request):
+    if request.user and request.user.is_anonymous():
+        return dict()
     return dict(
         unread=UEntry.objects.filter(
             user=request.user,
@@ -20,6 +23,13 @@ def index(request):
 def subscriptions(request):
     subscriptions = Subscription.objects.filter(user=request.user)
     return dict(subscriptions=subscriptions)
+
+
+@login_required
+@render_to('main/subscription.html')
+def subscription(request, id):
+    feed = get_object_or_404(Feed, id=id)
+    return dict(feed=feed)
 
 
 @login_required

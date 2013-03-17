@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load markup %}
+{% block content %}
+
+<h2>{{feed.title}}</h2>
+<dl class="dl-horizontal">
+	<dt>url</dt>
+	<dd>{{feed.url}}</dd>
+  <dt>guid</dt>
+	<dd>{{feed.guid}}</dd>
+	<dt>last fetched</dt>
+	<dd>{{feed.last_fetched}}</dd>
+	<dt>last failed</dt>
+	<dd>{{feed.last_failed}}</dd>
+	<dt>next fetch</dt>
+	<dd>{{feed.next_fetch}}</dd>
+	<dt>backoff</dt>
+	<dd>{{feed.backoff}}</dd>
+</dl>
+
+{% for entry in feed.entry_set.all %}
+<div class="row">
+	<div class="span10"><a href="{{entry.link}}">{{entry.title}}</a></div>
+</div>
+{% if entry.description %}
+<div class="row">
+	<div class="span2">{{entry.published}}</div>
+
+	<div class="span10">
+		{{entry.description|markdown}}
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+
+
+{% endblock %}

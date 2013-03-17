@@ -11,6 +11,7 @@ urlpatterns = patterns(
     '',
     (r'^$', 'antisocial.main.views.index'),
     (r'^subscriptions/$', 'antisocial.main.views.subscriptions'),
+    (r'^subscriptions/(?P<id>\d+)/$', 'antisocial.main.views.subscription'),
     (r'^subscriptions/add/$', 'antisocial.main.views.add_subscription'),
     (r'^accounts/', include('userena.urls')),
     (r'^admin/', include(admin.site.urls)),

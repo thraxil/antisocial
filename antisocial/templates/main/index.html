@@ -1,17 +1,30 @@
 {% extends 'base.html' %}
-
+{% load markup %}
 {% block content %}
+{% if not request.user.is_anonymous %}
 
 {% if unread %}
 {% for ue in unread %}
 <div class="row">
-	<div class="span3">{{ue.entry.feed.title}}</div>
-	<div class="span7"><a href="{{ue.entry.link}}">{{ue.entry.title}}</a></div>
-	<div class="span2">{{ue.entry.published}}</div>
+	<div class="span3"><a href="{{ue.entry.feed.get_absolute_url}}">{{ue.entry.feed.title}}</a></div>
+	<div class="span9"><a href="{{ue.entry.link}}">{{ue.entry.title}}</a></div>
 </div>
+{% if ue.entry.description %}
+<div class="row">
+	<div class="span2">
+		{{ue.entry.published}}
+	</div>
+	<div class="span10">
+		{{ue.entry.description|markdown}}
+	</div>
+</div>
+{% endif %}
 {% endfor %}
 {% else %}
 <p>You have no unread items</p>
 {% endif %}
 
+{% else %}
+<p>Please login or sign up</p>
+{% endif %}
 {% endblock %}

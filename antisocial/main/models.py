@@ -4,6 +4,7 @@ import feedparser
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import random
+from time import mktime
 
 
 class Feed(models.Model):
@@ -42,10 +43,17 @@ class Feed(models.Model):
         self.last_fetched = now
         try:
             d = feedparser.parse(self.url)
-            if d.feed.title != self.title:
+            if 'title' in d.feed and d.feed.title != self.title:
                 self.title = d.feed.title
-            if d.feed.guid != self.guid:
-                self.guid = d.feed.guid
+            guid = d.feed.get(
+                'guid',
+                d.feed.get(
+                    'id',
+                    d.feed.get('link', self.url)
+                )
+            )
+            if guid != self.guid:
+                self.guid = guid
             self.backoff = 0
             self.save()
             print "fetch successful"
@@ -55,8 +63,9 @@ class Feed(models.Model):
             self.backoff = self.backoff + 1
             self.save()
         self.schedule_next_fetch()
-        for entry in d.entries:
-            self.update_entry(entry)
+        if 'entries' in d:
+            for entry in d.entries:
+                self.update_entry(entry)
 
     def update_entry(self, entry):
         print "update entry"
@@ -78,22 +87,27 @@ class Feed(models.Model):
             print "already have this entry"
             return
         published = datetime.utcnow().replace(tzinfo=utc)
-        if 'published' in entry:
-            published = entry.published
-        elif 'updated' in entry:
-            published = entry.updated
+        if 'published_parsed' in entry:
+            published = datetime.fromtimestamp(
+                mktime(entry.published_parsed))
+        elif 'updated_parsed' in entry:
+            published = datetime.fromtimestamp(
+                mktime(entry.updated_parsed))
         e = Entry.objects.create(
             feed=self,
             guid=guid,
-            link=entry.get('link', u""),
-            title=entry.get('title', u"no title"),
+            link=entry.get('link', u"")[:256],
+            title=entry.get('title', u"no title")[:256],
             description=entry.get(
                 'description',
                 entry.get('summary', u"")),
-            author=entry.get('author', u""),
+            author=entry.get('author', u"")[:256],
             published=published,
         )
         e.fanout()
+
+    def get_absolute_url(self):
+        return "/subscriptions/%d/" % self.id
 
 
 class Entry(models.Model):

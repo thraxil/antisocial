@@ -32,7 +32,9 @@
       <div class="container">
         <ul class="nav">
           <li><a class="brand" href="/">antisocial</a></li>
+{% if not request.user.is_anonymous %}
 					<li><a href="/subscriptions/">my subscriptions</a></li>
+{% endif %}
           {% block topnavbarleftitems %}{% endblock %}
         </ul>
 
