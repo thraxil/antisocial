@@ -28,6 +28,10 @@
 	</dd>
 </dl>
 
+<form action="unsubscribe/" method="post">
+	<input type="submit" value="unsubscribe" class="btn btn-danger" />
+</form>
+
 {% for entry in feed.entry_set.all %}
 <div class="row">
 	<div class="span10"><a href="{{entry.link}}">{{entry.title}}</a></div>

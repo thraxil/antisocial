@@ -54,6 +54,19 @@ def subscription_mark_read(request, id):
     return HttpResponseRedirect(subs.feed.get_absolute_url())
 
 
+@login_required
+def unsubscribe(request, id):
+    feed = get_object_or_404(Feed, id=id)
+    subs = feed.subscription_set.filter(user=request.user)[0]
+    for ue in subs.unread_entries():
+        ue.read = True
+        ue.save()
+    subs.delete()
+    if feed.subscription_set.count() == 0:
+        feed.delete()
+    return HttpResponseRedirect("/subscriptions/")
+
+
 # feeds known to segfault feedparser
 BLACKLIST = [
     'http://www.metrokitty.com/rss/rss.xml',
