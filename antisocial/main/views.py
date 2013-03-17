@@ -31,7 +31,8 @@ def index(request):
 @login_required
 @render_to('main/subscriptions.html')
 def subscriptions(request):
-    subscriptions = Subscription.objects.filter(user=request.user)
+    subscriptions = Subscription.objects.select_related().filter(
+        user=request.user)
     return dict(subscriptions=subscriptions)
 
 
