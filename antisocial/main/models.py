@@ -168,3 +168,17 @@ class UEntry(models.Model):
     entry = models.ForeignKey(Entry)
     user = models.ForeignKey(User)
     read = models.BooleanField(default=False)
+
+    def as_dict(self):
+        return dict(
+            id=self.id,
+            read=self.read,
+            title=self.entry.title,
+            link=self.entry.link,
+            guid=self.entry.guid,
+            description=self.entry.description,
+            author=self.entry.author,
+            published=str(self.entry.published),
+            feed_title=self.entry.feed.title,
+            feed_id=self.entry.feed.id,
+        )

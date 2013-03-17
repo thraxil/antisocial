@@ -9,7 +9,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         socket.setdefaulttimeout(5)
         now = datetime.utcnow().replace(tzinfo=utc)
-        for f in Feed.objects.filter(next_fetch__lt=now):
-#        for f in Feed.objects.all():
-            print "fetching %s" % f.title
+        for f in Feed.objects.filter(
+                next_fetch__lt=now).order_by("next_fetch"):
             f.fetch()

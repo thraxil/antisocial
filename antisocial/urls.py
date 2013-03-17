@@ -18,6 +18,10 @@ urlpatterns = patterns(
      'antisocial.main.views.unsubscribe'),
     (r'^subscriptions/add/$', 'antisocial.main.views.add_subscription'),
     (r'^subscriptions/import/$', 'antisocial.main.views.import_feeds'),
+
+    (r'api/entries/$', 'antisocial.main.views.entries'),
+    (r'api/entry/(?P<id>\d+)/$', 'antisocial.main.views.entry_api'),
+
     (r'^accounts/', include('userena.urls')),
     (r'^admin/', include(admin.site.urls)),
     (r'smoketest/', include('smoketest.urls')),

@@ -1,30 +1,56 @@
 {% extends 'base.html' %}
 {% load markup %}
+
+{% block js %}
+{% if not request.user.is_anonymous %}
+<script data-main="/site_media/js/main" src="/site_media/js/libs/require/require.js"></script>
+
+
+<script type="text/template" id="entry-template">
+  <div class="entry <%= current ? 'current' : 'not-current' %>" id="ue-<%= id %>">
+		<div class="expanded">
+			<div class="row">
+				<div class="span11 title lead">
+					<a href="<%= link %>"><%= title %></a>
+					<span class="published pull-right">
+						<%= published %>
+					</span>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span10 feed-title">
+					from <a href="/subscription/<%= feed_id %>/"><%= feed_title %></a>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span10">
+					<%= description %>
+				</div>
+			</div>
+		</div>
+
+		<div class="collapsed">
+			<div class="row">
+				<div class="span11">
+					<%= feed_title %>: <b><%= title %></b>
+					<span class="published pull-right">
+						<%= published %>
+					</span>
+				</div>
+			</div>
+		</div>
+  </div>
+</script>
+
+{% endif %}
+{% endblock %}
+
 {% block content %}
 {% if not request.user.is_anonymous %}
 
-<p>Unread: <b>{{ unread_count }}</b></p>
-
-{% if unread %}
-{% for ue in unread %}
-<div class="row">
-	<div class="span3"><a href="{{ue.entry.feed.get_absolute_url}}">{{ue.entry.feed.title}}</a></div>
-	<div class="span9"><a href="{{ue.entry.link}}">{{ue.entry.title}}</a></div>
-</div>
-{% if ue.entry.description %}
-<div class="row">
-	<div class="span2">
-		{{ue.entry.published}}
-	</div>
-	<div class="span10">
-		{{ue.entry.description|markdown}}
-	</div>
-</div>
-{% endif %}
-{% endfor %}
-{% else %}
-<p>You have no unread items</p>
-{% endif %}
+<div id="entries-container"></div>
 
 {% else %}
 <p>Please login or sign up</p>

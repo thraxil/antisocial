@@ -8,23 +8,38 @@ import feedparser
 import zipfile
 import opml
 import socket
+from django.utils.simplejson import dumps, loads
 
 from antisocial.main.models import Feed, Subscription, UEntry
 
 
 @render_to('main/index.html')
 def index(request):
-    if request.user and request.user.is_anonymous():
-        return dict()
-    return dict(
-        unread=UEntry.objects.select_related().filter(
-            user=request.user,
-            read=False,
-        ).order_by("entry__published")[:40],
-        unread_count=UEntry.objects.filter(
-            user=request.user,
-            read=False,
-        ).count()
+    return dict()
+
+
+@login_required
+def entries(request):
+    unread_entries = UEntry.objects.select_related().filter(
+        user=request.user,
+        read=False,
+    ).order_by("entry__published")[:40]
+    return HttpResponse(
+        dumps([ue.as_dict() for ue in unread_entries]),
+        mimetype="application/json"
+    )
+
+
+@login_required
+def entry_api(request, id):
+    ue = get_object_or_404(UEntry, id=id)
+    if request.method == "PUT":
+        d = loads(request.read())
+        ue.read = d['read']
+        ue.save()
+    return HttpResponse(
+        dumps(ue.as_dict()),
+        mimetype="application/json"
     )
 
 
