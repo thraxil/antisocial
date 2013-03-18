@@ -26,7 +26,7 @@ define([
 				},
 				updateCount: function (model, response, options) {
 						if (model.get('unread_count')) {
-                if parseInt(model.get('unread_count'), 10) < 10 {
+                if (parseInt(model.get('unread_count'), 10) < 10) {
                     disableFetch = true;
                 } else {
                     disableFetch = false;
