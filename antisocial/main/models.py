@@ -39,7 +39,6 @@ class Feed(models.Model):
         self.save()
 
     def fetch_failed(self):
-        print "fetch failed: %s" % self.url
         now = datetime.utcnow().replace(tzinfo=utc)
         self.last_failed = now
         self.backoff = self.backoff + 1
@@ -66,7 +65,6 @@ class Feed(models.Model):
             self.guid = guid
         self.backoff = 0
         self.save()
-        print "fetch successful"
         if 'entries' in d:
             for entry in d.entries:
                 self.update_entry(entry)
@@ -81,7 +79,6 @@ class Feed(models.Model):
         self.schedule_next_fetch()
 
     def update_entry(self, entry):
-        print "update entry"
         guid = entry.get(
             'guid',
             entry.get(
@@ -91,13 +88,10 @@ class Feed(models.Model):
         )
         if not guid:
             # no guid? can't do anything with it
-            print "no guid"
             return
-        print "guid: %s" % guid
         r = self.entry_set.filter(guid=guid)
         if r.count() > 0:
             # already have this one, so nothing to do
-            print "already have this entry"
             return
         published = datetime.utcnow().replace(tzinfo=utc)
         if 'published_parsed' in entry:
@@ -120,7 +114,6 @@ class Feed(models.Model):
             )
             e.fanout()
         except Exception, e:
-            print "exception while adding entry:"
             print str(e)
 
     def get_absolute_url(self):
@@ -138,9 +131,7 @@ class Entry(models.Model):
 
     def fanout(self):
         """ new entry. spread it to subscribers """
-        print "fanout()"
         for s in self.feed.subscription_set.all():
-            print "adding uentry for %s" % s.user.username
             UEntry.objects.create(
                 entry=self,
                 user=s.user)
