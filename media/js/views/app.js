@@ -93,6 +93,10 @@ define([
 						if (this.idx > 0) {
 								Entries.at(this.idx - 1).set("current", false);
 						}
+            if (Entries.length < this.idx + 1) {
+                // at the end. can't go further
+                return;
+            }
 						var e = Entries.at(this.idx);
 						e.set("current", true);
 						this.idx++;
