@@ -15,11 +15,12 @@ from antisocial.main.models import Feed, Subscription, UEntry
 
 @render_to('main/index.html')
 def index(request):
-    return dict(
-        unread_count=UEntry.objects.select_related().filter(
+    unread_count = 0
+    if not request.user.is_anonymous():
+        unread_count = UEntry.objects.select_related().filter(
             user=request.user,
-            read=False,
-        ).count())
+            read=False).count()
+    return dict(unread_count=unread_count)
 
 
 @login_required
