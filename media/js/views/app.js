@@ -62,17 +62,23 @@ define([
 						this.idx = 0;
 				},
 				prev: function() {
-						if (this.idx == 0) {
+						if (this.idx < 2) {
 								// can't go up
 								return;
 						}
-						Entries.at(this.idx).set("current", false);
+						// collapse the one that's open
+						Entries.at(this.idx - 1).set("current", false);
+						// undo the advance from before
+						this.idx--;
+						// and again to actually back up to the previous
 						this.idx--;
 						var e = Entries.at(this.idx);
 						e.set("current", true);
 						$('html, body').animate({
 								scrollTop: $("#ue-" + e.get('id')).offset().top - 50
 						}, 500);
+						// re-advance so the next 'j' will work as expected
+						this.idx++;
 				},
 				next: function() {
 						if (this.idx > 0) {
