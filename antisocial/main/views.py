@@ -15,7 +15,11 @@ from antisocial.main.models import Feed, Subscription, UEntry
 
 @render_to('main/index.html')
 def index(request):
-    return dict()
+    return dict(
+        unread_count=UEntry.objects.select_related().filter(
+            user=request.user,
+            read=False,
+        ).count())
 
 
 @login_required
@@ -32,13 +36,19 @@ def entries(request):
 
 @login_required
 def entry_api(request, id):
+    unread_count = UEntry.objects.select_related().filter(
+        user=request.user,
+        read=False,
+    ).count()
     ue = get_object_or_404(UEntry, id=id)
     if request.method == "PUT":
         d = loads(request.read())
         ue.read = d['read']
         ue.save()
+    d = ue.as_dict()
+    d['unread_count'] = unread_count
     return HttpResponse(
-        dumps(ue.as_dict()),
+        dumps(d),
         mimetype="application/json"
     )
 

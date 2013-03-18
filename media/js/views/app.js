@@ -11,6 +11,7 @@ define([
 				initialize: function () {
 						this.model.bind('change', this.render, this);
 						this.model.bind('remove', this.remove, this);
+						this.model.bind('sync', this.updateCount, this);
 				},
         remove: function() {
 						$(this.el).remove();
@@ -18,7 +19,12 @@ define([
 				render: function () {
 						this.$el.html(this.template(this.model.toJSON()));
 						return this;
-				} 
+				},
+				updateCount: function (model, response, options) {
+						if (model.get('unread_count')) {
+								$("#unread-count-var").html(model.get('unread_count'));
+						}
+				}
 		});
 
 		var Entries = new EntryList;

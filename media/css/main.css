@@ -86,3 +86,13 @@ body > .container {
 .not-current .collapsed {
 		display: block;
 }
+
+#unread-counter {
+  position: fixed;
+	bottom: 0px;
+	right: 0px;
+  background-color: #fff;
+	padding: 1em;
+	font-size: 1.5em;
+	border: #ccc solid 1px;
+}

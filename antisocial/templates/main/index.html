@@ -50,6 +50,7 @@
 {% block content %}
 {% if not request.user.is_anonymous %}
 
+<div id="unread-counter"><span id="unread-count-var">{{unread_count}}</span> unread</div>
 <div id="entries-container"></div>
 
 {% else %}
