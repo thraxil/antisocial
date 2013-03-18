@@ -5,3 +5,4 @@ distribute*.tar.gz
 .coverage
 pip-log.txt
 *~
+CACHE

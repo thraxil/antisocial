@@ -49,7 +49,7 @@ class Feed(models.Model):
         if 'status' in d and d.status == 404:
             self.fetch_failed()
             return
-        if 'bozo' in d and d.bozo:
+        if 'entries' not in d:
             self.fetch_failed()
             return
         if 'title' in d.feed and d.feed.title != self.title:
