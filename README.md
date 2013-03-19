@@ -25,6 +25,6 @@ Technology:
 * Backbone.js frontend
 * Celery/RabbitMQ fetch/parse pipeline (in the works. cronjob for now)
 
-Byline:
-
 Built by Anders Pearson <anders@columbia.edu>
+
+License: BSD
