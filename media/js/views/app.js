@@ -55,6 +55,7 @@ define([
 				},
 				addAll: function() {
 						Entries.each(this.addOne, this);
+            $("#unread-count-var").html(Entries.length);
 				},
 				reload: function() {
 						Entries.each(this.remove, this);
