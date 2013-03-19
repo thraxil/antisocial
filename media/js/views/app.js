@@ -5,10 +5,6 @@ define([
 		'models/entry',
 		'collections/antisocial',
 ], function($, _, Backbone, Entry, EntryList){
-    // if we know that fetching new items from the server won't
-    // actually get us any new ones (ie, we're almost at the end)
-    // might as well just not do that
-    var disableFetch = false;
 		var EntryView = Backbone.View.extend({
 				tagName: 'div',
 				template: _.template($('#entry-template').html()),
@@ -26,11 +22,6 @@ define([
 				},
 				updateCount: function (model, response, options) {
 						if (model.get('unread_count')) {
-                if (parseInt(model.get('unread_count'), 10) < 10) {
-                    disableFetch = true;
-                } else {
-                    disableFetch = false;
-                }
 								$("#unread-count-var").html(model.get('unread_count'));
 						}
 				}
@@ -104,22 +95,9 @@ define([
 								scrollTop: $("#ue-" + e.get('id')).offset().top - 50
 						}, 500);
 						e.markRead();
-						if (!disableFetch && this.idx > Entries.length - 10) {
-								var toremove = [];
-								for (var i = 0; i < Entries.length; i++) {
-										if (i != this.idx - 1) {
-												toremove.push(Entries.at(i));
-										}
-								}
-								_(toremove).each(this.remove, this);
-								Entries.fetch();
-                this.idx = 1;
-								// elements on the page move around
-								// so get back where we want
-								$('html, body').animate({
-										scrollTop: $("#ue-" + e.get('id')).offset().top - 50
-								}, 100);
-
+						if (this.idx > Entries.length - 10) {
+                // TODO: show a message to the user
+                // to let them know they are at the end
 						}
 
 				}
