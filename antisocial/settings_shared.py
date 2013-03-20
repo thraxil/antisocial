@@ -168,5 +168,17 @@ SESSION_COOKIE_HTTPONLY = True
 BROKER_URL = "amqp://guest:guest@localhost:5672//"
 CELERYD_CONCURRENCY = 4
 
+# from datetime import timedelta
+
+# CELERYBEAT_SCHEDULE = {
+#     'schedule-feeds': {
+#         'task': 'antisocial.main.tasks.schedule_feeds',
+#         'schedule': timedelta(seconds=60),
+#         'args': (),
+#     },
+# }
+
+# CELERY_TIMEZONE = 'UTC'
+
 import djcelery
 djcelery.setup_loader()
