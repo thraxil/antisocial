@@ -23,7 +23,7 @@ Technology:
 * Django backend (running on Ubuntu and PostgreSQL)
 * Python feedparser module does the heavy lifting on parsing feeds
 * Backbone.js frontend
-* Celery/RabbitMQ fetch/parse pipeline (in the works. cronjob for now)
+* Celery/RabbitMQ fetch/parse pipeline
 
 Built by Anders Pearson <anders@columbia.edu>
 
