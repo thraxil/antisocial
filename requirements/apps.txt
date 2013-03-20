@@ -19,3 +19,5 @@ requirements/src/django-stagingcontext-0.1.0.tar.gz
 requirements/src/easy-thumbnails-1.2.tar.gz
 requirements/src/django-guardian-1.1.0.beta.tar.gz
 requirements/src/django-userena-1.2.0.tar.gz
+requirements/src/django-picklefield-0.3.0.tar.gz
+requirements/src/django-celery-3.0.11.tar.gz
