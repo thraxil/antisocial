@@ -116,6 +116,7 @@ INSTALLED_APPS = [
     'guardian',
     'easy_thumbnails',
     'antisocial.profile',
+    'djcelery',
 ]
 
 LETTUCE_APPS = (
@@ -163,3 +164,9 @@ LOGOUT_URL = '/accounts/signout/'
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 SESSION_COOKIE_HTTPONLY = True
+
+BROKER_URL = "amqp://guest:guest@localhost:5672//"
+CELERYD_CONCURRENCY = 4
+
+import djcelery
+djcelery.setup_loader()

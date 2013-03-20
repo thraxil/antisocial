@@ -6,3 +6,4 @@ distribute*.tar.gz
 pip-log.txt
 *~
 CACHE
+celerybeat-schedule
