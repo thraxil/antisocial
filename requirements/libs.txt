@@ -33,6 +33,7 @@ requirements/src/pylint-0.26.0.tar.gz
 requirements/src/six-1.2.0.tar.gz
 requirements/src/opml-0.5.tar.gz
 requirements/src/Pillow-2.0.0.zip
+requirements/src/python-dateutil-2.1.tar.gz
 requirements/src/anyjson-0.3.3.tar.gz
 requirements/src/billiard-2.7.3.22.tar.gz
 requirements/src/amqp-1.0.9.tar.gz
