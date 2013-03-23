@@ -36,6 +36,10 @@
 	<dt>etag</dt>
 	<dd>{{feed.etag}}</dd>
 	{% endif %}
+	{% if feed.modified %}
+	<dt>modified</dt>
+	<dd>{{feed.modified}}</dd>
+	{% endif %}
 </dl>
 
 <form action="unsubscribe/" method="post">

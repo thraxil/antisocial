@@ -16,6 +16,9 @@ class Feed(models.Model):
     next_fetch = models.DateTimeField()
     backoff = models.IntegerField(default=0)
     etag = models.CharField(max_length=256, default="")
+    # store modified as a string, since we are just
+    # passing it back through to feedparser
+    modified = models.CharField(max_length=256, default="")
 
     def subscribe_user(self, user):
         r = self.subscription_set.filter(user=user)
@@ -46,7 +49,8 @@ class Feed(models.Model):
         self.save()
 
     def try_fetch(self):
-        d = feedparser.parse(self.url, etag=self.etag)
+        d = feedparser.parse(self.url, etag=self.etag,
+                             modified=self.modified)
         if 'status' in d and d.status == 404:
             self.fetch_failed()
             return
@@ -68,6 +72,8 @@ class Feed(models.Model):
         self.backoff = 0
         if 'etag' in d:
             self.etag = d.etag
+        if 'modified' in d:
+            self.modified = d.modified
         self.save()
         if 'entries' in d:
             for entry in d.entries:
