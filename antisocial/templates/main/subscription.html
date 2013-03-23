@@ -32,6 +32,10 @@
 		</form>
 {% endif %}
 	</dd>
+	{% if feed.etag %}
+	<dt>etag</dt>
+	<dd>{{feed.etag}}</dd>
+	{% endif %}
 </dl>
 
 <form action="unsubscribe/" method="post">

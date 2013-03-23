@@ -15,6 +15,7 @@ class Feed(models.Model):
     last_failed = models.DateTimeField(null=True)
     next_fetch = models.DateTimeField()
     backoff = models.IntegerField(default=0)
+    etag = models.CharField(max_length=256, default="")
 
     def subscribe_user(self, user):
         r = self.subscription_set.filter(user=user)
@@ -45,7 +46,7 @@ class Feed(models.Model):
         self.save()
 
     def try_fetch(self):
-        d = feedparser.parse(self.url)
+        d = feedparser.parse(self.url, etag=self.etag)
         if 'status' in d and d.status == 404:
             self.fetch_failed()
             return
@@ -54,6 +55,7 @@ class Feed(models.Model):
             return
         if 'title' in d.feed and d.feed.title != self.title:
             self.title = d.feed.title
+
         guid = d.feed.get(
             'guid',
             d.feed.get(
@@ -64,6 +66,8 @@ class Feed(models.Model):
         if guid != self.guid:
             self.guid = guid
         self.backoff = 0
+        if 'etag' in d:
+            self.etag = d.etag
         self.save()
         if 'entries' in d:
             for entry in d.entries:
