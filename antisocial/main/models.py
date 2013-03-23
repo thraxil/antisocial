@@ -67,6 +67,7 @@ class Feed(models.Model):
         self.save()
         if 'entries' in d:
             for entry in d.entries:
+
                 self.update_entry(entry)
 
     def fetch(self):
@@ -96,10 +97,10 @@ class Feed(models.Model):
         published = datetime.utcnow().replace(tzinfo=utc)
         if 'published_parsed' in entry:
             published = datetime.fromtimestamp(
-                mktime(entry.published_parsed))
+                mktime(entry.published_parsed)).replace(tzinfo=utc)
         elif 'updated_parsed' in entry:
             published = datetime.fromtimestamp(
-                mktime(entry.updated_parsed))
+                mktime(entry.updated_parsed)).replace(tzinfo=utc)
         try:
             e = Entry.objects.create(
                 feed=self,
