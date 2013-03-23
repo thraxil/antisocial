@@ -42,3 +42,4 @@ requirements/src/amqplib-1.0.2.tgz
 requirements/src/kombu-2.5.7.tar.gz
 requirements/src/pyparsing-1.5.6.tar.gz
 requirements/src/celery-3.0.16.tar.gz
+requirements/src/BeautifulSoup-3.2.1.tar.gz
