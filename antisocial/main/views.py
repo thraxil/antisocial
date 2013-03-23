@@ -11,6 +11,7 @@ import socket
 from django.utils.simplejson import dumps, loads
 
 from antisocial.main.models import Feed, Subscription, UEntry
+import antisocial.main.tasks as tasks
 
 
 @render_to('main/index.html')
@@ -78,6 +79,16 @@ def subscription_mark_read(request, id):
         ue.read = True
         ue.save()
     return HttpResponseRedirect(subs.feed.get_absolute_url())
+
+
+@login_required
+def subscription_fetch(request, id):
+    """ fetch it now, ignoring the schedule
+    mainly for debugging. """
+    feed = get_object_or_404(Feed, id=id)
+    tasks.process_feed.delay(feed.id)
+    subs = feed.subscription_set.filter(user=request.user)[0]
+    return HttpResponseRedirect(feed.get_absolute_url())
 
 
 @login_required

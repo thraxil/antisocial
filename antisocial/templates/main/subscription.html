@@ -13,7 +13,13 @@
 	<dt>last failed</dt>
 	<dd>{{feed.last_failed}}</dd>
 	<dt>next fetch</dt>
-	<dd>{{feed.next_fetch}}</dd>
+	<dd>{{feed.next_fetch}}
+		{% if request.user.is_superuser %}
+		<form action="fetch/" method="post">
+			<input type="submit" value="fetch now" class="btn" />
+		</form>
+		{% endif %}
+	</dd>
 	<dt>backoff</dt>
 	<dd>{{feed.backoff}}</dd>
 	<dt>Total Entries</dt>
