@@ -137,7 +137,7 @@ def add_feed(url):
     return (
         True,
         Feed.objects.create(
-            url=url,
+            url=d.href,
             title=d.feed.get('title', 'no title for feed'),
             guid=guid,
             last_fetched=now,

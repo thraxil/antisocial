@@ -74,6 +74,8 @@ class Feed(models.Model):
             self.etag = d.etag
         if 'modified' in d:
             self.modified = d.modified
+        if 'status' in d and d.status == 301:
+            self.url = d.href
         self.save()
         if 'entries' in d:
             for entry in d.entries:
