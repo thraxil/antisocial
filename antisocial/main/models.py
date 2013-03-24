@@ -54,6 +54,10 @@ class Feed(models.Model):
         if 'status' in d and d.status == 404:
             self.fetch_failed()
             return
+        if 'status' in d and d.status == 410:
+            # 410 == GONE
+            self.fetch_failed()
+            return
         if 'entries' not in d:
             self.fetch_failed()
             return
