@@ -3,8 +3,6 @@ from celery.decorators import periodic_task
 from celery.task.schedules import crontab
 from datetime import datetime
 from django.utils.timezone import utc
-
-
 from .models import Feed
 
 

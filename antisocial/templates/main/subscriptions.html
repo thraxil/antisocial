@@ -28,7 +28,7 @@
 
 	<tbody>
 {% for s in subscriptions %}
-  <tr>
+  <tr{% if s.feed.backoff %} class="error"{% endif %}>
 		<td><a href="{{s.feed.get_absolute_url}}">{{s.feed.title|truncatechars:50}}</a></td>
 		<td>{{s.feed.entry_set.count}}</td>
 		<td>{{s.feed.guid|truncatechars:50}}</td>

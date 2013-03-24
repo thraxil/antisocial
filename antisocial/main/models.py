@@ -77,7 +77,6 @@ class Feed(models.Model):
         self.save()
         if 'entries' in d:
             for entry in d.entries:
-
                 self.update_entry(entry)
 
     def fetch(self):
