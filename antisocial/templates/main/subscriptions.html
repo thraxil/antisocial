@@ -22,20 +22,18 @@
 			<th>Last Fetched</th>
 			<th>Last Failed</th>
 			<th>Next Fetch</th>
-			<th>Status</th>
 		</tr>
 	</thead>
 
 	<tbody>
 {% for s in subscriptions %}
-  <tr{% if s.feed.backoff %} class="error"{% endif %}>
+  <tr{% if s.feed.backoff %} class="error"{% else %}{% if not s.feed.entry_set.count %} class="warning"{% endif %}{% endif %}>
 		<td><a href="{{s.feed.get_absolute_url}}">{{s.feed.title|truncatechars:50}}</a></td>
 		<td>{{s.feed.entry_set.count}}</td>
 		<td>{{s.feed.guid|truncatechars:50}}</td>
 		<td><nobr>{{s.feed.last_fetched}}</nobr></td>
 		<td><nobr>{{s.feed.last_failed}}</nobr></td>
 		<td><nobr>{{s.feed.next_fetch}}</nobr></td>
-		<td>{{s.feed.backoff}}</td>
 	</tr>
 {% endfor %}
 	</tbody>
