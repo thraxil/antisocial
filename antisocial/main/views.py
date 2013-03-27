@@ -132,12 +132,14 @@ def add_feed(url):
             d.feed.get('link', url)
         )
     )
+    if 'href' in d:
+        url = d.href
     socket.setdefaulttimeout(None)
     now = datetime.utcnow().replace(tzinfo=utc)
     return (
         True,
         Feed.objects.create(
-            url=d.href,
+            url=url,
             title=d.feed.get('title', 'no title for feed'),
             guid=guid,
             last_fetched=now,
@@ -161,6 +163,10 @@ def import_feeds(request):
                 zipfile.ZIP_STORED) as openzip:
             filelist = openzip.infolist()
             for f in filelist:
+                if f.filename.startswith("__"):
+                    continue
+                if f.filename.startswith("."):
+                    continue
                 if f.filename.endswith("subscriptions.xml"):
                     opmlfile = openzip.read(f)
                     outline = opml.from_string(opmlfile)
