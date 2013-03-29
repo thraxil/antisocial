@@ -129,7 +129,7 @@ def import_feeds(request):
         return HttpResponse("error parsing file: %s" % str(e))
 
     for url in feed_urls:
-        tasks.add_feed.delay(url)
+        tasks.add_feed.delay(url, user=request.user)
     return dict(
         total=cnt
     )
