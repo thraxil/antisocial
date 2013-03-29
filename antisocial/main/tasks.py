@@ -37,7 +37,7 @@ def add_feed(url, user=None):
     if r.count() > 0:
         # already have it
         if user:
-            r[0].subscribe(user)
+            r[0].subscribe_user(user)
         return
 
     socket.setdefaulttimeout(5)
@@ -66,4 +66,4 @@ def add_feed(url, user=None):
         next_fetch=now,
     )
     if user:
-        f.subscribe(user)
+        f.subscribe_user(user)
