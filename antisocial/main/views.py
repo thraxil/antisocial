@@ -34,7 +34,7 @@ def entries(request):
 
 @login_required
 def entry_api(request, id):
-    unread_count = UEntry.objects.select_related().filter(
+    unread_count = UEntry.objects.filter(
         user=request.user,
         read=False,
     ).count()
