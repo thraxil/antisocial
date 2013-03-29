@@ -14,7 +14,7 @@ import antisocial.main.tasks as tasks
 def index(request):
     unread_count = 0
     if not request.user.is_anonymous():
-        unread_count = UEntry.objects.select_related().filter(
+        unread_count = UEntry.objects.filter(
             user=request.user,
             read=False).count()
     return dict(unread_count=unread_count)
