@@ -1,13 +1,9 @@
 from annoying.decorators import render_to
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from datetime import datetime
 from django.shortcuts import get_object_or_404
-from django.utils.timezone import utc
-import feedparser
 import zipfile
 import opml
-import socket
 from django.utils.simplejson import dumps, loads
 
 from antisocial.main.models import Feed, Subscription, UEntry
@@ -87,7 +83,6 @@ def subscription_fetch(request, id):
     mainly for debugging. """
     feed = get_object_or_404(Feed, id=id)
     tasks.process_feed.delay(feed.id)
-    subs = feed.subscription_set.filter(user=request.user)[0]
     return HttpResponseRedirect(feed.get_absolute_url())
 
 
@@ -102,50 +97,6 @@ def unsubscribe(request, id):
     if feed.subscription_set.count() == 0:
         feed.delete()
     return HttpResponseRedirect("/subscriptions/")
-
-
-# feeds known to segfault feedparser
-BLACKLIST = [
-    'http://www.metrokitty.com/rss/rss.xml',
-]
-
-
-def add_feed(url):
-    if url in BLACKLIST:
-        return (False, "blacklisted feed")
-    r = Feed.objects.filter(url=url)
-    if r.count() > 0:
-        # already have it
-        return (True, r[0])
-
-    socket.setdefaulttimeout(5)
-    # haven't seen this one before, let's fetch it
-    try:
-        d = feedparser.parse(url)
-    except Exception, e:
-        socket.setdefaulttimeout(None)
-        return (False, str(e))
-    guid = d.feed.get(
-        'guid',
-        d.feed.get(
-            'id',
-            d.feed.get('link', url)
-        )
-    )
-    if 'href' in d:
-        url = d.href
-    socket.setdefaulttimeout(None)
-    now = datetime.utcnow().replace(tzinfo=utc)
-    return (
-        True,
-        Feed.objects.create(
-            url=url,
-            title=d.feed.get('title', 'no title for feed'),
-            guid=guid,
-            last_fetched=now,
-            next_fetch=now,
-        )
-    )
 
 
 @login_required
@@ -177,24 +128,10 @@ def import_feeds(request):
     except Exception, e:
         return HttpResponse("error parsing file: %s" % str(e))
 
-    succeeded = 0
-    failed = 0
-    failed_urls = []
-    togo = cnt
     for url in feed_urls:
-        (success, f) = add_feed(url)
-        if success:
-            f.subscribe_user(request.user)
-            succeeded += 1
-        else:
-            failed += 1
-            failed_urls.append(url)
-        togo -= 1
+        tasks.add_feed.delay(url)
     return dict(
-        total=cnt,
-        succeeded=succeeded,
-        failed=failed,
-        failed_urls=failed_urls,
+        total=cnt
     )
 
 
@@ -209,6 +146,5 @@ def add_subscription(request):
     if r.count() > 0:
         r[0].subscribe_user(request.user)
         return HttpResponseRedirect("/subscriptions/")
-    (success, f) = add_feed(url)
-    f.subscribe_user(request.user)
+    tasks.add_feed.delay(url, user=request.user)
     return HttpResponseRedirect("/subscriptions/")

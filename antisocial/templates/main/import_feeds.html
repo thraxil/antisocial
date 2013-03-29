@@ -2,25 +2,14 @@
 
 {% block content %}
 
-<h2>Imported Feeds</h2>
+<h2>Importing Feeds</h2>
 
 <dl>
 	<dt>Feed URLs found:</dt>
 	<dd>{{total}}</dd>
-	<dt>Succeeded</dt>
-	<dd>{{succeeded}}</dd>
-	<dt>Failed</dt>
-	<dd>{{failed}}</dd>
-	{% if failed %}
-	<dt>Failed Feeds:</dt>
-	<dd>
-		<ul>
-			{% for f in failed_urls %}
-			<li>{{f}}</li>
-			{% endfor %}
-		</ul>
-	</dd>
 	{% endif %}
 </dl>
+
+<p>These feeds are queued for importing. It'll probably take a few minutes.</p>
 
 {% endblock %}
