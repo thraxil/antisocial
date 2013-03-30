@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import random
 from time import mktime
+from .utils import get_feed_guid
 
 
 class Feed(models.Model):
@@ -64,13 +65,7 @@ class Feed(models.Model):
         if 'title' in d.feed and d.feed.title != self.title:
             self.title = d.feed.title
 
-        guid = d.feed.get(
-            'guid',
-            d.feed.get(
-                'id',
-                d.feed.get('link', self.url)
-            )
-        )
+        guid = get_feed_guid(d.feed, self.url)
         if guid != self.guid:
             self.guid = guid
         self.backoff = 0
