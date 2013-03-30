@@ -17,3 +17,19 @@ def get_feed_guid(feed, url):
             feed.get('link', url)
         )
     )
+
+
+def get_entry_guid(entry):
+    """ get the guid for an entry
+
+    prefer: 'guid', 'id', 'link'
+
+    if it can't find any of those, None
+    """
+    return entry.get(
+        'guid',
+        entry.get(
+            'id',
+            entry.get('link', None)
+        )
+    )

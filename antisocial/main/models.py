@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import random
 from time import mktime
-from .utils import get_feed_guid
+from .utils import get_feed_guid, get_entry_guid
 
 
 class Feed(models.Model):
@@ -90,13 +90,7 @@ class Feed(models.Model):
         self.schedule_next_fetch()
 
     def update_entry(self, entry):
-        guid = entry.get(
-            'guid',
-            entry.get(
-                'id',
-                entry.get('link', None)
-            )
-        )
+        guid = get_entry_guid(entry)
         if not guid:
             # no guid? can't do anything with it
             return

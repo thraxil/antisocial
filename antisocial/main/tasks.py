@@ -6,6 +6,7 @@ from django.utils.timezone import utc
 import feedparser
 import socket
 from .models import Feed, UEntry
+from .utils import get_feed_guid
 
 
 @task(ignore_result=True)
@@ -73,13 +74,7 @@ def add_feed(url, user=None):
     except:
         socket.setdefaulttimeout(None)
         return
-    guid = d.feed.get(
-        'guid',
-        d.feed.get(
-            'id',
-            d.feed.get('link', url)
-        )
-    )
+    guid = get_feed_guid(d.feed, url)
     if 'href' in d:
         url = d.href
     socket.setdefaulttimeout(None)
