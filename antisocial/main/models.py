@@ -74,7 +74,7 @@ class Feed(models.Model):
         if 'modified' in d:
             self.modified = d.modified
         if 'status' in d and d.status == 301:
-            self.url = d.href
+            self.url = d.href[:200]
         self.save()
         if 'entries' in d:
             for entry in d.entries:
@@ -94,7 +94,7 @@ class Feed(models.Model):
         if not guid:
             # no guid? can't do anything with it
             return
-        r = self.entry_set.filter(guid=guid)
+        r = self.entry_set.filter(guid=guid[:256])
         if r.count() > 0:
             # already have this one, so nothing to do
             return

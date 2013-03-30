@@ -60,7 +60,7 @@ BLACKLIST = [
 def add_feed(url, user=None):
     if url in BLACKLIST:
         return
-    r = Feed.objects.filter(url=url)
+    r = Feed.objects.filter(url=url[:200])
     if r.count() > 0:
         # already have it
         if user:
@@ -76,13 +76,13 @@ def add_feed(url, user=None):
         return
     guid = get_feed_guid(d.feed, url)
     if 'href' in d:
-        url = d.href
+        url = d.href[:200]
     socket.setdefaulttimeout(None)
     now = datetime.utcnow().replace(tzinfo=utc)
     f = Feed.objects.create(
-        url=url,
+        url=url[:200],
         title=d.feed.get('title', 'no title for feed'),
-        guid=guid,
+        guid=guid[:256],
         last_fetched=now,
         next_fetch=now,
     )
