@@ -8,7 +8,7 @@ import socket
 from .models import Feed
 
 
-@task
+@task(ignore_result=True)
 def process_feed(feed_id):
     f = Feed.objects.get(id=feed_id)
     f.fetch()
@@ -29,7 +29,7 @@ BLACKLIST = [
 ]
 
 
-@task
+@task(ignore_result=True)
 def add_feed(url, user=None):
     if url in BLACKLIST:
         return
