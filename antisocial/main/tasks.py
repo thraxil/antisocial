@@ -5,7 +5,7 @@ from datetime import datetime
 from django.utils.timezone import utc
 import feedparser
 import socket
-from .models import Feed
+from .models import Feed, UEntry
 
 
 @task(ignore_result=True)
@@ -22,6 +22,13 @@ def schedule_feeds():
     for f in Feed.objects.filter(
             next_fetch__lt=now).order_by("next_fetch"):
         process_feed.delay(f.id)
+
+
+@periodic_task(run_every=crontab(hour="*", minute="*/5", day_of_week="*"))
+def expunge_uentries():
+    """ clear out all the uentries that have been read """
+    UEntry.objects.filter(read=True).delete()
+
 
 # feeds known to segfault feedparser
 BLACKLIST = [
