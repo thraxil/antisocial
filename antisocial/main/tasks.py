@@ -30,6 +30,25 @@ def expunge_uentries():
     UEntry.objects.filter(read=True).delete()
 
 
+@periodic_task(run_every=crontab(hour="*", minute="23", day_of_week="*"))
+def remove_duplicate_feeds():
+    """
+    somehow, duplicate feeds occasionally show up.
+    as a last resort, find them and kill them here.
+    """
+    guids = set()
+    duplicates = []
+    # order by -last_fetched means we always keep
+    # the most recently fetched one when we find a duplicate
+    for f in Feed.objects.all().order_by("-last_fetched"):
+        if f.guid in guids:
+            # we've seen it before, so it's a duplicate
+            duplicates.append(f)
+        guids.add(f.guid)
+    for f in duplicates:
+        f.delete()
+
+
 # feeds known to segfault feedparser
 BLACKLIST = [
     'http://www.metrokitty.com/rss/rss.xml',
