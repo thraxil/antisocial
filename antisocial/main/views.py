@@ -63,7 +63,10 @@ def subscriptions(request):
 @render_to('main/subscription.html')
 def subscription(request, id):
     feed = get_object_or_404(Feed, id=id)
-    subs = feed.subscription_set.filter(user=request.user)[0]
+    subs = []
+    r = feed.subscription_set.filter(user=request.user)
+    if r.count() > 0:
+        subs = r[0]
     return dict(feed=feed, subscription=subs)
 
 
@@ -96,6 +99,13 @@ def unsubscribe(request, id):
     subs.delete()
     if feed.subscription_set.count() == 0:
         feed.delete()
+    return HttpResponseRedirect("/subscriptions/")
+
+
+@login_required
+def subscribe(request, id):
+    feed = get_object_or_404(Feed, id=id)
+    feed.subscribe_user(request.user)
     return HttpResponseRedirect("/subscriptions/")
 
 

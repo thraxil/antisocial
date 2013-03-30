@@ -22,7 +22,7 @@ class Feed(models.Model):
 
     def subscribe_user(self, user):
         r = self.subscription_set.filter(user=user)
-        if r.count() == 0:
+        if r.count() < 1:
             Subscription.objects.create(
                 feed=self,
                 user=user,

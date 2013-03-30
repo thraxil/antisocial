@@ -18,6 +18,8 @@ urlpatterns = patterns(
      'antisocial.main.views.subscription_fetch'),
     (r'^subscriptions/(?P<id>\d+)/unsubscribe/$',
      'antisocial.main.views.unsubscribe'),
+    (r'^subscriptions/(?P<id>\d+)/subscribe/$',
+     'antisocial.main.views.subscribe'),
     (r'^subscriptions/add/$', 'antisocial.main.views.add_subscription'),
     (r'^subscriptions/import/$', 'antisocial.main.views.import_feeds'),
 

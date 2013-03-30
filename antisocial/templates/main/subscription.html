@@ -22,6 +22,7 @@
 	</dd>
 	<dt>backoff</dt>
 	<dd>{{feed.backoff}}</dd>
+{% if subscription %}
 	<dt>Total Entries</dt>
 	<dd>{{subscription.all_entries.count}}</dd>
 	<dt>Unread Entries</dt>
@@ -32,6 +33,7 @@
 		</form>
 {% endif %}
 	</dd>
+{% endif %}
 	{% if feed.etag %}
 	<dt>etag</dt>
 	<dd>{{feed.etag}}</dd>
@@ -42,9 +44,15 @@
 	{% endif %}
 </dl>
 
+{% if subscription %}
 <form action="unsubscribe/" method="post">
 	<input type="submit" value="unsubscribe" class="btn btn-danger" />
 </form>
+{% else %}
+<form action="subscribe/" method="post">
+	<input type="submit" value="subscribe" class="btn" />
+</form>
+{% endif %}
 
 {% for entry in feed.entry_set.all %}
 <div class="row">
