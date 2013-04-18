@@ -82,6 +82,9 @@ class Feed(models.Model):
 
     def fetch(self):
         now = datetime.utcnow().replace(tzinfo=utc)
+        if now < self.last_fetched + timedelta(minutes=15):
+            # never fetch the same feed more than once per 15 minutes
+            return
         self.last_fetched = now
         try:
             self.try_fetch()
