@@ -53,7 +53,7 @@ def schedule_feeds():
         for f in Feed.objects.filter(
             next_fetch__lt=now,
             next_fetch__gt=(
-                now - timedelta(minutes=2))).order_by("next_fetch"):
+                now - timedelta(minutes=5))).order_by("next_fetch"):
             process_feed.apply_async(
                 args=[f.id], time_limit=10, soft_time_limit=6)
 
