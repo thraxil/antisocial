@@ -3,6 +3,7 @@ from celery.decorators import periodic_task
 from celery.exceptions import SoftTimeLimitExceeded
 from celery.task.schedules import crontab
 from datetime import datetime
+from datetime import timedelta
 from django.utils.timezone import utc
 import feedparser
 import socket
@@ -22,11 +23,39 @@ def process_feed(feed_id):
 @periodic_task(run_every=crontab(hour="*", minute="*", day_of_week="*"))
 def schedule_feeds():
     """ find all the feeds that are scheduled for fetching
-    and add them to the queue """
+    and add them to the queue
+
+    sometimes the celery worker dies, but celery-beat is still
+    going. then, when the worker comes back online,
+    this task gets called over and over in a short time period,
+    queueing up the same feeds over and over.
+
+    we mitigate that by only adding feeds that are due in the
+    last two minute window (since we normally will get called
+    once per minute.) That means that feeds might get double
+    added in that situation, but not 1000x added.
+
+    But then that could correct too far the other way, and
+    if celery-beat were stopped for a while, the feeds
+    due in that span would never get queued back up because
+    we'd miss that window. So once an hour, under normal
+    operation, we make sure to queue up any due feeds,
+    not just ones in the two minute window.
+
+    """
     now = datetime.utcnow().replace(tzinfo=utc)
-    for f in Feed.objects.filter(
-            next_fetch__lt=now).order_by("next_fetch"):
-        process_feed.apply_async(args=[f.id], time_limit=10, soft_time_limit=6)
+    if now.minute == 0:
+        for f in Feed.objects.filter(
+                next_fetch__lt=now).order_by("next_fetch"):
+            process_feed.apply_async(
+                args=[f.id], time_limit=10, soft_time_limit=6)
+    else:
+        for f in Feed.objects.filter(
+            next_fetch__lt=now,
+            next_fetch__gt=(
+                now - timedelta(minutes=2))).order_by("next_fetch"):
+            process_feed.apply_async(
+                args=[f.id], time_limit=10, soft_time_limit=6)
 
 
 @periodic_task(run_every=crontab(hour="*", minute="*/5", day_of_week="*"))
