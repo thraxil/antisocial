@@ -21,3 +21,4 @@ requirements/src/django-guardian-1.1.0.beta.tar.gz
 requirements/src/django-userena-1.2.0.tar.gz
 requirements/src/django-picklefield-0.3.0.tar.gz
 requirements/src/django-celery-3.0.11.tar.gz
+requirements/src/django-statsd-mozilla-0.3.3.tar.gz
