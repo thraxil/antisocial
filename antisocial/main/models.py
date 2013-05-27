@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import feedparser
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
+from django_statsd.clients import statsd
 import random
 from time import mktime
 from .utils import get_feed_guid, get_entry_guid
@@ -44,12 +45,14 @@ class Feed(models.Model):
         self.save()
 
     def fetch_failed(self):
+        statsd.incr("fetch_failed")
         now = datetime.utcnow().replace(tzinfo=utc)
         self.last_failed = now
         self.backoff = self.backoff + 1
         self.save()
 
     def try_fetch(self):
+        statsd.incr("try_fetch")
         d = feedparser.parse(self.url, etag=self.etag,
                              modified=self.modified)
         if 'status' in d and d.status == 404:
@@ -81,6 +84,7 @@ class Feed(models.Model):
                 self.update_entry(entry)
 
     def fetch(self):
+        statsd.incr("fetch")
         now = datetime.utcnow().replace(tzinfo=utc)
         if now < self.last_fetched + timedelta(minutes=15):
             # never fetch the same feed more than once per 15 minutes
@@ -95,6 +99,7 @@ class Feed(models.Model):
         self.schedule_next_fetch()
 
     def update_entry(self, entry):
+        statsd.incr("update_entry")
         guid = get_entry_guid(entry)
         if not guid:
             # no guid? can't do anything with it
@@ -111,6 +116,7 @@ class Feed(models.Model):
             published = datetime.fromtimestamp(
                 mktime(entry.updated_parsed)).replace(tzinfo=utc)
         try:
+            statsd.incr("create_entry")
             e = Entry.objects.create(
                 feed=self,
                 guid=guid[:256],
@@ -124,6 +130,7 @@ class Feed(models.Model):
             )
             e.fanout()
         except Exception, e:
+            statsd.incr("create_entry_exception")
             print str(e)
 
     def get_absolute_url(self):
@@ -142,6 +149,7 @@ class Entry(models.Model):
     def fanout(self):
         """ new entry. spread it to subscribers """
         for s in self.feed.subscription_set.all():
+            statsd.incr("create_uentry")
             UEntry.objects.create(
                 entry=self,
                 user=s.user)
