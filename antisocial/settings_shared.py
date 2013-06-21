@@ -120,6 +120,7 @@ INSTALLED_APPS = [
     'antisocial.profile',
     'djcelery',
     'django_statsd',
+    'gunicorn',
 ]
 
 LETTUCE_APPS = (
