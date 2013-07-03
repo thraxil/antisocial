@@ -28,3 +28,16 @@ Technology:
 Built by Anders Pearson <anders@columbia.edu>
 
 License: BSD
+
+I've had a few requests for screenshots. Antisocial is purposely quite
+minimal and design-wise it's pretty much just a standard Bootstrap
+application, so I haven't seen much point in it. Still people keep
+asking, so here's what it looks like:
+
+[![Main Screen](http://reticulum.thraxil.org/image/8e1b05b1bcacf0dc2b004e5a4217f5eff9607a6c/600w/image.png)](http://reticulum.thraxil.org/image/8e1b05b1bcacf0dc2b004e5a4217f5eff9607a6c/full/image.png)
+
+[![Subscriptions](http://reticulum.thraxil.org/image/10fb5d2583a388552e4dccb242f2fb68e04cbd57/600w/image.png)](http://reticulum.thraxil.org/image/10fb5d2583a388552e4dccb242f2fb68e04cbd57/full/image.png)
+
+![add feed](http://reticulum.thraxil.org/image/413788efa82b5bb6328ef12193c92c7400df6509/full/image.png)
+
+![add opml](http://reticulum.thraxil.org/image/e607029f5d686bbc817fb403dd8ccbd8826c3a7a/full/image.png)
