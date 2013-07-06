@@ -1,4 +1,4 @@
-from fabric.api import run, sudo, local, cd, env, roles
+from fabric.api import run, sudo, local, cd, env, roles, execute
 
 env.hosts = ['oolong.thraxil.org', 'maru.thraxil.org', 'tardar.thraxil.org']
 env.user = 'anders'
@@ -30,6 +30,6 @@ def deploy():
         run("git pull origin master")
         run("./bootstrap.py")
         run("./manage.py migrate")
-    restart_gunicorn()
-    restart_celery()
-    restart_celerybeat()
+    execute(restart_gunicorn)
+    execute(restart_celery)
+    execute(restart_celerybeat)
