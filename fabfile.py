@@ -1,10 +1,25 @@
-from fabric.api import run, sudo, local, cd, env
+from fabric.api import run, sudo, local, cd, env, roles
 
 env.hosts = ['oolong.thraxil.org', 'maru.thraxil.org', 'tardar.thraxil.org']
 env.user = 'anders'
 
+env.roledefs = {
+    'celery': ['tardar.thraxil.org'],
+    'web': ['maru.thraxil.org', 'oolong.thraxil.org'],
+}
+
+
+@roles('web')
 def restart_gunicorn():
     sudo("restart antisocial")
+
+@roles('celery')
+def restart_celery():
+    sudo("restart antisocial-celery")
+
+@roles('celery')
+def restart_celerybeat():
+    sudo("restart antisocial-beat")
 
 def prepare_deploy():
     local("./manage.py test")
@@ -16,3 +31,5 @@ def deploy():
         run("./bootstrap.py")
         run("./manage.py migrate")
     restart_gunicorn()
+    restart_celery()
+    restart_celerybeat()
