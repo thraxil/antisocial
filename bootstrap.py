@@ -21,23 +21,6 @@ ret = subprocess.call(["python", "virtualenv.py",
 if ret:
     exit(ret)
 
-if sys.version.startswith('2.6'):
-    # have to do seperately or it breaks in 2.7
-    ret = subprocess.call(
-        [os.path.join(vedir, 'bin', 'pip'), "install",
-         "-E", vedir,
-         "--index-url=''",
-         os.path.join(pwd, "requirements/src/importlib-1.0.1.tar.gz")])
-    if ret:
-        exit(ret)
-    ret = subprocess.call(
-        [os.path.join(vedir, 'bin', 'pip'), "install",
-         "-E", vedir,
-         "--index-url=''",
-         os.path.join(pwd, "requirements/src/unittest2-0.5.1.tar.gz")])
-    if ret:
-        exit(ret)
-
 ret = subprocess.call(
     [os.path.join(vedir, 'bin', 'pip'), "install",
      "-E", vedir,
