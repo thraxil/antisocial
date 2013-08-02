@@ -7,6 +7,7 @@ env.roledefs = {
     'celery': ['tardar.thraxil.org'],
     'web': ['maru.thraxil.org', 'oolong.thraxil.org'],
 }
+code_dir = "/var/www/antisocial/antisocial"
 
 
 @roles('web')
