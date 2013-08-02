@@ -66,11 +66,11 @@ class Feed(models.Model):
             self.fetch_failed()
             return
         if 'title' in d.feed and d.feed.title != self.title:
-            self.title = d.feed.title
+            self.title = d.feed.title[:256]
 
         guid = get_feed_guid(d.feed, self.url)
         if guid != self.guid:
-            self.guid = guid
+            self.guid = guid[:256]
         self.backoff = 0
         if 'etag' in d:
             self.etag = d.etag
