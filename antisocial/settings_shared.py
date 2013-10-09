@@ -192,3 +192,8 @@ STATSD_PATCHES = ['django_statsd.patches.db', ]
 
 import djcelery
 djcelery.setup_loader()
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+}
