@@ -25,10 +25,11 @@ def restart_celerybeat():
 
 @roles('web')
 def staticfiles():
-    run("./manage.py collectstatic --noinput --settings=antisocial.settings_production")
-    for n in nginx_hosts:
-        run(("rsync -avp --delete media/ "
-             "%s:/var/www/antisocial/antisocial/media/") % n)
+    with cd(code_dir):
+        run("./manage.py collectstatic --noinput --settings=antisocial.settings_production")
+        for n in nginx_hosts:
+            run(("rsync -avp --delete media/ "
+                 "%s:/var/www/antisocial/antisocial/media/") % n)
 
 
 def prepare_deploy():
