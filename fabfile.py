@@ -2,6 +2,7 @@ from fabric.api import run, sudo, local, cd, env, roles, execute, runs_once
 
 env.hosts = ['oolong.thraxil.org', 'maru.thraxil.org', 'tardar.thraxil.org']
 env.user = 'anders'
+nginx_hosts = ['lilbub.thraxil.org', 'lolrus.thraxil.org']
 
 env.roledefs = {
     'celery': ['tardar.thraxil.org'],
@@ -22,6 +23,14 @@ def restart_celery():
 def restart_celerybeat():
     sudo("restart antisocial-beat")
 
+@roles('web')
+def staticfiles():
+    run("./manage.py collectstatic --noinput --settings=antisocial.settings_production")
+    for n in nginx_hosts:
+        run(("rsync -avp --delete media/ "
+             "%s:/var/www/antisocial/antisocial/media/") % n)
+
+
 def prepare_deploy():
     local("./manage.py test")
 
@@ -36,6 +45,7 @@ def deploy():
         run("git pull origin master")
         run("./bootstrap.py")
     migrate()
+    staticfiles()
     execute(restart_gunicorn)
     execute(restart_celery)
     execute(restart_celerybeat)

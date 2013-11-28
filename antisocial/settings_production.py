@@ -26,6 +26,9 @@ COMPRESS_ROOT = "/var/www/antisocial/antisocial/media/"
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+STATICFILES_DIRS = ()
+STATIC_ROOT = "/var/www/antisocial/antisocial/media/"
+
 try:
     from local_settings import *
 except ImportError:

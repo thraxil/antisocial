@@ -60,7 +60,6 @@ SITE_ID = 1
 USE_I18N = False
 MEDIA_ROOT = "/var/www/antisocial/uploads/"
 MEDIA_URL = '/uploads/'
-STATIC_URL = '/media/'
 SECRET_KEY = ')ng#)ef_u@_^zvvu@dxm7ql-yb^_!a6%v3v^j3b(mp+)l+5%@h'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -72,6 +71,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.request',
     'stagingcontext.staging_processor',
+    'django.core.context_processors.static',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -100,7 +100,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django.contrib.markup',
-    'staticmedia',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     'django.contrib.admin',
     'typogrify',
     'south',
@@ -122,6 +123,17 @@ INSTALLED_APPS = [
     'django_statsd',
     'gunicorn',
 ]
+
+STATIC_URL = "/media/"
+STATICFILES_DIRS = (
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../media/")),
+)
+STATIC_ROOT = ""
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
 
 LETTUCE_APPS = (
     'antisocial.main',
@@ -151,7 +163,7 @@ STATICMEDIA_MOUNTS = (
     ('/sitemedia', 'sitemedia'),
 )
 
-COMPRESS_URL = "/site_media/"
+COMPRESS_URL = "/media/"
 COMPRESS_ROOT = "media/"
 
 AUTHENTICATION_BACKENDS = (
