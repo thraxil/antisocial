@@ -74,3 +74,4 @@ django-userena==1.2.0
 django-picklefield==0.3.0
 django-celery==3.0.11
 django-statsd-mozilla==0.3.8.7
+raven==4.0.3
