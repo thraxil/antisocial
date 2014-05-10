@@ -26,25 +26,25 @@ def restart_celerybeat():
 @roles('web')
 def staticfiles():
     with cd(code_dir):
-        run("./manage.py collectstatic --noinput --settings=antisocial.settings_production")
+        run("make collectstatic")
         for n in nginx_hosts:
             run(("rsync -avp --delete media/ "
                  "%s:/var/www/antisocial/antisocial/media/") % n)
 
 
 def prepare_deploy():
-    local("./manage.py test")
+    local("make test")
 
 @runs_once
 def migrate():
     with cd(code_dir):
-        run("./manage.py migrate")
+        run("make migrate")
 
 def deploy():
     code_dir = "/var/www/antisocial/antisocial"
     with cd(code_dir):
         run("git pull origin master")
-        run("./bootstrap.py")
+        run("make")
     migrate()
     staticfiles()
     execute(restart_gunicorn)
