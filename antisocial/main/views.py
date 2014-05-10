@@ -124,17 +124,7 @@ def import_feeds(request):
                 zipfile.ZIP_STORED) as openzip:
             filelist = openzip.infolist()
             for f in filelist:
-                if f.filename.startswith("__"):
-                    continue
-                if f.filename.startswith("."):
-                    continue
-                if f.filename.endswith("subscriptions.xml"):
-                    opmlfile = openzip.read(f)
-                    outline = opml.from_string(opmlfile)
-                    for o in outline:
-                        for o2 in o:
-                            feed_urls.append(getattr(o2, 'xmlUrl'))
-                            cnt += 1
+                (cnt, feed_urls) = add_file(f, openzip, cnt, feed_urls)
     except Exception, e:
         return HttpResponse("error parsing file: %s" % str(e))
 
@@ -143,6 +133,20 @@ def import_feeds(request):
     return dict(
         total=cnt
     )
+
+
+def add_file(f, openzip, cnt, feed_urls):
+    if f.filename.startswith("__"):
+        return
+    if f.filename.startswith("."):
+        return
+    if f.filename.endswith("subscriptions.xml"):
+        opmlfile = openzip.read(f)
+        outline = opml.from_string(opmlfile)
+        for o in outline:
+            for o2 in o:
+                feed_urls.append(getattr(o2, 'xmlUrl'))
+                cnt += 1
 
 
 @login_required
