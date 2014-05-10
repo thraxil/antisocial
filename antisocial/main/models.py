@@ -51,22 +51,27 @@ class Feed(models.Model):
         self.backoff = self.backoff + 1
         self.save()
 
+    def validate_fetch(self, d):
+        if 'status' in d and d.status == 404:
+            self.fetch_failed()
+            return False
+        if 'status' in d and d.status == 410:
+            # 410 == GONE
+            self.fetch_failed()
+            return False
+        if 'entries' not in d:
+            self.fetch_failed()
+            return False
+        return True
+
     def try_fetch(self):
         statsd.incr("try_fetch")
         d = feedparser.parse(self.url, etag=self.etag,
                              modified=self.modified)
-        if 'status' in d and d.status == 404:
-            self.fetch_failed()
-            return
-        if 'status' in d and d.status == 410:
-            # 410 == GONE
-            self.fetch_failed()
-            return
-        if 'entries' not in d:
-            self.fetch_failed()
-            return
         if 'title' in d.feed and d.feed.title != self.title:
             self.title = d.feed.title[:256]
+        if not self.validate_fetch(d):
+            return
 
         guid = get_feed_guid(d.feed, self.url)
         if guid != self.guid:
