@@ -204,3 +204,6 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
 }
+SOUTH_MIGRATION_MODULES = {
+    'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}
