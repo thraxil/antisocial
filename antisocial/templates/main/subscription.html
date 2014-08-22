@@ -54,7 +54,7 @@
 </form>
 {% endif %}
 
-{% for entry in feed.entry_set.all %}
+{% for entry in entries %}
 <div class="row">
 	<div class="span10"><a href="{{entry.link}}">{{entry.title}}</a></div>
 </div>
@@ -69,5 +69,20 @@
 {% endif %}
 {% endfor %}
 
+<div class="pagination">
+    <span class="step-links">
+        {% if entries.has_previous %}
+            <a href="?page={{ entries.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ entries.number }} of {{ entries.paginator.num_pages }}.
+        </span>
+
+        {% if entries.has_next %}
+            <a href="?page={{ entries.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 
 {% endblock %}

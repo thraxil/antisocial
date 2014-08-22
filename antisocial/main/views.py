@@ -1,5 +1,6 @@
 from annoying.decorators import render_to
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 import zipfile
@@ -67,7 +68,18 @@ def subscription(request, id):
     r = feed.subscription_set.filter(user=request.user)
     if r.count() > 0:
         subs = r[0]
-    return dict(feed=feed, subscription=subs)
+    entry_list = feed.entry_set.all()
+    paginator = Paginator(entry_list, 100)
+
+    page = request.GET.get('page')
+    try:
+        entries = paginator.page(page)
+    except PageNotAnInteger:
+        entries = paginator.page(1)
+    except EmptyPage:
+        entries = paginator.page(paginator.num_pages)
+    return dict(feed=feed, subscription=subs,
+                entries=entries)
 
 
 @login_required
