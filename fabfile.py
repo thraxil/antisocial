@@ -44,8 +44,8 @@ def deploy():
     code_dir = "/var/www/antisocial/antisocial"
     with cd(code_dir):
         run("git pull origin master")
-    migrate()
-    staticfiles()
+        migrate()
+        staticfiles()
     execute(restart_gunicorn)
     execute(restart_celery)
     execute(restart_celerybeat)
