@@ -5,7 +5,7 @@ env.user = 'anders'
 nginx_hosts = ['lolrus.thraxil.org']
 
 env.roledefs = {
-    'celery': ['tardar.thraxil.org'],
+    'celery': ['condor.thraxil.org'],
     'web': ['orlando.thraxil.org'],
 }
 code_dir = "/var/www/antisocial/antisocial"
