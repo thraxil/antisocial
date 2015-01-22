@@ -29,7 +29,7 @@ def entries(request):
     ).order_by("entry__published")
     return HttpResponse(
         dumps([ue.as_dict() for ue in unread_entries]),
-        mimetype="application/json"
+        content_type="application/json"
     )
 
 
@@ -48,7 +48,7 @@ def entry_api(request, id):
     d['unread_count'] = unread_count
     return HttpResponse(
         dumps(d),
-        mimetype="application/json"
+        content_type="application/json"
     )
 
 
