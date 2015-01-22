@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 import zipfile
 import opml
-from django.utils.simplejson import dumps, loads
+from json import dumps, loads
 
 from antisocial.main.models import Feed, Subscription, UEntry
 import antisocial.main.tasks as tasks
