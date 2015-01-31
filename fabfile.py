@@ -13,15 +13,15 @@ code_dir = "/var/www/antisocial/antisocial"
 
 @roles('web')
 def restart_gunicorn():
-    sudo("restart antisocial")
+    sudo("restart antisocial", shell=False)
 
 @roles('celery')
 def restart_celery():
-    sudo("restart antisocial-celery")
+    sudo("restart antisocial-celery", shell=False)
 
 @roles('celery')
 def restart_celerybeat():
-    sudo("restart antisocial-beat")
+    sudo("restart antisocial-beat", shell=False)
 
 @roles('web')
 def staticfiles():

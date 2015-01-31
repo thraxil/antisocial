@@ -54,6 +54,9 @@ deploy: ./ve/bin/python validate jenkins
 	git push
 	./ve/bin/fab deploy
 
+travis_deploy: ./ve/bin/python validate jenkins
+	./ve/bin/fab deploy -i antisocial_rsa
+
 # run this one the very first time you check
 # this out on a new machine to set up dev
 # database, etc. You probably *DON'T* want
