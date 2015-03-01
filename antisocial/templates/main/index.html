@@ -4,9 +4,9 @@
 
 {% block js %}
 {% if not request.user.is_anonymous %}
-{% compress js %}
+
 <script data-main="{{STATIC_URL}}js/main" src="{{STATIC_URL}}js/libs/require/require.js"></script>
-{% endcompress %}
+
 
 <script type="text/template" id="entry-template">
   <div class="entry <%= current ? 'current' : 'not-current' %>" id="ue-<%= id %>">
