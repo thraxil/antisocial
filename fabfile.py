@@ -27,6 +27,7 @@ def restart_celerybeat():
 def staticfiles():
     with cd(code_dir):
         run("make collectstatic")
+        run("make compress")
         for n in nginx_hosts:
             run(("rsync -avp --delete media/ "
                  "%s:/var/www/antisocial/antisocial/media/") % n)
