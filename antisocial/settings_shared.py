@@ -118,6 +118,7 @@ INSTALLED_APPS = [
     'django_statsd',
     'gunicorn',
     'django_markwhat',
+    'storages',
 ]
 
 STATIC_URL = "/media/"
@@ -159,6 +160,11 @@ STATICMEDIA_MOUNTS = (
 
 COMPRESS_URL = "/media/"
 COMPRESS_ROOT = "media/"
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter',
+]
 
 AUTHENTICATION_BACKENDS = (
     'userena.backends.UserenaAuthenticationBackend',

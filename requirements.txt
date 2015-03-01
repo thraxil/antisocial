@@ -49,6 +49,7 @@ sqlparse==0.1.13
 html2text==2014.4.5
 typogrify==2.0.7
 astroid==1.2.1
+boto==2.34.0
 
 django-indexer==0.3.0
 django-templatetag-sugar==1.0
@@ -72,3 +73,5 @@ django-celery==3.1.16
 django-statsd-mozilla==0.3.14
 raven==5.1.1
 django-markwhat==2014.9.20
+django-storages-redux==1.2.2
+django-cacheds3storage==0.1.1
