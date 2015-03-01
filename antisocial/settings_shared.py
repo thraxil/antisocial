@@ -118,7 +118,6 @@ INSTALLED_APPS = [
     'django_statsd',
     'gunicorn',
     'django_markwhat',
-    'storages',
 ]
 
 STATIC_URL = "/media/"
