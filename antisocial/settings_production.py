@@ -29,7 +29,6 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 AWS_S3_CUSTOM_DOMAIN = "d115djs1mf98us.cloudfront.net"
-AWS_IS_GZIPPED = True
 
 AWS_STORAGE_BUCKET_NAME = "thraxil-antisocial-static-prod"
 AWS_PRELOAD_METADATA = True
