@@ -2,7 +2,7 @@ from fabric.api import run, sudo, local, cd, env, roles, execute, runs_once
 
 env.hosts = ['orlando.thraxil.org', 'condor.thraxil.org']
 env.user = 'anders'
-nginx_hosts = ['lolrus.thraxil.org']
+nginx_hosts = ['north.thraxil.org']
 
 env.roledefs = {
     'celery': ['condor.thraxil.org'],
