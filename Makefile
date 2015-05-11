@@ -25,6 +25,9 @@ validate: ./ve/bin/python
 shell: ./ve/bin/python
 	$(MANAGE) shell_plus
 
+build: flake8
+	docker build -t thraxil/antisocial .
+
 clean:
 	rm -rf ve
 	rm -rf media/CACHE
