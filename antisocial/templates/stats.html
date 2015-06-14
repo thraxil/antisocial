@@ -2,55 +2,37 @@
 
 {% block content %}
 
-<ul class="nav nav-tabs">
-  <li class="active"><a href="#day" data-toggle="tab">Last 24 Hours</a></li>
-  <li><a href="#week" data-toggle="tab">Week</a></li>
-  <li><a href="#month" data-toggle="tab">Month</a></li>
-  <li><a href="#year" data-toggle="tab">Year</a></li>
-</ul>
+<h1>Stats</h1>
+{% with base="http://graphite.thraxil.org/render" %}
+{% with app="antisocial" width=900 height=200 salt="1337976132.743" %}
 
-<div id="tabs" class="tab-content">
-<div id="day" class="tab-pane active">
-<h2>Traffic</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.200&graphOnly=false&hideGrid=true&hideLegend=true">
-<h2>Response Times (max/mean/min)</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976726.925&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.lower)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.mean)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.upper)&hideGrid=true&hideLegend=true&from=-24hours"/>
-<h2>Errors</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.404&target=ccnmtl.app.counters.antisocial.response.500&graphOnly=false&hideGrid=true">
-</div>
-
-
-<div id="week" class="tab-pane">
-<h2>Traffic</h2>
-
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.200&graphOnly=false&hideGrid=true&hideLegend=true&from=-7days">
-
-<h2>Response Times (max/mean/min)</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976726.925&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.lower)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.mean)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.upper)&hideGrid=true&hideLegend=true&from=-7days"/>
-
-<h2>Errors</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.404&target=ccnmtl.app.counters.antisocial.response.500&graphOnly=false&hideGrid=true&from=-7days">
-</div>
-
-<div id="month" class="tab-pane">
+{% with trafficmetric="summarize(stats.counters.nginx.antisocial.status.200.count,'5mins')" %}
+{% with responsemetric="keepLastValue(summarize(stats.timers.nginx.antisocial.request_time.upper_90,'5mins'))" %}
+{% with errormetric="summarize(stats.counters.nginx.antisocial.status.404.count,'5mins')&target=summarize(sumSeries(stats.counters.nginx.antisocial.status.5*.count),'5mins')" %}
+{% with percenterrormetric="movingAverage(divideSeries(sumSeries(stats.counters.nginx.antisocial.status.5*.count),sumSeries(stats.counters.nginx.antisocial.status.*.count)),'15mins')" %}
 
 <h2>Traffic</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.200&graphOnly=false&hideGrid=true&hideLegend=true&from=-1months">
-<h2>Response Times (max/mean/min)</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976726.925&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.lower)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.mean)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.upper)&hideGrid=true&hideLegend=true&from=-1months"/>
+<img width="{{width}}" height="{{height}}" 
+src="{{base}}/?width={{width}}&height={{height}}&_salt={{salt}}&target={{trafficmetric}}&graphOnly=false&hideGrid=true&hideLegend=true">
+
+<h2>Response Times (90th percentile)</h2>
+<img width="{{width}}" height="{{height}}" 
+src="{{base}}/?width={{width}}&height={{height}}&_salt={{salt}}&target={{responsemetric}}&hideGrid=true&hideLegend=true&from=-24hours"/>
+
 <h2>Errors</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.404&target=ccnmtl.app.counters.antisocial.response.500&graphOnly=false&hideGrid=true&from=-1months">
+<img width="{{width}}" height="{{height}}" 
+src="{{base}}/?width={{width}}&height={{height}}&_salt={{salt}}&target={{errormetric}}&graphOnly=false&hideGrid=true">
+
+<h2>% Errors</h2>
+<img width="{{width}}" height="{{height}}" 
+src="{{base}}/?width={{width}}&height={{height}}&_salt={{salt}}&target={{percenterrormetric}}&graphOnly=false&hideGrid=true">
+
 </div>
 
-
-<div id="year" class="tab-pane">
-<h2>Traffic</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.200&graphOnly=false&hideGrid=true&hideLegend=true&from=-1years">
-<h2>Response Times (max/mean/min)</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976726.925&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.lower)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.mean)&target=keepLastValue(ccnmtl.app.timers.antisocial.view.GET.upper)&hideGrid=true&hideLegend=true&from=-1years"/>
-<h2>Errors</h2>
-<img width="900" height="200" src="http://nanny.cul.columbia.edu/render/?width=900&height=200&_salt=1337976132.743&target=ccnmtl.app.counters.antisocial.response.404&target=ccnmtl.app.counters.antisocial.response.500&graphOnly=false&hideGrid=true&from=-1years">
-</div>
-</div>
-
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
 {% endblock %}
