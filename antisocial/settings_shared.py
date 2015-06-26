@@ -1,6 +1,7 @@
 # Django settings for antisocial project.
 import os.path
 import sys
+import djcelery
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -194,7 +195,6 @@ STATSD_PREFIX = 'antisocial'
 STATSD_HOST = '127.0.0.1'
 STATSD_PORT = 8125
 
-import djcelery
 djcelery.setup_loader()
 
 LOGGING = {
