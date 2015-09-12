@@ -68,3 +68,4 @@ raven==5.5.0
 django-markwhat==1.4
 django-storages-redux==1.2.3
 django-cacheds3storage==0.1.1
+thraxilsettings==0.2.0
