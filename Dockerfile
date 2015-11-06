@@ -5,7 +5,8 @@ RUN apt-get install python-ldap libldap2-dev libsasl2-dev \
     python-tk liblcms1 libexif-dev libexif12 libfontconfig1-dev \
     libfreetype6-dev liblcms1-dev libxft-dev python-imaging \
     python-beautifulsoup python-dev libssl-dev gcc \
-    build-essential binutils libpq-dev postgresql-client python-pip \
+    build-essential binutils libpq-dev postgresql-client \
+		python-requests python-pip \
     -y
 ENV PYTHONUNBUFFERED 1
 RUN apt-get install nodejs npm -y
