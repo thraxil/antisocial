@@ -21,4 +21,4 @@ EXPOSE 8000
 ADD docker-run.sh /run.sh
 ENV APP antisocial
 ENTRYPOINT ["/run.sh"]
-CMD ["/run"]
+CMD ["run"]
