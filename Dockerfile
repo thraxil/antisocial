@@ -19,6 +19,6 @@ COPY . /var/www/antisocial/antisocial/
 RUN python manage.py test
 EXPOSE 8000
 ADD docker-run.sh /run.sh
-ADD docker-worker.sh /worker.sh
-ADD docker-beat.sh /beat.sh
-CMD ["/run.sh"]
+ENV APP antisocial
+ENTRYPOINT ["/run.sh"]
+CMD ["/run"]
