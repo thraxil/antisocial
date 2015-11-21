@@ -87,4 +87,4 @@ wheelhouse/requirements.txt: requirements.txt
 	touch wheelhouse/requirements.txt
 
 build: wheelhouse/requirements.txt
-	docker build -t thraxil/$(APP) .
+	docker build -t $(IMAGE) .
