@@ -1,36 +1,39 @@
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 MANAGE=./manage.py
 APP=antisocial
+REPO=thraxil
 FLAKE8=./ve/bin/flake8
+PYTHON=./ve/bin/python
+MAX_COMPLEXITY=10
+WHEELHOUSE=wheelhouse
 
 ifeq ($(TAG), undefined)
-	IMAGE = thraxil/$(APP)
+	IMAGE = $(REPO)/$(APP)
 else
-	IMAGE = thraxil/$(APP):$(TAG)
+	IMAGE = $(REPO)/$(APP):$(TAG)
 endif
 
+jenkins: $(PYTHON) validate test flake8
 
-jenkins: ./ve/bin/python validate test flake8
-
-./ve/bin/python: requirements.txt bootstrap.py virtualenv.py
+$(PYTHON): requirements.txt bootstrap.py virtualenv.py
 	./bootstrap.py
 
-test: ./ve/bin/python
+test: $(PYTHON)
 	$(MANAGE) jenkins
 
-flake8: ./ve/bin/python
-	$(FLAKE8) $(APP) --max-complexity=10
+flake8: $(PYTHON)
+	$(FLAKE8) $(APP) --max-complexity=$(MAX_COMPLEXITY)
 
-runserver: ./ve/bin/python validate
+runserver: $(PYTHON) validate
 	$(MANAGE) runserver
 
-migrate: ./ve/bin/python validate
+migrate: $(PYTHON) validate
 	$(MANAGE) migrate
 
-validate: ./ve/bin/python
+validate: $(PYTHON)
 	$(MANAGE) validate
 
-shell: ./ve/bin/python
+shell: $(PYTHON)
 	$(MANAGE) shell_plus
 
 clean:
@@ -55,36 +58,31 @@ rebase:
 	make migrate
 	make flake8
 
-collectstatic: ./ve/bin/python validate
+collectstatic: $(PYTHON) validate
 	$(MANAGE) collectstatic --noinput --settings=$(APP).settings_production
 
-compress: ./ve/bin/python validate
+compress: $(PYTHON) validate
 	$(MANAGE) compress --settings=$(APP).settings_production
-
-deploy: ./ve/bin/python validate jenkins
-	git push
-	./ve/bin/fab deploy
-
-travis_deploy: ./ve/bin/python validate jenkins
-	./ve/bin/fab deploy -i antisocial_rsa
 
 # run this one the very first time you check
 # this out on a new machine to set up dev
 # database, etc. You probably *DON'T* want
 # to run it after that, though.
-install: ./ve/bin/python validate jenkins
+install: $(PYTHON) validate jenkins
 	createdb $(APP)
 	$(MANAGE) syncdb --noinput
 	make migrate
 
-wheelhouse/requirements.txt: requirements.txt
-	mkdir -p wheelhouse
+$(WHEELHOUSE)/requirements.txt: requirements.txt
+	mkdir -p $(WHEELHOUSE)
 	docker run --rm \
 	-v $(ROOT_DIR):/app \
-	-v $(ROOT_DIR)/wheelhouse:/wheelhouse \
+	-v $(ROOT_DIR)/$(WHEELHOUSE):/wheelhouse \
 	ccnmtl/django.build
-	cp requirements.txt wheelhouse/requirements.txt
-	touch wheelhouse/requirements.txt
+	cp requirements.txt $(WHEELHOUSE)/requirements.txt
+	touch $(WHEELHOUSE)/requirements.txt
 
-build: wheelhouse/requirements.txt
+build: $(WHEELHOUSE)/requirements.txt
 	docker build -t $(IMAGE) .
+
+.PHONY: clean collectstatic compress build install pull rebase shell validate migrate runserver flake8 test jenkins
