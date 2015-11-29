@@ -64,6 +64,11 @@ class Feed(models.Model):
             return False
         return True
 
+    def update_guid(self, d):
+        guid = get_feed_guid(d.feed, self.url)
+        if guid != self.guid:
+            self.guid = guid[:256]
+
     def try_fetch(self):
         statsd.incr("try_fetch")
         d = feedparser.parse(self.url, etag=self.etag,
@@ -73,9 +78,7 @@ class Feed(models.Model):
         if not self.validate_fetch(d):
             return
 
-        guid = get_feed_guid(d.feed, self.url)
-        if guid != self.guid:
-            self.guid = guid[:256]
+        self.update_guid(d)
         self.backoff = 0
         if 'etag' in d:
             self.etag = d.etag

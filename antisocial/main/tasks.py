@@ -105,9 +105,12 @@ def add_feed(url, user=None):
         if user:
             r[0].subscribe_user(user)
         return
+    initial_fetch(url)
 
-    socket.setdefaulttimeout(5)
+
+def initial_fetch(url, user):
     # haven't seen this one before, let's fetch it
+    socket.setdefaulttimeout(5)
     try:
         d = feedparser.parse(url)
     except:

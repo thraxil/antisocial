@@ -4,7 +4,7 @@ APP=antisocial
 REPO=thraxil
 FLAKE8=./ve/bin/flake8
 PYTHON=./ve/bin/python
-MAX_COMPLEXITY=8
+MAX_COMPLEXITY=7
 WHEELHOUSE=wheelhouse
 
 ifeq ($(TAG), undefined)
