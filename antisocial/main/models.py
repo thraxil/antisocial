@@ -80,8 +80,7 @@ class Feed(models.Model):
 
         self.update_guid(d)
         self.backoff = 0
-        if 'etag' in d:
-            self.etag = d.etag
+        self.update_etag(d)
         if 'modified' in d:
             self.modified = d.modified
         if 'status' in d and d.status == 301:
@@ -89,6 +88,10 @@ class Feed(models.Model):
         self.save()
         if 'entries' in d:
             self.update_entries(d)
+
+    def update_etag(self, d):
+        if 'etag' in d:
+            self.etag = d.etag
 
     def update_entries(self, d):
         for entry in d.entries:
@@ -119,13 +122,7 @@ class Feed(models.Model):
         if r.count() > 0:
             # already have this one, so nothing to do
             return
-        published = datetime.utcnow().replace(tzinfo=utc)
-        if 'published_parsed' in entry:
-            published = datetime.fromtimestamp(
-                mktime(entry.published_parsed)).replace(tzinfo=utc)
-        elif 'updated_parsed' in entry:
-            published = datetime.fromtimestamp(
-                mktime(entry.updated_parsed)).replace(tzinfo=utc)
+        published = extract_published(entry)
         try:
             statsd.incr("create_entry")
             e = Entry.objects.create(
@@ -146,6 +143,17 @@ class Feed(models.Model):
 
     def get_absolute_url(self):
         return "/subscriptions/%d/" % self.id
+
+
+def extract_published(entry):
+    published = datetime.utcnow().replace(tzinfo=utc)
+    if 'published_parsed' in entry:
+        published = datetime.fromtimestamp(
+            mktime(entry.published_parsed)).replace(tzinfo=utc)
+    elif 'updated_parsed' in entry:
+        published = datetime.fromtimestamp(
+            mktime(entry.updated_parsed)).replace(tzinfo=utc)
+    return published
 
 
 class Entry(models.Model):
