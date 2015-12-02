@@ -62,6 +62,12 @@ class TestFeed(TestCase):
         f.update_etag(d)
         self.assertEqual(f.etag, 'new one')
 
+    def test_update_modified(self):
+        f = feed_factory()
+        d = DictObj(modified='new one')
+        f.update_modified(d)
+        self.assertEqual(f.modified, 'new one')
+
     def test_update_entry_already_exists(self):
         f = feed_factory()
         e = entry_factory(f)

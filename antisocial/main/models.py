@@ -81,13 +81,16 @@ class Feed(models.Model):
         self.update_guid(d)
         self.backoff = 0
         self.update_etag(d)
-        if 'modified' in d:
-            self.modified = d.modified
+        self.update_modified(d)
         if 'status' in d and d.status == 301:
             self.url = d.href[:200]
         self.save()
         if 'entries' in d:
             self.update_entries(d)
+
+    def update_modified(self, d):
+        if 'modified' in d:
+            self.modified = d.modified
 
     def update_etag(self, d):
         if 'etag' in d:
