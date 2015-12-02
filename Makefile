@@ -1,11 +1,20 @@
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+VE=./ve
 MANAGE=./manage.py
 APP=antisocial
 REPO=thraxil
-FLAKE8=./ve/bin/flake8
-PYTHON=./ve/bin/python
+FLAKE8=$(VE)/bin/flake8
+PYTHON=$(VE)/bin/python
+SYS_PYTHON=python
+PIP=$(VE)/bin/pip
+SENTINAL=$(VE)/sentinal
 MAX_COMPLEXITY=5
 WHEELHOUSE=wheelhouse
+PYPI_URL=https://pypi.ccnmtl.columbia.edu/
+WHEEL_VERSION=0.24.0
+REQUIREMENTS=requirements.txt
+VIRTUALENV=virtualenv.py
+SUPPORT_DIR=requirements/virtualenv_support/
 
 ifeq ($(TAG), undefined)
 	IMAGE = $(REPO)/$(APP)
@@ -13,31 +22,36 @@ else
 	IMAGE = $(REPO)/$(APP):$(TAG)
 endif
 
-jenkins: $(PYTHON) validate test flake8
+jenkins: $(SENTINAL) validate test flake8
 
-$(PYTHON): requirements.txt bootstrap.py virtualenv.py
-	./bootstrap.py
+$(SENTINAL): $(REQUIREMENTS) $(VIRTUALENV) $(SUPPORT_DIR)*
+	rm -rf $(VE)
+	$(SYS_PYTHON) $(VIRTUALENV) --extra-search-dir=$(SUPPORT_DIR) --never-download $(VE)
+	$(PIP) install --index-url=$(PYPI_URL) wheel==$(WHEEL_VERSION)
+	$(PIP) install --use-wheel --no-deps --index-url=$(PYPI_URL) --requirement $(REQUIREMENTS)
+	$(SYS_PYTHON) $(VIRTUALENV) --relocatable $(VE)
+	touch $(SENTINAL)
 
-test: $(PYTHON)
+test: $(SENTINAL)
 	$(MANAGE) jenkins
 
-flake8: $(PYTHON)
+flake8: $(SENTINAL)
 	$(FLAKE8) $(APP) --max-complexity=$(MAX_COMPLEXITY)
 
-runserver: $(PYTHON) validate
+runserver: $(SENTINAL) validate
 	$(MANAGE) runserver
 
-migrate: $(PYTHON) validate
+migrate: $(SENTINAL) validate
 	$(MANAGE) migrate
 
-validate: $(PYTHON)
+validate: $(SENTINAL)
 	$(MANAGE) validate
 
-shell: $(PYTHON)
+shell: $(SENTINAL)
 	$(MANAGE) shell_plus
 
 clean:
-	rm -rf ve
+	rm -rf $(VE)
 	rm -rf media/CACHE
 	rm -rf reports
 	rm celerybeat-schedule
@@ -58,28 +72,28 @@ rebase:
 	make migrate
 	make flake8
 
-collectstatic: $(PYTHON) validate
+collectstatic: $(SENTINAL) validate
 	$(MANAGE) collectstatic --noinput --settings=$(APP).settings_production
 
-compress: $(PYTHON) validate
+compress: $(SENTINAL) validate
 	$(MANAGE) compress --settings=$(APP).settings_production
 
 # run this one the very first time you check
 # this out on a new machine to set up dev
 # database, etc. You probably *DON'T* want
 # to run it after that, though.
-install: $(PYTHON) validate jenkins
+install: $(SENTINAL) validate jenkins
 	createdb $(APP)
 	$(MANAGE) syncdb --noinput
 	make migrate
 
-$(WHEELHOUSE)/requirements.txt: requirements.txt
+$(WHEELHOUSE)/requirements.txt: $(REQUIREMENTS)
 	mkdir -p $(WHEELHOUSE)
 	docker run --rm \
 	-v $(ROOT_DIR):/app \
 	-v $(ROOT_DIR)/$(WHEELHOUSE):/wheelhouse \
 	ccnmtl/django.build
-	cp requirements.txt $(WHEELHOUSE)/requirements.txt
+	cp $(REQUIREMENTS) $(WHEELHOUSE)/requirements.txt
 	touch $(WHEELHOUSE)/requirements.txt
 
 build: $(WHEELHOUSE)/requirements.txt
