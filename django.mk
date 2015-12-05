@@ -1,9 +1,11 @@
-ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-
 jenkins: $(SENTINAL) validate test flake8
 
 test: $(SENTINAL)
 	$(MANAGE) test
+
+coverage: $(SENTINAL) flake8
+	. $(VE)/bin/activate && $(VE)/bin/coverage run --source='$(APP)' $(MANAGE) test \
+	&& $(VE)/bin/coverage html -d reports --omit='*migrations*,*settings_*,*wsgi*'
 
 $(SENTINAL): $(REQUIREMENTS) $(VIRTUALENV) $(SUPPORT_DIR)*
 	rm -rf $(VE)
@@ -65,16 +67,4 @@ install: $(SENTINAL) validate test flake8
 	$(MANAGE) syncdb --noinput
 	make migrate
 
-wheelhouse/requirements.txt: $(REQUIREMENTS)
-	mkdir -p wheelhouse
-	docker run --rm \
-	-v $(ROOT_DIR):/app \
-	-v $(ROOT_DIR)/$(WHEELHOUSE):/wheelhouse \
-	ccnmtl/django.build
-	cp $(REQUIREMENTS) $(WHEELHOUSE)/requirements.txt
-	touch $(WHEELHOUSE)/requirements.txt
-
-build: $(WHEELHOUSE)/requirements.txt
-	docker build -t $(IMAGE) .
-
-.PHONY: clean collectstatic compress build install pull rebase shell validate migrate runserver flake8 test jenkins
+.PHONY: clean collectstatic compress install pull rebase shell validate migrate runserver flake8 test jenkins
