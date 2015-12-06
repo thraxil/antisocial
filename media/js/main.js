@@ -8,16 +8,16 @@ var AppView = require('./views/app');
 
 var app = new AppView();
 console.log(app);
-console.log("made new app");
-$("body").keyup(function() {
-		var c = String.fromCharCode(event.keyCode);
-		if (c == 'J') {
-				app.next();
-		}
-		if (c == 'K') {
-				app.prev();
-		}
-		if (c == 'R') {
-				app.reload();
-		}
+console.log('made new app');
+$('body').keyup(function() {
+    var c = String.fromCharCode(event.keyCode);
+    if (c == 'J') {
+        app.next();
+    }
+    if (c == 'K') {
+        app.prev();
+    }
+    if (c == 'R') {
+        app.reload();
+    }
 });
