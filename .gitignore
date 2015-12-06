@@ -10,3 +10,4 @@ celerybeat-schedule
 celerybeat.pid
 reports/
 wheelhouse
+node_modules
