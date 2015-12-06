@@ -11,3 +11,4 @@ celerybeat.pid
 reports/
 wheelhouse
 node_modules
+media/js/dist

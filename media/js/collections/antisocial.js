@@ -1,9 +1,8 @@
-define([
-		'jquery',
-		'underscore',
-		'backbone',
-		'models/entry'
-], function($, _, Backbone, Entry){
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var Entry = require('models/entry');
+
   var Entries = Backbone.Collection.extend({
 			model: Entry,
 			initialize: function () {
@@ -14,5 +13,4 @@ define([
 			}
   });
 
-  return Entries;
-});
+module.exports = Entries;

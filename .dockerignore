@@ -2,3 +2,4 @@
 ve
 *.pyc
 reports
+node_modules

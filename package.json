@@ -17,6 +17,12 @@
   },
   "devDependencies": {
     "jshint": "~2.9.1-rc1",
-    "jscs": "~2.6.0"
+    "jscs": "~2.6.0",
+    "webpack": "~1.12.9"
+  },
+  "dependencies": {
+      "jquery": "~2.1.4",
+      "backbone": "^1.1.2",
+    "underscore": "~1.8.3"
   }
 }
