@@ -4,6 +4,12 @@ var webpack = require('webpack')
 module.exports = {
     context: __dirname,
 
+    plugins: [
+        new webpack.ProvidePlugin({
+            _: "underscore"
+        })
+    ],
+    
     entry: {
         main: './media/js/main',
     },
@@ -16,6 +22,10 @@ module.exports = {
     
     module: {
         loaders: [
+            {
+                test: /\.ejs$/,
+                loader: "ejs-loader"
+            },
         ],
     },
 

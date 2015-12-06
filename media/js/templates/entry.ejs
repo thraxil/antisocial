@@ -1,0 +1,35 @@
+  <div class="entry <%= current ? 'current' : 'not-current' %>" id="ue-<%= id %>">
+		<div class="expanded">
+			<div class="row">
+				<div class="span11 title lead">
+					<a href="<%= link %>"><%= title %></a>
+					<span class="published pull-right">
+						<%= published %>
+					</span>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span10 feed-title">
+					from <a href="/subscriptions/<%= feed_id %>/"><%= feed_title %></a>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span10">
+					<%= description %>
+				</div>
+			</div>
+		</div>
+
+		<div class="collapsed">
+			<div class="row">
+				<div class="span11 title">
+					<%= feed_title %>: <b><%= title %></b>
+					<span class="published pull-right">
+						<%= published %>
+					</span>
+				</div>
+			</div>
+		</div>
+  </div>

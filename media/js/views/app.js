@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Entry = require('models/entry');
 var EntryList = require('collections/antisocial');
+var entryTemplate = require('templates/entry.ejs');
 
 var EntryView = Backbone.View.extend({
     tagName: 'div',
@@ -15,8 +16,7 @@ var EntryView = Backbone.View.extend({
         $(this.el).remove();
     },
     render: function() {
-        var template = _.template($('#entry-template').html());
-        this.$el.html(template(this.model.toJSON()));
+        this.$el.html(entryTemplate(this.model.toJSON()));
         return this;
     },
     updateCount: function(model, response, options) {
