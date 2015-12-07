@@ -16,7 +16,7 @@ $(JS_SENTINAL): package.json
 	npm install
 	touch $(JS_SENTINAL)
 
-media/js/dist/main.js: $(JS_SENTINAL) $(JS_FILES) webpack.*.config.js
+media/js/dist/main.js: $(JS_SENTINAL) $(JS_FILES) webpack.*.config.js bootstrap.config.*
 	$(WEBPACK) --config $(WEBPACK_CONFIG)
 
 webpack:

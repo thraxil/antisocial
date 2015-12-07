@@ -4,78 +4,64 @@
 <head>
 	<meta charset="utf-8" />
 	<title>antisocial: {% block title %}{% endblock %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="antisocial">
   <meta name="author" content="CCNMTL">
 
-{% compress css %}
-    <link href="{{STATIC_URL}}bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="{{STATIC_URL}}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
-{% endcompress %}
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
 	{% block css %}{% endblock %}
-{% compress js %}
-  <script src="{{STATIC_URL}}js/jquery-1.7.2.min.js"></script>
-{% endcompress %}
 
 	{% block feeds %}{% endblock %}
 </head>
 <body>
 
 {% block topnavbar %}
-  <div class="navbar navbar-fixed-top navbar-inverse">
-    <div class="navbar-inner">
-      <div class="container">
-        <ul class="nav">
-          <li><a class="brand" href="/">antisocial</a></li>
+<div class="navbar navbar-default">
+  <div class="container-fluid">
+
+    <div class="navbar-header">
+      <a class="navbar-brand active" href="/">antisocial</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
 {% if not request.user.is_anonymous %}
-					<li><a href="/subscriptions/">my subscriptions</a></li>
+			  <li><a href="/subscriptions/">my subscriptions</a></li>
 {% endif %}
-          {% block topnavbarleftitems %}{% endblock %}
-        </ul>
+{% block topnavbarleftitems %}{% endblock %}
+      </ul>
 
-        <p class="navbar-text pull-right">
-          {% block topnavbarrightitems %}{% endblock %}
+      <ul class="nav navbar-nav navbar-right">
+      {% block topnavbarrightitems %}{% endblock %}
 {% block usernav %}
-          {% if request.user.is_anonymous %}
-          <a href="/accounts/signin/?next=/" class="btn btn-success">login</a>
-					or
-					<a href="/accounts/signup/" class="btn btn-success">signup</a>
-          {% else %}
-          logged in as <a href="/accounts/{{request.user.username}}/">{% if request.user.first_name %}
-					{{request.user.first_name}} {{request.user.last_name}}
-					{% else %}
-					{{ request.user.username }}
-					{% endif %}</a>
-          <a href="/accounts/signout/" class="btn btn-inverse">logout</a>
-          {% endif %}
+  {% if request.user.is_anonymous %}
+    <p class="navbar-text"><a href="/accounts/signin/?next=/" class="btn btn-success">login</a>
+			or
+			<a href="/accounts/signup/" class="btn btn-success">signup</a></p>
+  {% else %}
+      <p class="navbar-text">logged in as <a href="/accounts/{{request.user.username}}/">{% if request.user.first_name %}
+				{{request.user.first_name}} {{request.user.last_name}}
+			{% else %}
+				{{ request.user.username }}
+			{% endif %}</a>
+      <a href="/accounts/signout/" class="btn btn-inverse">logout</a></p>
+  {% endif %}
 {% endblock %}
-       </p>
-
-       </div>
-     </div>
+      </ul>
+    </div>
   </div>
+</div>
 {% endblock %}
 
-  <div class="container" id="outer-container">
-
-    <div class="container-fluid" id="content">
-      <div class="row">
-        <div class="span12" id="right-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12" id="right-content">
 {% block pagetitle %}{% endblock %}
 {% block content %}{% endblock %}
-        </div>
       </div>
     </div>
   </div>
 </div>
-
-<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-
-{% compress js %}
-<script src="{{STATIC_URL}}bootstrap/js/bootstrap.js"></script>
-{% endcompress %}
 
 {% block js %}{% endblock %}
 
