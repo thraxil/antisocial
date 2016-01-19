@@ -17,7 +17,6 @@ INSTALLED_APPS += [  # noqa
     'easy_thumbnails',
     'bootstrapform',
     'djcelery',
-    'typogrify',
 
     'antisocial.main',
     'antisocial.profile',

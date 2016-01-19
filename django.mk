@@ -1,4 +1,4 @@
-jenkins: $(SENTINAL) validate test flake8
+jenkins: $(SENTINAL) check test flake8
 
 test: $(SENTINAL)
 	$(MANAGE) test
@@ -18,14 +18,14 @@ $(SENTINAL): $(REQUIREMENTS) $(VIRTUALENV) $(SUPPORT_DIR)*
 flake8: $(SENTINAL)
 	$(FLAKE8) $(APP) --max-complexity=$(MAX_COMPLEXITY)
 
-runserver: $(SENTINAL) validate
+runserver: $(SENTINAL) check
 	$(MANAGE) runserver
 
-migrate: $(SENTINAL) validate
+migrate: $(SENTINAL) check
 	$(MANAGE) migrate
 
-validate: $(SENTINAL)
-	$(MANAGE) validate
+check: $(SENTINAL)
+	$(MANAGE) check
 
 shell: $(SENTINAL)
 	$(MANAGE) shell_plus
@@ -40,31 +40,31 @@ clean:
 
 pull:
 	git pull
-	make validate
+	make check
 	make test
 	make migrate
 	make flake8
 
 rebase:
 	git pull --rebase
-	make validate
+	make check
 	make test
 	make migrate
 	make flake8
 
-collectstatic: $(SENTINAL) validate
+collectstatic: $(SENTINAL) check
 	$(MANAGE) collectstatic --noinput --settings=$(APP).settings_production
 
-compress: $(SENTINAL) validate
+compress: $(SENTINAL) check
 	$(MANAGE) compress --settings=$(APP).settings_production
 
 # run this one the very first time you check
 # this out on a new machine to set up dev
 # database, etc. You probably *DON'T* want
 # to run it after that, though.
-install: $(SENTINAL) validate test flake8
+install: $(SENTINAL) check test flake8
 	createdb $(APP)
 	$(MANAGE) syncdb --noinput
 	make migrate
 
-.PHONY: clean collectstatic compress install pull rebase shell validate migrate runserver flake8 test jenkins
+.PHONY: clean collectstatic compress install pull rebase shell check migrate runserver flake8 test jenkins
