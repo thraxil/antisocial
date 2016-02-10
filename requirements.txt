@@ -46,7 +46,6 @@ astroid==1.4.4
 boto==2.38.0
 opbeat==3.2.1
 
-django-annoying==0.8.5
 django-appconf==1.0.1
 django_compressor==2.0
 django-bootstrap-form==3.1.0

@@ -1,8 +1,7 @@
-from annoying.decorators import render_to
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 import zipfile
 import opml
 from json import dumps, loads
@@ -11,14 +10,15 @@ from antisocial.main.models import Feed, Subscription, UEntry
 import antisocial.main.tasks as tasks
 
 
-@render_to('main/index.html')
 def index(request):
     unread_count = 0
     if not request.user.is_anonymous():
         unread_count = UEntry.objects.filter(
             user=request.user,
             read=False).count()
-    return dict(unread_count=unread_count)
+    return render(
+        request, 'main/index.html',
+        dict(unread_count=unread_count))
 
 
 @login_required
@@ -53,15 +53,14 @@ def entry_api(request, id):
 
 
 @login_required
-@render_to('main/subscriptions.html')
 def subscriptions(request):
     subscriptions = Subscription.objects.select_related().filter(
         user=request.user).order_by("feed__next_fetch")
-    return dict(subscriptions=subscriptions)
+    return render(request, 'main/subscriptions.html',
+                  dict(subscriptions=subscriptions))
 
 
 @login_required
-@render_to('main/subscription.html')
 def subscription(request, id):
     feed = get_object_or_404(Feed, id=id)
     subs = []
@@ -78,8 +77,10 @@ def subscription(request, id):
         entries = paginator.page(1)
     except EmptyPage:
         entries = paginator.page(paginator.num_pages)
-    return dict(feed=feed, subscription=subs,
-                entries=entries)
+    return render(request,
+                  'main/subscription.html',
+                  dict(feed=feed, subscription=subs,
+                       entries=entries))
 
 
 @login_required
@@ -122,7 +123,6 @@ def subscribe(request, id):
 
 
 @login_required
-@render_to("main/import_feeds.html")
 def import_feeds(request):
     if request.method != "POST":
         return HttpResponseRedirect("/subscriptions/")
@@ -141,7 +141,8 @@ def import_feeds(request):
         return HttpResponse("error parsing file: %s" % str(e))
 
     add_feed_urls(feed_urls, request.user)
-    return dict(total=cnt)
+    return render(request, 'main/import_feeds.html',
+                  dict(total=cnt))
 
 
 def add_feed_urls(feed_urls, user):
