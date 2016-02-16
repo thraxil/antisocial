@@ -46,7 +46,7 @@ astroid==1.4.4
 boto==2.38.0
 opbeat==3.2.1
 SPARQLWrapper==1.7.6
-argparse==1.2.1
+argparse==1.4.0
 backports-abc==0.4
 backports.ssl-match-hostname==3.5.0.1
 certifi==2015.11.20.1
