@@ -15,18 +15,18 @@ cssselect==0.9.1
 lxml==3.6.0
 sure==1.2.24
 ipython==4.2.0
-ipdb==0.9.3
+ipdb==0.10.0
 rdflib==4.2.1
-selenium==2.49.2
+selenium==2.53.2
 coverage==4.0.3
-requests==2.9.1
+requests==2.10.0
 logilab-common==1.2.0
 logilab-astng==0.24.3
 pylint==1.5.5
 six==1.10.0
 opml==0.5
-Pillow==3.1.0
-pytz==2015.7
+Pillow==3.2.0
+pytz==2016.4
 python-dateutil==2.5.3
 librabbitmq==1.6.1
 anyjson==0.3.3
@@ -43,7 +43,7 @@ ecdsa==0.13
 sqlparse==0.1.19
 html2text==2016.4.2
 astroid==1.4.5
-boto==2.39.0
+boto==2.40.0
 opbeat==3.3
 SPARQLWrapper==1.7.6
 argparse==1.4.0
@@ -52,7 +52,7 @@ backports.ssl-match-hostname==3.5.0.1
 certifi==2016.2.28
 colorama==0.3.7
 decorator==4.0.9
-funcsigs==1.0.0
+funcsigs==1.0.2
 html5lib==0.9999999
 ipython-genutils==0.1.0
 isodate==0.5.4
@@ -80,7 +80,7 @@ django-debug-toolbar==1.4
 django-waffle==0.11
 django-jenkins==0.18.1
 django-smoketest==1.0.0
-django-extensions==1.6.1
+django-extensions==1.6.3
 django-stagingcontext==0.1.0
 easy-thumbnails==2.3
 django-guardian==1.4.4
@@ -91,4 +91,4 @@ django-statsd-mozilla==0.3.16
 django-markwhat==1.5
 django-storages-redux==1.3.2
 django-cacheds3storage==0.1.2
-thraxilsettings==0.5.1
+thraxilsettings==0.6.2
