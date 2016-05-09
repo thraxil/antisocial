@@ -7,7 +7,7 @@ psycopg2==2.6.1
 versiontools==1.9.1
 pep8==1.7.0
 mccabe==0.4.0
-pyflakes==1.1.0
+pyflakes==1.2.2
 flake8==2.5.4
 tornado==4.3
 BeautifulSoup==3.2.1
@@ -44,7 +44,7 @@ sqlparse==0.1.19
 html2text==2016.4.2
 astroid==1.4.5
 boto==2.40.0
-opbeat==3.3
+opbeat==3.3.1
 SPARQLWrapper==1.7.6
 argparse==1.4.0
 backports-abc==0.4
@@ -75,12 +75,12 @@ wsgiref==0.1.2
 
 django-appconf==1.0.2
 django_compressor==2.0
-django-bootstrap-form==3.1.0
+django-bootstrap-form==3.2.1
 django-debug-toolbar==1.4
 django-waffle==0.11
 django-jenkins==0.18.1
 django-smoketest==1.0.0
-django-extensions==1.6.3
+django-extensions==1.6.6
 django-stagingcontext==0.1.0
 easy-thumbnails==2.3
 django-guardian==1.4.4
