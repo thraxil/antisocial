@@ -5,7 +5,6 @@ FLAKE8 ?= $(VE)/bin/flake8
 SYS_PYTHON ?= python
 PIP ?= $(VE)/bin/pip
 SENTINAL ?= $(VE)/sentinal
-PYPI_URL ?= https://pypi.ccnmtl.columbia.edu/
 WHEEL_VERSION ?= 0.24.0
 REQUIREMENTS ?= requirements.txt
 VIRTUALENV ?= virtualenv.py

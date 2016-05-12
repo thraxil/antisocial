@@ -10,8 +10,8 @@ coverage: $(SENTINAL) flake8
 $(SENTINAL): $(REQUIREMENTS) $(VIRTUALENV) $(SUPPORT_DIR)*
 	rm -rf $(VE)
 	$(SYS_PYTHON) $(VIRTUALENV) --extra-search-dir=$(SUPPORT_DIR) --never-download $(VE)
-	$(PIP) install --index-url=$(PYPI_URL) wheel==$(WHEEL_VERSION)
-	$(PIP) install --use-wheel --no-deps --index-url=$(PYPI_URL) --requirement $(REQUIREMENTS)
+	$(PIP) install wheel==$(WHEEL_VERSION)
+	$(PIP) install --use-wheel --no-deps --requirement $(REQUIREMENTS)
 	$(SYS_PYTHON) $(VIRTUALENV) --relocatable $(VE)
 	touch $(SENTINAL)
 
