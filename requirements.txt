@@ -7,7 +7,7 @@ psycopg2==2.6.1
 versiontools==1.9.1
 pep8==1.7.0
 mccabe==0.4.0
-pyflakes==1.2.2
+pyflakes==1.2.3
 flake8==2.5.4
 tornado==4.3
 BeautifulSoup==3.2.1
