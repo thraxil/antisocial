@@ -18,7 +18,7 @@ ipython==4.2.0
 ipdb==0.10.0
 rdflib==4.2.1
 selenium==2.53.2
-coverage==4.0.3
+coverage==4.1
 requests==2.10.0
 logilab-common==1.2.0
 logilab-astng==0.24.3
