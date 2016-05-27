@@ -20,7 +20,7 @@ rdflib==4.2.1
 selenium==2.53.2
 coverage==4.1
 requests==2.10.0
-logilab-common==1.2.0
+logilab-common==1.2.1
 logilab-astng==0.24.3
 pylint==1.5.5
 six==1.10.0
