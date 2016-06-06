@@ -42,7 +42,7 @@ pycrypto==2.6.1
 ecdsa==0.13
 sqlparse==0.1.19
 html2text==2016.5.29
-astroid==1.4.5
+astroid==1.4.6
 boto==2.40.0
 opbeat==3.3.2
 SPARQLWrapper==1.7.6
