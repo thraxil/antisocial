@@ -34,7 +34,7 @@ vine==1.1.0
 amqp==2.0.2
 amqplib==1.0.2
 kombu==3.0.35
-pyparsing==2.1.4
+pyparsing==2.1.5
 celery==3.1.23
 statsd==3.2.1
 gunicorn==19.6.0
