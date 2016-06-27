@@ -44,7 +44,7 @@ sqlparse==0.1.19
 html2text==2016.5.29
 astroid==1.4.6
 boto==2.40.0
-opbeat==3.3.2
+opbeat==3.3.4
 SPARQLWrapper==1.7.6
 argparse==1.4.0
 backports-abc==0.4
