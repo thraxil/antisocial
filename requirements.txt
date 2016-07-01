@@ -69,7 +69,7 @@ rcssmin==1.0.6
 rjsmin==1.0.12
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
-traitlets==4.2.1
+traitlets==4.2.2
 wrapt==1.10.8
 wsgiref==0.1.2
 
