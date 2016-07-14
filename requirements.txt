@@ -26,7 +26,7 @@ pylint==1.6.1
 six==1.10.0
 opml==0.5
 Pillow==3.3.0
-pytz==2016.4
+pytz==2016.6
 python-dateutil==2.5.3
 librabbitmq==1.6.1
 anyjson==0.3.3
