@@ -1,4 +1,4 @@
-FROM ccnmtl/django.base
+FROM ccnmtl/django.base:2016-07-16
 ADD wheelhouse /wheelhouse
 RUN apt-get update && apt-get install -y libxml2-dev libxslt-dev
 RUN /ve/bin/pip install --no-index -f /wheelhouse -r /wheelhouse/requirements.txt \
