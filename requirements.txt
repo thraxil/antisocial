@@ -22,7 +22,7 @@ coverage==4.1
 requests==2.10.0
 logilab-common==1.2.2
 logilab-astng==0.24.3
-pylint==1.6.2
+pylint==1.6.3
 six==1.10.0
 opml==0.5
 Pillow==3.3.0
