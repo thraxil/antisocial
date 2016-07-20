@@ -44,7 +44,7 @@ ecdsa==0.13
 sqlparse==0.2.0
 html2text==2016.5.29
 astroid==1.4.7
-boto==2.41.0
+boto==2.42.0
 opbeat==3.3.4
 SPARQLWrapper==1.7.6
 argparse==1.4.0
