@@ -41,7 +41,7 @@ statsd==3.2.1
 gunicorn==19.6.0
 pycrypto==2.6.1
 ecdsa==0.13
-sqlparse==0.1.19
+sqlparse==0.2.0
 html2text==2016.5.29
 astroid==1.4.7
 boto==2.41.0
