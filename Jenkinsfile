@@ -34,12 +34,12 @@ def create_execution(int i, String host) {
         cmd = { 
             stage "Docker Pull parallel- #"+i
             node {
-    			     sh '''
+    			     sh """
 echo "docker pull on ${host}"
-ssh ${host} docker pull ${REPOSITORY}$REPO/$APP:$TAG
-ssh ${host} cp /var/www/$APP/TAG /var/www/$APP/REVERT || true
-ssh ${host} "echo export TAG=$TAG > /var/www/$APP/TAG"
-					 '''
+ssh ${host} docker pull \${REPOSITORY}\$REPO/\$APP:\$TAG
+ssh ${host} cp /var/www/\$APP/TAG /var/www/\$APP/REVERT || true
+ssh ${host} "echo export TAG=\$TAG > /var/www/\$APP/TAG"
+					 """
             }
         }
         return cmd
