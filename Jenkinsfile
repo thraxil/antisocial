@@ -71,6 +71,7 @@ node {
 		  int n = i
       branches["web-restart-${i}"] = {
         stage "Restart Gunicorn parallel- #"+n
+				println hosts[n]
 			  env.h = hosts[n]
         node {
 			     sh '''#!/bin/bash
