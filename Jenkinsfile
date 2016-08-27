@@ -11,7 +11,7 @@ env.OPBEAT_ORG = '68fbae23422f4aa98cb810535e54c5f1'
 env.OPBEAT_APP = 'edc70f3770'
 // OPBEAT_TOKEN comes out of credential store
 
-node('local') {
+node {
    stage 'Checkout'
    checkout scm
   stage "Build"
@@ -27,7 +27,7 @@ do
 done'''
 }
 
-node('remote') {
+node {
     stage "Docker Pull"
     sh '''#!/bin/bash
 hosts=(${HOSTS})
@@ -98,7 +98,7 @@ do
 done'''
 }
 
-node('local') {
+node {
     stage "Opbeat"
 		withCredentials([[$class: 'StringBinding', credentialsId : env.APP + '-opbeat', variable: 'OPBEAT_TOKEN', ]]) {
        sh '''curl https://intake.opbeat.com/api/v1/organizations/${OPBEAT_ORG}/apps/{OPBEAT_APP}/releases/ \
