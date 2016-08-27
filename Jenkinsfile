@@ -31,23 +31,29 @@ done'''
 }
 
 node {
-		 stage "Docker Pull All"
-    def branches = [:]
-    for (int i = 0; i < all_hosts.size(); i++) {
-		  def n = i
-      branches["pull-${i}"] = {
-        stage "Docker Pull parallel- #"+n
-				def host = all_hosts[n]
-				println host
-			  env.h = host
-        node {
-			     sh '''
+		stage "Docker Pull All"
+
+    def create_execution(int i) {
+        cmd = { 
+            stage "Docker Pull parallel- #"+i
+     				def host = all_hosts[i]
+    				println host
+    			  env.h = host
+            node {
+    			     sh '''
 echo "docker pull on $h"
 ssh $h docker pull ${REPOSITORY}$REPO/$APP:$TAG
 ssh $h cp /var/www/$APP/TAG /var/www/$APP/REVERT || true
 ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
 					 '''
+            }
         }
+        return cmd
+    }
+
+    def branches = [:]
+    for (int i = 0; i < all_hosts.size(); i++) {
+      branches["pull-${i}"] = create_execution(i)
       }
     }
     parallel branches
