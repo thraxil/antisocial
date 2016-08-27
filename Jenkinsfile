@@ -36,6 +36,9 @@ node {
     for (int i = 0; i < all_hosts.size(); i++) {
       branches["host-pull-${i}"] = {
         stage "Docker Pull parallel- #"+i
+				println all_hosts
+				println i
+				println all_hosts[i]
 			  env.h = all_hosts[i]
         node {
 			     sh '''
