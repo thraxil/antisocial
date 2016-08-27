@@ -30,19 +30,19 @@ do
 done'''
 }
 
-def create_execution(int i, String host) {
-        cmd = { 
-            stage "Docker Pull parallel- #"+i
-            node {
-    			     sh """
+def create_pull_exec(int i, String host) {
+    cmd = { 
+        stage "Docker Pull parallel- #"+i
+        node {
+    			   sh """
 echo "docker pull on ${host}"
 ssh ${host} docker pull \${REPOSITORY}\$REPO/\$APP:\$TAG
 ssh ${host} cp /var/www/\$APP/TAG /var/www/\$APP/REVERT || true
 ssh ${host} "echo export TAG=\$TAG > /var/www/\$APP/TAG"
 					 """
             }
-        }
-        return cmd
+    }
+    return cmd
 }
 
 
@@ -50,7 +50,7 @@ node {
 		stage "Docker Pull All"
     def branches = [:]
     for (int i = 0; i < all_hosts.size(); i++) {
-      branches["pull-${i}"] = create_execution(i, all_hosts[i])
+      branches["pull-${i}"] = create_pull_exec(i, all_hosts[i])
     }
     parallel branches
 	
@@ -68,61 +68,74 @@ ssh $h /usr/local/bin/docker-runner $APP compress
 '''
 }
 
+def create_restart_web_exec(int i, String host) {
+    cmd = { 
+        stage "Restart Gunicorn parallel- #"+i
+        node {
+    			   sh """
+echo "restarting gunicorn on ${host}"
+ssh ${host} sudo stop \$APP || true
+ssh ${host} sudo start \$APP
+					 """
+            }
+    }
+    return cmd
+}
+
+
 node {
 		 stage "Restart Web Workers"
     def branches = [:]
     for (int i = 0; i < hosts.size(); i++) {
 		  int n = i
-      branches["web-restart-${i}"] = {
-        stage "Restart Gunicorn parallel- #"+n
-				println hosts[n]
-			  env.h = hosts[n]
-        node {
-			     sh '''#!/bin/bash
-echo "restarting gunicorn on $h"
-ssh $h sudo stop $APP || true
-ssh $h sudo start $APP
-'''
-        }
-      }
+      branches["web-restart-${i}"] = create_restart_web_exec(i, hosts[i])
     }
     parallel branches
 }
+
+def create_restart_celery_exec(int i, String host) {
+    cmd = { 
+        stage "Restart Worker parallel- #"+i
+        node {
+    			   sh """
+echo "restarting celery worker on ${host}"
+ssh ${host} sudo stop \$APP-worker || true
+ssh ${host} sudo start \$APP-worker
+					 """
+            }
+    }
+    return cmd
+}
+
 
 node {
     def branches = [:]
     for (int i = 0; i < celery_hosts.size(); i++) {
 		  int n = i
-      branches["host-celery-${i}"] = {
-        stage "Restart Worker parallel- #"+n
-			  env.h = celery_hosts[n]
-        node {
-			     sh '''
-echo "restart celery worker on $h"
-ssh $h sudo stop $APP-worker || true
-ssh $h sudo start $APP-worker
-'''
-        }
-      }
+      branches["host-celery-${i}"] = create_restart_celery_exec(i, celery_hosts[i])
     }
     parallel branches
+}
+
+def create_restart_beat_exec(int i, String host) {
+    cmd = { 
+        stage "Restart Beat parallel- #"+i
+        node {
+    			   sh """
+echo "restarting beat worker on ${host}"
+ssh ${host} sudo stop \$APP-beat || true
+ssh ${host} sudo start \$APP-beat
+					 """
+            }
+    }
+    return cmd
 }
 
 node {
     def branches = [:]
     for (int i = 0; i < beat_hosts.size(); i++) {
 		  int n = i
-      branches["host-beat-${i}"] = {
-        stage "Restart Beat parallel- #"+n
-			  env.h = beat_hosts[n]
-        node {
-			     sh '''
-echo "restart beat worker on $h"
-ssh $h sudo stop $APP-beat || true
-ssh $h sudo start $APP-beat
-'''
-        }
-      }
+      branches["host-beat-${i}"] = create_restart_beat_exec(i, beat_hosts[i])
     }
     parallel branches
 }
