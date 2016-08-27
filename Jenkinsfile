@@ -47,7 +47,6 @@ ssh ${host} "echo export TAG=\$TAG > /var/www/\$APP/TAG"
 
 
 node {
-		stage "Docker Pull All"
     def branches = [:]
     for (int i = 0; i < all_hosts.size(); i++) {
       branches["pull-${i}"] = create_pull_exec(i, all_hosts[i])
@@ -84,7 +83,6 @@ ssh ${host} sudo start \$APP
 
 
 node {
-		 stage "Restart Web Workers"
     def branches = [:]
     for (int i = 0; i < hosts.size(); i++) {
 		  int n = i
