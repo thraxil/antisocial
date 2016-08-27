@@ -25,7 +25,7 @@ node {
 //    n=$[$n+1]
 //    sleep $n
 // done'''
-// }
+}
 
 // node {
 //     stage "Deploy"
