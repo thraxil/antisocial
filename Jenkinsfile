@@ -8,7 +8,7 @@ def beat_hosts = ['condor.thraxil.org']
 
 //def all_hosts = (hosts + celery_hosts + beat_hosts).unique()
 
-all_hosts = ['dublin.thraxil.org', 'cobra.thraxil.org', 'condor.thraxil.org']
+def all_hosts = ['dublin.thraxil.org', 'cobra.thraxil.org', 'condor.thraxil.org']
 
 env.OPBEAT_ORG = '68fbae23422f4aa98cb810535e54c5f1'
 env.OPBEAT_APP = 'edc70f3770'
@@ -32,9 +32,8 @@ done'''
 
 node {
 		 stage "Docker Pull All"
-		def n = all_hosts.size()
     def branches = [:]
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < all_hosts.size(); i++) {
       branches["host-pull-${i}"] = {
         stage "Docker Pull parallel- #"+i
 			  env.h = all_hosts[i]
@@ -66,9 +65,8 @@ ssh $h /usr/local/bin/docker-runner $APP compress
 
 node {
 		 stage "Restart Web Workers"
-    def n = hosts.size()
     def branches = [:]
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < hosts.size(); i++) {
       branches["host-web-restart-${i}"] = {
         stage "Restart parallel- #"+i
 			  env.h = hosts[i]
@@ -85,9 +83,8 @@ ssh $h sudo start $APP
 }
 
 node {
-    def n = celery_hosts.size()
     def branches = [:]
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < celery_hosts.size(); i++) {
       branches["host-celery-${i}"] = {
         stage "Restart Worker parallel- #"+i
 			  env.h = celery_hosts[i]
@@ -104,9 +101,8 @@ ssh $h sudo start $APP-worker
 }
 
 node {
-    def n = beat_hosts.size()
     def branches = [:]
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < beat_hosts.size(); i++) {
       branches["host-beat-${i}"] = {
         stage "Restart Beat parallel- #"+i
 			  env.h = beat_hosts[i]
