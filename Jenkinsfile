@@ -82,9 +82,11 @@ done'''
 
 node {
     stage "Opbeat"
-    sh '''curl https://intake.opbeat.com/api/v1/organizations/68fbae23422f4aa98cb810535e54c5f1/apps/edc70f3770/releases/ \
-    -H "Authorization: Bearer 2d0f64cf9464a3f383554dce3311e709fd928a5c" \
-    -d rev=`git log -n 1 --pretty=format:%H` \
-    -d branch=`git rev-parse --abbrev-ref HEAD` \
-    -d status=completed'''
+		withCredentials([[$class : 'StringBinding', credentialsId : 'antisocial-opbeat', variable: 'OPBEAT_TOKEN']]) {
+       sh '''curl https://intake.opbeat.com/api/v1/organizations/68fbae23422f4aa98cb810535e54c5f1/apps/edc70f3770/releases/ \
+       -H "Authorization: Bearer ${OPBEAT_TOKEN}" \
+       -d rev=`git log -n 1 --pretty=format:%H` \
+       -d branch=`git rev-parse --abbrev-ref HEAD` \
+       -d status=completed'''
+		}
 }
