@@ -57,7 +57,9 @@ ssh $h /usr/local/bin/docker-runner $APP migrate
 ssh $h /usr/local/bin/docker-runner $APP collectstatic
 ssh $h /usr/local/bin/docker-runner $APP compress
 '''
+}
 
+node {
     def n = hosts.size() - 1
     def branches = [:]
     for (int i = 0; i < n; i++) {
@@ -73,7 +75,9 @@ ssh $h sudo start $APP
       }
     }
     parallel branches
+}
 
+node {
     def n = celery_hosts.size() - 1
     def branches = [:]
     for (int i = 0; i < n; i++) {
@@ -89,7 +93,9 @@ ssh $h sudo start $APP-worker
       }
     }
     parallel branches
+}
 
+node {
     def n = beat_hosts.size() - 1
     def branches = [:]
     for (int i = 0; i < n; i++) {
