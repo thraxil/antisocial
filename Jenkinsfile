@@ -54,7 +54,6 @@ ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
     def branches = [:]
     for (int i = 0; i < all_hosts.size(); i++) {
       branches["pull-${i}"] = create_execution(i)
-      }
     }
     parallel branches
 	
