@@ -2,10 +2,11 @@ env.TAG = 'build-' + env.BUILD_NUMBER
 env.APP = 'antisocial'
 env.REPO = 'thraxil'
 
-// space separate hosts
-env.HOSTS = 'dublin.thraxil.org cobra.thraxil.org'
-env.CELERY_HOSTS = 'condor.thraxil.org'
-env.BEAT_HOSTS = 'condor.thraxil.org'
+def hosts = ['dublin.thraxil.org', 'cobra.thraxil.org']
+def celery_hosts = ['condor.thraxil.org']
+def beat_hosts = ['condor.thraxil.org']
+
+def all_hosts = (hosts + celery_hosts + beat_hosts).unique()
 
 env.OPBEAT_ORG = '68fbae23422f4aa98cb810535e54c5f1'
 env.OPBEAT_APP = 'edc70f3770'
@@ -28,74 +29,82 @@ done'''
 }
 
 node {
-    stage "Docker Pull"
-    sh '''#!/bin/bash
-hosts=(${HOSTS})
-chosts=(${CELERY_HOSTS})
-bhosts=(${BEAT_HOSTS})
-
-for h in "${hosts[@]}"
-do
-    ssh $h docker pull ${REPOSITORY}$REPO/$APP:$TAG
-done
-
-for h in "${chosts[@]}"
-do
-    ssh $h docker pull ${REPOSITORY}$REPO/$APP:$TAG
-done
-
-for h in "${bhosts[@]}"
-do
-    ssh $h docker pull ${REPOSITORY}$REPO/$APP:$TAG
-done'''
-    stage "Migrate"
-    sh '''#!/bin/bash
-hosts=(${HOSTS})
-h=${hosts[0]}
-
+		def n = all_hosts.size() - 1
+    def branches = [:]
+    for (int i = 0; i < n; i++) {
+      branches["host-${i}"] = {
+        stage "Docker Pull parallel- #"+i
+			  env.h = all_hosts[i]
+        node {
+			     sh '''
+ssh $h docker pull ${REPOSITORY}$REPO/$APP:$TAG
 ssh $h cp /var/www/$APP/TAG /var/www/$APP/REVERT || true
 ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
+					 '''
+        }
+      }
+    }
+    parallel branches
+	
+    stage "Migrate"
+		env.h = all_hosts[0]
+    sh '''
 
 ssh $h /usr/local/bin/docker-runner $APP migrate
 '''
     stage "Collectstatic/Compress"
-		sh '''#!/bin/bash
-hosts=(${HOSTS})
-h=${hosts[0]}
+		sh '''
 ssh $h /usr/local/bin/docker-runner $APP collectstatic
 ssh $h /usr/local/bin/docker-runner $APP compress
 '''
-    stage "Restart"
-		sh '''#!/bin/bash
-hosts=(${HOSTS})
-chosts=(${CELERY_HOSTS})
-bhosts=(${BEAT_HOSTS})
 
-for h in "${hosts[@]}"
-do
-    ssh $h cp /var/www/$APP/TAG /var/www/$APP/REVERT || true
-    ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
-    ssh $h sudo stop $APP || true
-    ssh $h sudo start $APP
-done
+    def n = hosts.size() - 1
+    def branches = [:]
+    for (int i = 0; i < n; i++) {
+      branches["host-${i}"] = {
+        stage "Restart parallel- #"+i
+			  env.h = hosts[i]
+        node {
+			     sh '''
+ssh $h sudo stop $APP || true
+ssh $h sudo start $APP
+'''
+        }
+      }
+    }
+    parallel branches
 
-for h in "${chosts[@]}"
-do
-    echo $h
-    ssh $h cp /var/www/$APP/TAG /var/www/$APP/REVERT || true
-    ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
-    ssh $h sudo stop $APP-worker || true
-    ssh $h sudo start $APP-worker
-done
+    def n = celery_hosts.size() - 1
+    def branches = [:]
+    for (int i = 0; i < n; i++) {
+      branches["host-${i}"] = {
+        stage "Restart Worker parallel- #"+i
+			  env.h = celery_hosts[i]
+        node {
+			     sh '''
+ssh $h sudo stop $APP-worker || true
+ssh $h sudo start $APP-worker
+'''
+        }
+      }
+    }
+    parallel branches
 
-for h in "${bhosts[@]}"
-do
-    echo $h
-    ssh $h cp /var/www/$APP/TAG /var/www/$APP/REVERT || true
-    ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
-    ssh $h sudo stop $APP-beat || true
-    ssh $h sudo start $APP-beat
-done'''
+    def n = beat_hosts.size() - 1
+    def branches = [:]
+    for (int i = 0; i < n; i++) {
+      branches["host-${i}"] = {
+        stage "Restart Worker parallel- #"+i
+			  env.h = beat_hosts[i]
+        node {
+			     sh '''
+ssh $h sudo stop $APP-worker || true
+ssh $h sudo start $APP-worker
+'''
+        }
+      }
+    }
+    parallel branches
 }
 
 node {
