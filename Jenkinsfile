@@ -36,12 +36,8 @@ node {
     for (int i = 0; i < all_hosts.size(); i++) {
 		  int n = i
       branches["host-pull-${i}"] = {
-        stage "Docker Pull parallel- #"+i
-				println all_hosts
-				println i
-				println n
-				println all_hosts[i]
-			  env.h = all_hosts[i]
+        stage "Docker Pull parallel- #"+n
+			  env.h = all_hosts[n]
         node {
 			     sh '''
 echo "docker pull on $h"
@@ -72,9 +68,10 @@ node {
 		 stage "Restart Web Workers"
     def branches = [:]
     for (int i = 0; i < hosts.size(); i++) {
+		  int n = i
       branches["host-web-restart-${i}"] = {
-        stage "Restart parallel- #"+i
-			  env.h = hosts[i]
+        stage "Restart parallel- #"+n
+			  env.h = hosts[n]
         node {
 			     sh '''
 echo "restarting gunicorn on $h"
@@ -90,9 +87,10 @@ ssh $h sudo start $APP
 node {
     def branches = [:]
     for (int i = 0; i < celery_hosts.size(); i++) {
+		  int n = i
       branches["host-celery-${i}"] = {
-        stage "Restart Worker parallel- #"+i
-			  env.h = celery_hosts[i]
+        stage "Restart Worker parallel- #"+n
+			  env.h = celery_hosts[n]
         node {
 			     sh '''
 echo "restart celery worker on $h"
@@ -108,9 +106,10 @@ ssh $h sudo start $APP-worker
 node {
     def branches = [:]
     for (int i = 0; i < beat_hosts.size(); i++) {
+		  int n = i
       branches["host-beat-${i}"] = {
-        stage "Restart Beat parallel- #"+i
-			  env.h = beat_hosts[i]
+        stage "Restart Beat parallel- #"+n
+			  env.h = beat_hosts[n]
         node {
 			     sh '''
 echo "restart beat worker on $h"
