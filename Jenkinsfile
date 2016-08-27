@@ -31,14 +31,16 @@ done'''
 }
 
 node {
+		 stage "Docker Pull All"
 		def n = all_hosts.size() - 1
     def branches = [:]
     for (int i = 0; i < n; i++) {
-      branches["host-${i}"] = {
+      branches["host-pull-${i}"] = {
         stage "Docker Pull parallel- #"+i
 			  env.h = all_hosts[i]
         node {
 			     sh '''
+echo "docker pull on $h"
 ssh $h docker pull ${REPOSITORY}$REPO/$APP:$TAG
 ssh $h cp /var/www/$APP/TAG /var/www/$APP/REVERT || true
 ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
@@ -51,25 +53,28 @@ ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
     stage "Migrate"
 		env.h = all_hosts[0]
     sh '''
-
+echo "migrate on $h"
 ssh $h /usr/local/bin/docker-runner $APP migrate
 '''
     stage "Collectstatic/Compress"
 		sh '''
+echo "collectstatic/compress on $h"
 ssh $h /usr/local/bin/docker-runner $APP collectstatic
 ssh $h /usr/local/bin/docker-runner $APP compress
 '''
 }
 
 node {
+		 stage "Restart Web Workers"
     def n = hosts.size() - 1
     def branches = [:]
     for (int i = 0; i < n; i++) {
-      branches["host-${i}"] = {
+      branches["host-web-restart-${i}"] = {
         stage "Restart parallel- #"+i
 			  env.h = hosts[i]
         node {
 			     sh '''
+echo "restarting gunicorn on $h"
 ssh $h sudo stop $APP || true
 ssh $h sudo start $APP
 '''
@@ -83,11 +88,12 @@ node {
     def n = celery_hosts.size() - 1
     def branches = [:]
     for (int i = 0; i < n; i++) {
-      branches["host-${i}"] = {
+      branches["host-celery-${i}"] = {
         stage "Restart Worker parallel- #"+i
 			  env.h = celery_hosts[i]
         node {
 			     sh '''
+echo "restart celery worker on $h"
 ssh $h sudo stop $APP-worker || true
 ssh $h sudo start $APP-worker
 '''
@@ -101,13 +107,14 @@ node {
     def n = beat_hosts.size() - 1
     def branches = [:]
     for (int i = 0; i < n; i++) {
-      branches["host-${i}"] = {
-        stage "Restart Worker parallel- #"+i
+      branches["host-beat-${i}"] = {
+        stage "Restart Beat parallel- #"+i
 			  env.h = beat_hosts[i]
         node {
 			     sh '''
-ssh $h sudo stop $APP-worker || true
-ssh $h sudo start $APP-worker
+echo "restart beat worker on $h"
+ssh $h sudo stop $APP-beat || true
+ssh $h sudo start $APP-beat
 '''
         }
       }
