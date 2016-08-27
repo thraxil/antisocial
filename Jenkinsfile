@@ -6,7 +6,9 @@ def hosts = ['dublin.thraxil.org', 'cobra.thraxil.org']
 def celery_hosts = ['condor.thraxil.org']
 def beat_hosts = ['condor.thraxil.org']
 
-def all_hosts = (hosts + celery_hosts + beat_hosts).unique()
+//def all_hosts = (hosts + celery_hosts + beat_hosts).unique()
+
+all_hosts = ['dublin.thraxil.org', 'cobra.thraxil.org', 'condor.thraxil.org']
 
 env.OPBEAT_ORG = '68fbae23422f4aa98cb810535e54c5f1'
 env.OPBEAT_APP = 'edc70f3770'
