@@ -30,10 +30,7 @@ do
 done'''
 }
 
-node {
-		stage "Docker Pull All"
-
-    def create_execution(int i) {
+def create_execution(int i) {
         cmd = { 
             stage "Docker Pull parallel- #"+i
      				def host = all_hosts[i]
@@ -49,7 +46,12 @@ ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
             }
         }
         return cmd
-    }
+}
+
+
+node {
+		stage "Docker Pull All"
+
 
     def branches = [:]
     for (int i = 0; i < all_hosts.size(); i++) {
