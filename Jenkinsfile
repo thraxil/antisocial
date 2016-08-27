@@ -35,9 +35,11 @@ node {
     def branches = [:]
     for (int i = 0; i < all_hosts.size(); i++) {
 		  int n = i
+			host = all_hosts[n]
       branches["host-pull-${i}"] = {
         stage "Docker Pull parallel- #"+n
-			  env.h = all_hosts[n]
+				println host
+			  env.h = host
         node {
 			     sh '''
 echo "docker pull on $h"
