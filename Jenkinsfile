@@ -30,10 +30,9 @@ do
 done'''
 }
 
-def create_execution(int i) {
+def create_execution(int i, String host) {
         cmd = { 
             stage "Docker Pull parallel- #"+i
-     				def host = all_hosts[i]
     				println host
     			  env.h = host
             node {
@@ -51,11 +50,9 @@ ssh $h "echo export TAG=$TAG > /var/www/$APP/TAG"
 
 node {
 		stage "Docker Pull All"
-
-
     def branches = [:]
     for (int i = 0; i < all_hosts.size(); i++) {
-      branches["pull-${i}"] = create_execution(i)
+      branches["pull-${i}"] = create_execution(i, all_hosts[i])
     }
     parallel branches
 	
