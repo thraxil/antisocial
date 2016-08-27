@@ -32,9 +32,7 @@ done'''
 
 node {
 		 stage "Docker Pull All"
-		def n = all_hosts.size() - 1
-		println n
-		println all_hosts
+		def n = all_hosts.size()
     def branches = [:]
     for (int i = 0; i < n; i++) {
       branches["host-pull-${i}"] = {
@@ -68,7 +66,7 @@ ssh $h /usr/local/bin/docker-runner $APP compress
 
 node {
 		 stage "Restart Web Workers"
-    def n = hosts.size() - 1
+    def n = hosts.size()
     def branches = [:]
     for (int i = 0; i < n; i++) {
       branches["host-web-restart-${i}"] = {
@@ -87,7 +85,7 @@ ssh $h sudo start $APP
 }
 
 node {
-    def n = celery_hosts.size() - 1
+    def n = celery_hosts.size()
     def branches = [:]
     for (int i = 0; i < n; i++) {
       branches["host-celery-${i}"] = {
@@ -106,7 +104,7 @@ ssh $h sudo start $APP-worker
 }
 
 node {
-    def n = beat_hosts.size() - 1
+    def n = beat_hosts.size()
     def branches = [:]
     for (int i = 0; i < n; i++) {
       branches["host-beat-${i}"] = {
