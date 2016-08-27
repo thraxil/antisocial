@@ -69,11 +69,11 @@ node {
     def branches = [:]
     for (int i = 0; i < hosts.size(); i++) {
 		  int n = i
-      branches["host-web-restart-${i}"] = {
-        stage "Restart parallel- #"+n
+      branches["web-restart-${i}"] = {
+        stage "Restart Gunicorn parallel- #"+n
 			  env.h = hosts[n]
         node {
-			     sh '''
+			     sh '''#!/bin/bash
 echo "restarting gunicorn on $h"
 ssh $h sudo stop $APP || true
 ssh $h sudo start $APP
