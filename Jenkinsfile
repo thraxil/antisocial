@@ -179,17 +179,20 @@ ssh ${host} sudo start ${APP}-beat
 }
 
 // retry with exponential backoff
-// returns boolean for success
-def retry_backoff(int max_retries, Closure c) {
+def retry_backoff(int max_attempts, Closure c) {
     int n = 0
-    while(n < max_retries) {
+    while (n < max_attempts) {
         try {
             c()
-            return true
+            return
         } catch (err) {
+            if ((n + 1) >= max_attempts) {
+                // we're done. re-raise the exception
+                throw err
+            }
             sleep(2**n)
             n++
         }
     }
-    return false
+    return
 }
