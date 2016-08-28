@@ -1,22 +1,20 @@
 env.TAG = 'build-' + env.BUILD_NUMBER
 
-try {
-  env.APP = APP
-  }
-catch (MissingPropertyException e) {
-  println "APP parameter needs to be set"
-} 
+// check for required parameters. assign them to the env for
+// convenience and make sure that an exception is raised if any
+// are missing as a side-effect
 
-env.REPO = 'thraxil'
+env.APP = APP
+env.REPO = REPO
+env.OPBEAT_ORG = OPBEAT_ORG
+env.OPBEAT_APP = OPBEAT_APP
+// OPBEAT_TOKEN comes out of credential store
+env.ADMIN_EMAIL = ADMIN_EMAIL
 
 def hosts = ['dublin.thraxil.org', 'cobra.thraxil.org']
 def celery_hosts = ['condor.thraxil.org']
 def beat_hosts = ['condor.thraxil.org']
 def all_hosts = ['dublin.thraxil.org', 'cobra.thraxil.org', 'condor.thraxil.org']
-
-env.OPBEAT_ORG = '68fbae23422f4aa98cb810535e54c5f1'
-env.OPBEAT_APP = 'edc70f3770'
-// OPBEAT_TOKEN comes out of credential store
 
 
 def create_pull_exec(int i, String host) {
@@ -25,9 +23,9 @@ def create_pull_exec(int i, String host) {
         node {
     			   sh """
 echo "docker pull on ${host}"
-ssh ${host} docker pull \${REPOSITORY}\$REPO/\$APP:\$TAG
-ssh ${host} cp /var/www/\$APP/TAG /var/www/\$APP/REVERT || true
-ssh ${host} "echo export TAG=\$TAG > /var/www/\$APP/TAG"
+ssh ${host} docker pull \${REPOSITORY}\$REPO/${APP}:\$TAG
+ssh ${host} cp /var/www/${APP}/TAG /var/www/${APP}/REVERT || true
+ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
 					 """
             }
     }
@@ -40,8 +38,8 @@ def create_restart_web_exec(int i, String host) {
         node {
     			   sh """
 echo "restarting gunicorn on ${host}"
-ssh ${host} sudo stop \$APP || true
-ssh ${host} sudo start \$APP
+ssh ${host} sudo stop ${APP} || true
+ssh ${host} sudo start ${APP}
 					 """
             }
     }
@@ -54,8 +52,8 @@ def create_restart_celery_exec(int i, String host) {
         node {
     			   sh """
 echo "restarting celery worker on ${host}"
-ssh ${host} sudo stop \$APP-worker || true
-ssh ${host} sudo start \$APP-worker
+ssh ${host} sudo stop ${APP}-worker || true
+ssh ${host} sudo start ${APP}-worker
 					 """
             }
     }
@@ -68,8 +66,8 @@ def create_restart_beat_exec(int i, String host) {
         node {
     			   sh """
 echo "restarting beat worker on ${host}"
-ssh ${host} sudo stop \$APP-beat || true
-ssh ${host} sudo start \$APP-beat
+ssh ${host} sudo stop ${APP}-beat || true
+ssh ${host} sudo start ${APP}-beat
 					 """
             }
     }
@@ -91,7 +89,7 @@ node {
 n=0
 until [ $n -ge 5 ]
 do
-   docker push $REPO/$APP:$TAG && break
+   docker push $REPO/${APP}:$TAG && break
    n=$[$n+1]
    sleep $n
 done'''
@@ -150,7 +148,7 @@ node {
 
 node {
     stage "Opbeat"
-		withCredentials([[$class: 'StringBinding', credentialsId : env.APP + '-opbeat', variable: 'OPBEAT_TOKEN', ]]) {
+		withCredentials([[$class: 'StringBinding', credentialsId : APP + '-opbeat', variable: 'OPBEAT_TOKEN', ]]) {
        sh '''curl https://intake.opbeat.com/api/v1/organizations/${OPBEAT_ORG}/apps/${OPBEAT_APP}/releases/ \
        -H "Authorization: Bearer ${OPBEAT_TOKEN}" \
        -d rev=`git log -n 1 --pretty=format:%H` \
@@ -169,7 +167,7 @@ node {
         println "got to the end"
 				step([$class: 'Mailer',
            notifyEveryUnstableBuild: true,
-           recipients: "anders@columbia.edu",
+           recipients: ADMIN_EMAIL,
            sendToIndividuals: true])
     }
 
