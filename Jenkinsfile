@@ -156,9 +156,11 @@ node {
 }
 
 } catch (caughtError) {
+    println "caught an exception"
     err = caughtError
     currentBuild.result = "FAILURE"
 } finally {
+    println "in finally"
     (currentBuild.result != "ABORTED") {
         println "got to the end"
     }
