@@ -88,7 +88,7 @@ node {
 		stage "Docker Push"
     int n = 0
 		workToDo = true
-		while(workToDo && (n < 5) {
+		while(workToDo && (n < 5)) {
 				try {
 						sh "docker push ${REPO}/${APP}:${TAG}"
 						workToDo = false
