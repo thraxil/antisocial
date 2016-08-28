@@ -103,17 +103,17 @@ node {
     parallel branches
 	
     stage "Migrate"
-		env.h = all_hosts[0]
-    sh '''
-echo "migrate on $h"
-ssh $h /usr/local/bin/docker-runner $APP migrate
-'''
+		def host = all_hosts[0]
+    sh """
+echo "migrate on ${host}"
+ssh ${host} /usr/local/bin/docker-runner ${APP} migrate
+"""
     stage "Collectstatic/Compress"
-		sh '''
-echo "collectstatic/compress on $h"
-ssh $h /usr/local/bin/docker-runner $APP collectstatic
-ssh $h /usr/local/bin/docker-runner $APP compress
-'''
+		sh """
+echo "collectstatic/compress on ${host}"
+ssh ${host} /usr/local/bin/docker-runner ${APP} collectstatic
+ssh ${host} /usr/local/bin/docker-runner ${APP} compress
+"""
 }
 
 
