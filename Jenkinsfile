@@ -16,8 +16,15 @@ env.REPO = REPO
 env.ADMIN_EMAIL = ADMIN_EMAIL
 
 def hosts = HOSTS.split(" ")
-def celery_hosts = CELERY_HOSTS.split(" ")
-def beat_hosts = BEAT_HOSTS.split(" ")
+
+// optional (not all apps use celer/beat)
+def celery_hosts = [:]
+def beat_hosts = [:]
+try {
+  celery_hosts = CELERY_HOSTS.split(" ")
+  beat_hosts = BEAT_HOSTS.split(" ")
+}
+
 def all_hosts = hosts + celery_hosts + beat_hosts as Set
 
 def opbeat = true
