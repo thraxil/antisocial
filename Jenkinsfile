@@ -75,8 +75,27 @@ ssh ${host} sudo start ${APP}-beat
     return cmd
 }
 
+// retry with exponential backoff
+// returns boolean for success
+def retry_backoff(int max_retries, Closure c) {
+		int n = 0
+		while(n < max_retries) {
+				try {
+						c()
+						return true
+				} catch (err) {
+						sleep(2**n)
+						n++
+				}
+		}
+		return false
+}
+
+
 def err = null
 currentBuild.result = "SUCCESS"
+
+
 
 try {
 
