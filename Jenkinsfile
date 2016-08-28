@@ -92,7 +92,7 @@ node {
 				try {
 						sh "docker push ${REPO}/${APP}:${TAG}"
 						workToDo = false
-				} except (err) {
+				} catch (err) {
 						println "retry " + n
 						sleep(n)
 						n++
