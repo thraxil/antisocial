@@ -60,16 +60,13 @@ try {
   
         stage "Migrate"
         def host = all_hosts[0]
-        sh """
-echo "migrate on ${host}"
-ssh ${host} /usr/local/bin/docker-runner ${APP} migrate
-"""
-        stage "Collectstatic/Compress"
-        sh """
-echo "collectstatic/compress on ${host}"
-ssh ${host} /usr/local/bin/docker-runner ${APP} collectstatic
-ssh ${host} /usr/local/bin/docker-runner ${APP} compress
-"""
+        sh "ssh ${host} /usr/local/bin/docker-runner ${APP} migrate"
+
+        stage "Collectstatic"
+        sh "ssh ${host} /usr/local/bin/docker-runner ${APP} collectstatic"
+
+				stage "Compress"
+				sh "ssh ${host} /usr/local/bin/docker-runner ${APP} compress"
     }
 
 
@@ -129,6 +126,8 @@ ssh ${host} /usr/local/bin/docker-runner ${APP} compress
         throw err
     }
 }
+
+// -------------------- helper functions ----------------------
 
 def create_pull_exec(int i, String host) {
     cmd = { 
