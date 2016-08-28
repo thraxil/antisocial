@@ -23,6 +23,8 @@ def beat_hosts = [:]
 try {
     celery_hosts = CELERY_HOSTS.split(" ")
     beat_hosts = BEAT_HOSTS.split(" ")
+} catch (hostsErr) {
+		// don't care
 }
 
 def all_hosts = hosts + celery_hosts + beat_hosts as Set
