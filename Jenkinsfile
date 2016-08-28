@@ -98,16 +98,6 @@ node {
 						n++
 				}
 		}
-					/*		
-		sh '''#!/bin/bash
-n=0
-until [ $n -ge 5 ]
-do
-   docker push $REPO/${APP}:$TAG && break
-   n=$[$n+1]
-   sleep $n
-done'''
-					*/
 }
 
 node {
