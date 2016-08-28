@@ -160,12 +160,7 @@ node {
     currentBuild.result = "FAILURE"
 } finally {
     (currentBuild.result != "ABORTED") {
-        // Send e-mail notifications for failed or unstable builds.
-        // currentBuild.result must be non-null for this step to work.
-        step([$class: 'Mailer',
-           notifyEveryUnstableBuild: true,
-           recipients: "anders@columbia.edu",
-           sendToIndividuals: true])
+        println "got to the end"
     }
 
     /* Must re-throw exception to propagate error */
