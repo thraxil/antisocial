@@ -95,7 +95,7 @@ node {
 				} catch (pusshErr) {
 						println pushErr
 						println "retry " + n
-						sleep(n)
+						sleep(2**n)
 						n++
 				}
 		}
