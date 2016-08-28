@@ -105,19 +105,7 @@ node {
 		stage "Build"
 		sh "make build" 
 		stage "Docker Push"
-    int n = 0
-		workToDo = true
-		while(workToDo && (n < 5)) {
-				try {
-						sh "docker push ${REPO}/${APP}:${TAG}"
-						workToDo = false
-				} catch (pusshErr) {
-						println pushErr
-						println "retry " + n
-						sleep(2**n)
-						n++
-				}
-		}
+		retry_backoff(5) { sh "docker push ${REPO}/${APP}:${TAG}" }
 }
 
 node {
