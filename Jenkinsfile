@@ -1,4 +1,5 @@
-env.TAG = 'build-' + env.BUILD_NUMBER
+TAG = 'build-' + env.BUILD_NUMBER
+env.TAG = TAG
 
 // check for required parameters. assign them to the env for
 // convenience and make sure that an exception is raised if any
@@ -85,6 +86,19 @@ node {
 		stage "Build"
 		sh "make build" 
 		stage "Docker Push"
+    int n = 0
+		workToDo = true
+		while(workToDo && (n < 5) {
+				try {
+						sh "docker push ${REPO}/${APP}:${TAG}"
+						workToDo = false
+				} except (err) {
+						println "retry " + n
+						sleep(n)
+						n++
+				}
+		}
+					/*		
 		sh '''#!/bin/bash
 n=0
 until [ $n -ge 5 ]
@@ -93,6 +107,7 @@ do
    n=$[$n+1]
    sleep $n
 done'''
+					*/
 }
 
 node {
