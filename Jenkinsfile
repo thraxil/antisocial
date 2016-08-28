@@ -7,9 +7,6 @@ env.TAG = TAG
 
 env.APP = APP
 env.REPO = REPO
-env.OPBEAT_ORG = OPBEAT_ORG
-env.OPBEAT_APP = OPBEAT_APP
-// OPBEAT_TOKEN comes out of credential store
 env.ADMIN_EMAIL = ADMIN_EMAIL
 
 def hosts = HOSTS.split(" ")
@@ -17,6 +14,16 @@ def celery_hosts = CELERY_HOSTS.split(" ")
 def beat_hosts = BEAT_HOSTS.split(" ")
 def all_hosts = ALL_HOSTS.split(" ")
 
+def opbeat = true
+
+try {
+		env.OPBEAT_ORG = OPBEAT_ORG
+		env.OPBEAT_APP = OPBEAT_APP
+		// OPBEAT_TOKEN comes out of credential store
+} catch (opbeatErr) {
+		println "opbeat not configured"
+		opbeat = false
+}
 
 def create_pull_exec(int i, String host) {
     cmd = { 
@@ -156,14 +163,16 @@ node {
     parallel branches
 }
 
-node {
-    stage "Opbeat"
-		withCredentials([[$class: 'StringBinding', credentialsId : APP + '-opbeat', variable: 'OPBEAT_TOKEN', ]]) {
-				sh '''curl https://intake.opbeat.com/api/v1/organizations/${OPBEAT_ORG}/apps/${OPBEAT_APP}/releases/ \
+if (opbeat) {
+		node {
+				stage "Opbeat"
+				withCredentials([[$class: 'StringBinding', credentialsId : APP + '-opbeat', variable: 'OPBEAT_TOKEN', ]]) {
+						sh '''curl https://intake.opbeat.com/api/v1/organizations/${OPBEAT_ORG}/apps/${OPBEAT_APP}/releases/ \
        -H "Authorization: Bearer ${OPBEAT_TOKEN}" \
        -d rev=`git log -n 1 --pretty=format:%H` \
        -d branch=`git rev-parse --abbrev-ref HEAD` \
        -d status=completed'''
+				}
 		}
 }
 
