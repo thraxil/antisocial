@@ -72,6 +72,9 @@ ssh ${host} sudo start \$APP-beat
     return cmd
 }
 
+def err = null
+currentBuild.result = "SUCCESS"
+
 try {
 
 node {
