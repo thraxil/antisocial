@@ -21,8 +21,8 @@ def hosts = HOSTS.split(" ")
 def celery_hosts = [:]
 def beat_hosts = [:]
 try {
-  celery_hosts = CELERY_HOSTS.split(" ")
-  beat_hosts = BEAT_HOSTS.split(" ")
+		celery_hosts = CELERY_HOSTS.split(" ")
+		beat_hosts = BEAT_HOSTS.split(" ")
 }
 
 def all_hosts = hosts + celery_hosts + beat_hosts as Set
@@ -38,84 +38,8 @@ try {
 		opbeat = false
 }
 
-def create_pull_exec(int i, String host) {
-    cmd = { 
-        node {
-						stage "Docker Pull - "+i
-						sh """
-echo "docker pull on ${host}"
-ssh ${host} docker pull \${REPOSITORY}\$REPO/${APP}:\$TAG
-ssh ${host} cp /var/www/${APP}/TAG /var/www/${APP}/REVERT || true
-ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
-"""
-				}
-    }
-    return cmd
-}
-
-def create_restart_web_exec(int i, String host) {
-    cmd = { 
-        node {
-						stage "Restart Gunicorn - "+i
-						sh """
-echo "restarting gunicorn on ${host}"
-ssh ${host} sudo stop ${APP} || true
-ssh ${host} sudo start ${APP}
-"""
-				}
-    }
-    return cmd
-}
-
-def create_restart_celery_exec(int i, String host) {
-    cmd = { 
-        node {
-						stage "Restart Worker - "+i
-						sh """
-echo "restarting celery worker on ${host}"
-ssh ${host} sudo stop ${APP}-worker || true
-ssh ${host} sudo start ${APP}-worker
-"""
-            }
-    }
-    return cmd
-}
-
-def create_restart_beat_exec(int i, String host) {
-    cmd = { 
-        node {
-						stage "Restart Beat - "+i
-						sh """
-echo "restarting beat worker on ${host}"
-ssh ${host} sudo stop ${APP}-beat || true
-ssh ${host} sudo start ${APP}-beat
-"""
-				}
-    }
-    return cmd
-}
-
-// retry with exponential backoff
-// returns boolean for success
-def retry_backoff(int max_retries, Closure c) {
-		int n = 0
-		while(n < max_retries) {
-				try {
-						c()
-						return true
-				} catch (err) {
-						sleep(2**n)
-						n++
-				}
-		}
-		return false
-}
-
-
 def err = null
 currentBuild.result = "SUCCESS"
-
-
 
 try {
 
@@ -207,4 +131,77 @@ if (opbeat) {
     if (err) {
         throw err
     }
+}
+
+def create_pull_exec(int i, String host) {
+    cmd = { 
+        node {
+						stage "Docker Pull - "+i
+						sh """
+echo "docker pull on ${host}"
+ssh ${host} docker pull \${REPOSITORY}\$REPO/${APP}:\$TAG
+ssh ${host} cp /var/www/${APP}/TAG /var/www/${APP}/REVERT || true
+ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
+"""
+				}
+    }
+    return cmd
+}
+
+def create_restart_web_exec(int i, String host) {
+    cmd = { 
+        node {
+						stage "Restart Gunicorn - "+i
+						sh """
+echo "restarting gunicorn on ${host}"
+ssh ${host} sudo stop ${APP} || true
+ssh ${host} sudo start ${APP}
+"""
+				}
+    }
+    return cmd
+}
+
+def create_restart_celery_exec(int i, String host) {
+    cmd = { 
+        node {
+						stage "Restart Worker - "+i
+						sh """
+echo "restarting celery worker on ${host}"
+ssh ${host} sudo stop ${APP}-worker || true
+ssh ${host} sudo start ${APP}-worker
+"""
+            }
+    }
+    return cmd
+}
+
+def create_restart_beat_exec(int i, String host) {
+    cmd = { 
+        node {
+						stage "Restart Beat - "+i
+						sh """
+echo "restarting beat worker on ${host}"
+ssh ${host} sudo stop ${APP}-beat || true
+ssh ${host} sudo start ${APP}-beat
+"""
+				}
+    }
+    return cmd
+}
+
+// retry with exponential backoff
+// returns boolean for success
+def retry_backoff(int max_retries, Closure c) {
+		int n = 0
+		while(n < max_retries) {
+				try {
+						c()
+						return true
+				} catch (err) {
+						sleep(2**n)
+						n++
+				}
+		}
+		return false
 }
