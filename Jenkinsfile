@@ -161,8 +161,12 @@ node {
     currentBuild.result = "FAILURE"
 } finally {
     println "in finally"
-    (currentBuild.result != "ABORTED") {
+    (currentBuild.result != "ABORTED") && node {
         println "got to the end"
+				step([$class: 'Mailer',
+           notifyEveryUnstableBuild: true,
+           recipients: "anders@columbia.edu",
+           sendToIndividuals: true])
     }
 
     /* Must re-throw exception to propagate error */
