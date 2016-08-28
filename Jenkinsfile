@@ -11,10 +11,10 @@ env.OPBEAT_APP = OPBEAT_APP
 // OPBEAT_TOKEN comes out of credential store
 env.ADMIN_EMAIL = ADMIN_EMAIL
 
-def hosts = ['dublin.thraxil.org', 'cobra.thraxil.org']
-def celery_hosts = ['condor.thraxil.org']
-def beat_hosts = ['condor.thraxil.org']
-def all_hosts = ['dublin.thraxil.org', 'cobra.thraxil.org', 'condor.thraxil.org']
+def hosts = HOSTS.split(" ")
+def celery_hosts = CELERY_HOSTS.split(" ")
+def beat_hosts = BEAT_HOSTS.split(" ")
+def all_hosts = (HOSTS + CELERY_HOSTS + BEAT_HOSTS).unique()
 
 
 def create_pull_exec(int i, String host) {
