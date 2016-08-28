@@ -19,7 +19,7 @@ def all_hosts = ALL_HOSTS.split(" ")
 
 def create_pull_exec(int i, String host) {
     cmd = { 
-        stage "Docker Pull parallel- #"+i
+        stage "Docker Pull - "+i
         node {
 						sh """
 echo "docker pull on ${host}"
@@ -34,7 +34,7 @@ ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
 
 def create_restart_web_exec(int i, String host) {
     cmd = { 
-        stage "Restart Gunicorn parallel- #"+i
+        stage "Restart Gunicorn - "+i
         node {
 						sh """
 echo "restarting gunicorn on ${host}"
@@ -48,7 +48,7 @@ ssh ${host} sudo start ${APP}
 
 def create_restart_celery_exec(int i, String host) {
     cmd = { 
-        stage "Restart Worker parallel- #"+i
+        stage "Restart Worker - "+i
         node {
     			   sh """
 echo "restarting celery worker on ${host}"
@@ -62,7 +62,7 @@ ssh ${host} sudo start ${APP}-worker
 
 def create_restart_beat_exec(int i, String host) {
     cmd = { 
-        stage "Restart Beat parallel- #"+i
+        stage "Restart Beat - "+i
         node {
 						sh """
 echo "restarting beat worker on ${host}"
