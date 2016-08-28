@@ -69,7 +69,6 @@ try {
 				sh "ssh ${host} /usr/local/bin/docker-runner ${APP} compress"
     }
 
-
     node {
         def branches = [:]
         for (int i = 0; i < hosts.size(); i++) {
@@ -78,20 +77,18 @@ try {
         parallel branches
     }
 
-
     node {
         def branches = [:]
         for (int i = 0; i < celery_hosts.size(); i++) {
-            branches["host-celery-${i}"] = create_restart_celery_exec(i, celery_hosts[i])
+            branches["celery-restart-${i}"] = create_restart_celery_exec(i, celery_hosts[i])
         }
         parallel branches
     }
 
-
     node {
         def branches = [:]
         for (int i = 0; i < beat_hosts.size(); i++) {
-            branches["host-beat-${i}"] = create_restart_beat_exec(i, beat_hosts[i])
+            branches["beat-restart-${i}"] = create_restart_beat_exec(i, beat_hosts[i])
         }
         parallel branches
     }
