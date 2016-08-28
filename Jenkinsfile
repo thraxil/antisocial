@@ -72,6 +72,7 @@ ssh ${host} sudo start \$APP-beat
     return cmd
 }
 
+try {
 
 node {
    stage 'Checkout'
@@ -149,4 +150,23 @@ node {
        -d branch=`git rev-parse --abbrev-ref HEAD` \
        -d status=completed'''
 		}
+}
+
+} catch (caughtError) {
+    err = caughtError
+    currentBuild.result = "FAILURE"
+} finally {
+    (currentBuild.result != "ABORTED") {
+        // Send e-mail notifications for failed or unstable builds.
+        // currentBuild.result must be non-null for this step to work.
+        step([$class: 'Mailer',
+           notifyEveryUnstableBuild: true,
+           recipients: "anders@columbia.edu",
+           sendToIndividuals: true])
+    }
+
+    /* Must re-throw exception to propagate error */
+    if (err) {
+        throw err
+    }
 }
