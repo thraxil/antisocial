@@ -1,13 +1,17 @@
 env.TAG = 'build-' + env.BUILD_NUMBER
-env.APP = 'antisocial'
+
+try {
+  env.APP = APP
+  }
+catch (MissingPropertyException e) {
+  println "APP parameter needs to be set"
+} 
+
 env.REPO = 'thraxil'
 
 def hosts = ['dublin.thraxil.org', 'cobra.thraxil.org']
 def celery_hosts = ['condor.thraxil.org']
 def beat_hosts = ['condor.thraxil.org']
-
-//def all_hosts = (hosts + celery_hosts + beat_hosts).unique()
-
 def all_hosts = ['dublin.thraxil.org', 'cobra.thraxil.org', 'condor.thraxil.org']
 
 env.OPBEAT_ORG = '68fbae23422f4aa98cb810535e54c5f1'
