@@ -111,7 +111,6 @@ try {
     currentBuild.result = "FAILURE"
 } finally {
     (currentBuild.result != "ABORTED") && node {
-        println "got to the end"
         step([$class: 'Mailer',
               notifyEveryUnstableBuild: true,
               recipients: ADMIN_EMAIL,
@@ -131,7 +130,6 @@ def create_pull_exec(int i, String host) {
         node {
             stage "Docker Pull - "+i
             sh """
-echo "docker pull on ${host}"
 ssh ${host} docker pull \${REPOSITORY}\$REPO/${APP}:\$TAG
 ssh ${host} cp /var/www/${APP}/TAG /var/www/${APP}/REVERT || true
 ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
@@ -146,7 +144,6 @@ def create_restart_web_exec(int i, String host) {
         node {
             stage "Restart Gunicorn - "+i
             sh """
-echo "restarting gunicorn on ${host}"
 ssh ${host} sudo stop ${APP} || true
 ssh ${host} sudo start ${APP}
 """
@@ -160,7 +157,6 @@ def create_restart_celery_exec(int i, String host) {
         node {
             stage "Restart Worker - "+i
             sh """
-echo "restarting celery worker on ${host}"
 ssh ${host} sudo stop ${APP}-worker || true
 ssh ${host} sudo start ${APP}-worker
 """
@@ -174,7 +170,6 @@ def create_restart_beat_exec(int i, String host) {
         node {
             stage "Restart Beat - "+i
             sh """
-echo "restarting beat worker on ${host}"
 ssh ${host} sudo stop ${APP}-beat || true
 ssh ${host} sudo start ${APP}-beat
 """
