@@ -1,3 +1,9 @@
+// Sandbox approvals that you will need (at least):
+// staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods plus java.lang.Object[]
+// staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods getAt java.lang.Iterable int
+// java.lang.Object[]
+// staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods plus java.util.List java.lang.Object
+
 TAG = 'build-' + env.BUILD_NUMBER
 env.TAG = TAG
 
@@ -12,8 +18,6 @@ env.ADMIN_EMAIL = ADMIN_EMAIL
 def hosts = HOSTS.split(" ")
 def celery_hosts = CELERY_HOSTS.split(" ")
 def beat_hosts = BEAT_HOSTS.split(" ")
-//def all_hosts = ALL_HOSTS.split(" ")
-
 def all_hosts = hosts + celery_hosts + beat_hosts as Set
 
 def opbeat = true
