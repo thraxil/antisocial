@@ -17,14 +17,18 @@ env.ADMIN_EMAIL = ADMIN_EMAIL
 
 def hosts = HOSTS.split(" ")
 
-// optional (not all apps use celer/beat)
+// optional (not all apps use celery/beat)
 def celery_hosts = [:]
 def beat_hosts = [:]
 try {
     celery_hosts = CELERY_HOSTS.split(" ")
-    beat_hosts = BEAT_HOSTS.split(" ")
 } catch (hostsErr) {
-		// don't care
+    celery_hosts = []
+}
+try {
+    beat_hosts = BEAT_HOSTS.split(" ")
+} catch (beatserr) {
+    beat_hosts = []
 }
 
 def all_hosts = hosts + celery_hosts + beat_hosts as Set
@@ -98,7 +102,7 @@ try {
     if (opbeat) {
         node {
             stage "Opbeat"
-            withCredentials([[$class: 'StringBinding', credentialsId : APP + '-opbeat', variable: 'OPBEAT_TOKEN', ]]) {
+            withCredentials([[$class: 'StringBinding', credentialsId : 'opbeat-secret', variable: 'OPBEAT_TOKEN', ]]) {
                 sh '''curl https://intake.opbeat.com/api/v1/organizations/${OPBEAT_ORG}/apps/${OPBEAT_APP}/releases/ \
        -H "Authorization: Bearer ${OPBEAT_TOKEN}" \
        -d rev=`git log -n 1 --pretty=format:%H` \
