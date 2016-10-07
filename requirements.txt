@@ -36,8 +36,8 @@ billiard==3.5.0.1
 vine==1.1.2
 amqp==2.1.0
 amqplib==1.0.2
-kombu==3.0.36
-pyparsing==2.1.9
+kombu==3.0.37
+pyparsing==2.1.10
 celery==3.1.24
 statsd==3.2.1
 gunicorn==19.6.0
