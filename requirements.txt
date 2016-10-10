@@ -27,8 +27,10 @@ logilab-astng==0.24.3
 pylint==1.6.4
 six==1.10.0
 opml==0.5
-Pillow==3.3.1
+
+Pillow==3.4.1
 pytz==2016.7
+
 python-dateutil==2.5.3
 librabbitmq==1.6.1
 anyjson==0.3.3
@@ -36,9 +38,9 @@ billiard==3.3.0.23
 vine==1.1.2
 amqp==2.1.0
 amqplib==1.0.2
-kombu==3.0.35
-pyparsing==2.1.9
-celery==3.1.23
+kombu==3.0.36
+pyparsing==2.1.10
+celery==3.1.24
 statsd==3.2.1
 gunicorn==19.6.0
 pycrypto==2.6.1
@@ -79,7 +81,7 @@ wsgiref==0.1.2
 django-appconf==1.0.2
 django_compressor==2.1
 django-bootstrap-form==3.2.1
-django-debug-toolbar==1.5
+django-debug-toolbar==1.6
 django-waffle==0.11.1
 django-jenkins==0.110.0
 django-smoketest==1.0.0
