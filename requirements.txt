@@ -27,8 +27,10 @@ logilab-astng==0.24.3
 pylint==1.6.4
 six==1.10.0
 opml==0.5
+
 Pillow==3.4.1
 pytz==2016.7
+
 python-dateutil==2.5.3
 librabbitmq==1.6.1
 anyjson==0.3.3
