@@ -1,4 +1,4 @@
-NODE_MODULES=./node_modules
+NODE_MODULES ?= ./node_modules
 JS_SENTINAL=$(NODE_MODULES)/sentinal
 JSHINT=$(NODE_MODULES)/jshint/bin/jshint
 JSCS=$(NODE_MODULES)/jscs/bin/jscs

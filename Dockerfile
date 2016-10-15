@@ -1,14 +1,40 @@
-FROM ccnmtl/django.base:2016-07-16
-ADD wheelhouse /wheelhouse
-RUN apt-get update && apt-get install -y libxml2-dev libxslt-dev
-RUN /ve/bin/pip install --no-index -f /wheelhouse -r /wheelhouse/requirements.txt \
-&& rm -rf /wheelhouse
+FROM ccnmtl/django.base:latest
+RUN apt-get update \
+    && apt-get install -y \
+		binutils \
+		build-essential \
+		curl \
+		gcc \
+		libffi-dev \
+		libssl-dev \
+		libexif-dev \
+		libexif12 \
+		libfontconfig1-dev \
+		libfreetype6-dev \
+		libldap2-dev \
+		libpq-dev  \
+		libsasl2-dev \
+		libssl-dev \
+		libxft-dev \
+		libxml2-dev \
+		libxslt-dev \
+		libxslt1-dev \
+		python-all-dev \
+		python-dev \
+		python-beautifulsoup \
+		python-ldap \
+		python-tk \
+    && apt-get clean \
+		&& rm -rf /var/lib/apt/lists/* \
+		&& /ve/bin/pip install wheel
+COPY package.json /node/
+RUN cd /node && npm install && touch /node/node_modules/sentinal
+COPY requirements.txt /app/requirements.txt
+RUN /ve/bin/pip install -r /app/requirements.txt && touch /ve/sentinal
 WORKDIR /app
 COPY . /app/
-RUN /ve/bin/flake8 /app/antisocial/ --max-complexity=8
-RUN /ve/bin/python manage.py test
-RUN npm install
-RUN ./node_modules/.bin/webpack --config webpack.prod.config.js
+RUN VE=/ve/ MANAGE="/ve/bin/python manage.py" NODE_MODULES=/node/node_modules make all
+RUN cp -a /node/node_modules /app && make webpack
 EXPOSE 8000
 ADD docker-run.sh /run.sh
 ENV APP antisocial
