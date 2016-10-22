@@ -49,7 +49,7 @@ statsd==3.2.1
 gunicorn==19.6.0
 pycrypto==2.6.1
 ecdsa==0.13
-sqlparse==0.2.1
+sqlparse==0.2.2
 html2text==2016.9.19
 astroid==1.4.8
 boto==2.43.0
