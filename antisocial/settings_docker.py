@@ -15,3 +15,5 @@ locals().update(
         STATIC_ROOT=STATIC_ROOT,
         MIDDLEWARE_CLASSES=MIDDLEWARE_CLASSES,
     ))
+
+CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
