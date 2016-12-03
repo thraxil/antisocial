@@ -41,10 +41,10 @@ amqp==2.1.1
 
 amqplib==1.0.2
 
-kombu==3.0.37
+kombu==4.0.0
 pyparsing==2.1.10
 
-celery==3.1.24
+celery==4.0.0
 statsd==3.2.1
 gunicorn==19.6.0
 pycrypto==2.6.1
@@ -95,7 +95,6 @@ easy-thumbnails==2.3
 django-guardian==1.4.6
 django-userena==2.0.1
 django-picklefield==0.3.2
-django-celery==3.1.17
 django-statsd-mozilla==0.3.16
 django-markwhat==1.5
 django-storages-redux==1.3.2
