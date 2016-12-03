@@ -16,4 +16,4 @@ locals().update(
         MIDDLEWARE_CLASSES=MIDDLEWARE_CLASSES,
     ))
 
-CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
+CELERY_BROKER_URL = os.environ['BROKER_URL']
