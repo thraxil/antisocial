@@ -1,0 +1,41 @@
+db:
+  image: postgres
+rabbitmq:
+  image: rabbitmq
+web:
+  image: thraxil/antisocial
+  command: manage runserver 0.0.0.0:8000
+  environment:
+    - SETTINGS=settings_compose
+    - SECRET_KEY=docker-compose-secret
+  volumes:
+    - .:/app/
+  ports:
+    - "8000:8000"
+  links:
+    - db
+    - rabbitmq
+celery:
+  image: thraxil/antisocial
+  command: worker
+  environment:
+    - SETTINGS=settings_compose
+    - C_FORCE_ROOT=true
+    - SECRET_KEY=docker-compose-secret
+  volumes:
+    - .:/app/
+  links:
+    - db
+    - rabbitmq
+beat:
+  image: thraxil/antisocial
+  command: beat
+  environment:
+    - SETTINGS=settings_compose    
+    - C_FORCE_ROOT=true
+    - SECRET_KEY=docker-compose-secret
+  volumes:
+    - .:/app/
+  links:
+    - db
+    - rabbitmq

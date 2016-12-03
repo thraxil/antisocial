@@ -2,7 +2,11 @@
 
 cd /app/
 
-export DJANGO_SETTINGS_MODULE="$APP.settings_docker"
+if [[ "$SETTINGS" ]]; then
+    export DJANGO_SETTINGS_MODULE="$APP.$SETTINGS"
+else
+    export DJANGO_SETTINGS_MODULE="$APP.settings_docker"
+fi
 
 if [ "$1" == "migrate" ]; then
 		exec /ve/bin/python manage.py migrate --noinput
