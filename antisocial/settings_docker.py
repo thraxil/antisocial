@@ -17,3 +17,4 @@ locals().update(
     ))
 
 CELERY_BROKER_URL = os.environ['BROKER_URL']
+BROKER_URL = os.environ['BROKER_URL']

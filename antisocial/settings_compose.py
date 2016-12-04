@@ -15,6 +15,7 @@ DATABASES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 CELERY_BROKER_URL = "amqp://guest:guest@rabbitmq:5672/"
+BROKER_URL = "amqp://guest:guest@rabbitmq:5672/"
 
 try:
     from local_settings import *

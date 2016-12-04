@@ -45,6 +45,7 @@ def schedule_feeds():
     not just ones in the two minute window.
 
     """
+    print("schedule_feeds()")
     statsd.incr("schedule_feeds")
     now = datetime.utcnow().replace(tzinfo=utc)
     if now.minute == 0:
