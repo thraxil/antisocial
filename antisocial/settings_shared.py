@@ -1,5 +1,6 @@
 # Django settings for antisocial project.
 import os.path
+import djcelery
 
 from thraxilsettings.shared import common
 
@@ -15,6 +16,7 @@ INSTALLED_APPS += [  # noqa
     'guardian',
     'easy_thumbnails',
     'bootstrapform',
+    'djcelery',
 
     'antisocial.main',
     'antisocial.profile',
@@ -41,3 +43,5 @@ LOGOUT_URL = '/accounts/signout/'
 
 BROKER_URL = "amqp://guest:guest@localhost:5672//"
 CELERYD_CONCURRENCY = 4
+
+djcelery.setup_loader()
