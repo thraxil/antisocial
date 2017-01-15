@@ -60,7 +60,7 @@ backports-abc==0.5
 backports.ssl-match-hostname==3.5.0.1
 certifi==2016.9.26
 colorama==0.3.7
-decorator==4.0.10
+decorator==4.0.11
 funcsigs==1.0.2
 html5lib==0.999999999
 ipython-genutils==0.1.0
