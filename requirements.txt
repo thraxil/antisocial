@@ -100,4 +100,5 @@ django-statsd-mozilla==0.3.16
 django-markwhat==1.5
 django-storages-redux==1.3.2
 django-cacheds3storage==0.1.2
-thraxilsettings==1.0.1
+
+thraxilsettings==1.1.0
