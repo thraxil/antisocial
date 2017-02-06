@@ -1,5 +1,5 @@
 Django==1.9.12
-httplib2==0.10.2
+httplib2==0.10.3
 feedparser==5.2.1
 Markdown==2.6.8
 uuid==1.30
