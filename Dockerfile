@@ -1,32 +1,4 @@
-FROM ccnmtl/django.base:latest
-RUN apt-get update \
-    && apt-get install -y \
-		binutils \
-		build-essential \
-		curl \
-		gcc \
-		libffi-dev \
-		libssl-dev \
-		libexif-dev \
-		libexif12 \
-		libfontconfig1-dev \
-		libfreetype6-dev \
-		libldap2-dev \
-		libpq-dev  \
-		libsasl2-dev \
-		libssl-dev \
-		libxft-dev \
-		libxml2-dev \
-		libxslt-dev \
-		libxslt1-dev \
-		python-all-dev \
-		python-dev \
-		python-beautifulsoup \
-		python-ldap \
-		python-tk \
-    && apt-get clean \
-		&& rm -rf /var/lib/apt/lists/* \
-		&& /ve/bin/pip install wheel
+FROM thraxil/django.base:2017-02-18-a75c79f20e8bdc6c9b624e9159296209aa15fe6a
 COPY package.json /node/
 RUN cd /node && npm install && touch /node/node_modules/sentinal
 COPY requirements.txt /app/requirements.txt
