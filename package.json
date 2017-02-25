@@ -18,7 +18,7 @@
   "devDependencies": {
     "jshint": "~2.9.1-rc1",
     "jscs": "~3.0.7",
-    "webpack": "~2.2.1"
+    "webpack": "~1.13.0"
   },
   "dependencies": {
     "jquery": "~3.1.1",
@@ -27,13 +27,13 @@
     "ejs-loader": "~0.3.0",
     "bootstrap": "~3.3.6",
     "file-loader": "~0.10.1",
-    "extract-text-webpack-plugin": "~2.0.0",
+    "extract-text-webpack-plugin": "~1.0.1",
     "url-loader": "~0.5.7",
     "exports-loader": "~0.6.2",
     "imports-loader": "~0.7.1",
     "style-loader": "~0.13.0",
-    "css-loader": "~0.26.2",
-    "less": "~2.7.2",
+    "css-loader": "~0.18.0",
+    "less": "~2.7.1",
     "less-loader": "~2.2.2",
     "bootstrap-webpack": "0.0.5"
   }
