@@ -24,7 +24,7 @@
     "jquery": "~3.1.1",
     "backbone": "^1.1.2",
     "underscore": "~1.8.3",
-    "ejs-loader": "~0.2.1",
+    "ejs-loader": "~0.3.0",
     "bootstrap": "~3.3.6",
     "file-loader": "~0.10.1",
     "extract-text-webpack-plugin": "~2.0.0",
