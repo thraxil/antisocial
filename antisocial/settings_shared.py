@@ -15,6 +15,7 @@ INSTALLED_APPS += [  # noqa
     'userena',
     'guardian',
     'easy_thumbnails',
+    'bootstrap3',
     'bootstrapform',
     'djcelery',
 

@@ -2,8 +2,7 @@ NODE_MODULES ?= ./node_modules
 JS_SENTINAL=$(NODE_MODULES)/sentinal
 JSHINT=$(NODE_MODULES)/jshint/bin/jshint
 JSCS=$(NODE_MODULES)/jscs/bin/jscs
-WEBPACK=$(NODE_MODULES)/.bin/webpack
-WEBPACK_CONFIG=webpack.config.js
+REQUIREJS=$(NODE_MODULES)/.bin/r.js
 
 jshint: $(JS_SENTINAL)
 	$(JSHINT) $(JS_FILES)
@@ -16,8 +15,9 @@ $(JS_SENTINAL): package.json
 	npm install
 	touch $(JS_SENTINAL)
 
-media/js/dist/main.js: $(JS_SENTINAL) $(JS_FILES) webpack.*.config.js bootstrap.config.*
-	$(WEBPACK) --config $(WEBPACK_CONFIG)
+media/js/main-built.js: $(JS_SENTINAL) build.js media/js/src media/js/libs
+	$(REQUIREJS) -o build.js
 
-webpack:
-	make media/js/dist/main.js
+js: media/js/main-built.js
+
+.PHONY: js

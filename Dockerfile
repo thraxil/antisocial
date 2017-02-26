@@ -6,7 +6,6 @@ RUN /ve/bin/pip install -r /app/requirements.txt && touch /ve/sentinal
 WORKDIR /app
 COPY . /app/
 RUN VE=/ve/ MANAGE="/ve/bin/python manage.py" NODE_MODULES=/node/node_modules make all
-RUN cp -a /node/node_modules /app && make webpack
 EXPOSE 8000
 ADD docker-run.sh /run.sh
 ENV APP antisocial

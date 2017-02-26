@@ -17,24 +17,9 @@
   },
   "devDependencies": {
     "jshint": "~2.9.1-rc1",
-    "jscs": "~2.6.0",
-    "webpack": "~1.12.9"
+    "jscs": "~2.6.0"
   },
-  "dependencies": {
-    "jquery": "~2.1.4",
-    "backbone": "^1.1.2",
-    "underscore": "~1.8.3",
-    "ejs-loader": "~0.2.1",
-    "bootstrap": "~3.3.6",
-    "file-loader": "~0.8.5",
-    "extract-text-webpack-plugin": "~0.9.1",
-    "url-loader": "~0.5.7",
-    "exports-loader": "~0.6.2",
-    "imports-loader": "~0.6.5",
-    "style-loader": "~0.13.0",
-    "css-loader": "~0.18.0",
-    "less": "~2.5.3",
-    "less-loader": "~2.2.2",
-    "bootstrap-webpack": "0.0.5"
+    "dependencies": {
+        "requirejs": "~2.3.2"
   }
 }

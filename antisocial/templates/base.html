@@ -1,3 +1,4 @@
+{% load bootstrap3 %}
 {% load compress %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,11 @@
   <meta name="author" content="CCNMTL">
 
 	<link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
+  {% bootstrap_css %}
+  {% bootstrap_javascript jquery=1 %}
+  {% compress css %}
+  <link href="{{STATIC_URL}}css/main.css" rel="stylesheet" type="text/css" />
+  {% endcompress %}
 	{% block css %}{% endblock %}
 
 	{% block feeds %}{% endblock %}
