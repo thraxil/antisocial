@@ -87,7 +87,7 @@ wsgiref==0.1.2
 
 django-appconf==1.0.2
 django_compressor==2.1
-django-bootstrap3==8.1.0
+django-bootstrap3==8.2.1
 django-bootstrap-form==3.2.1
 django-debug-toolbar==1.6
 django-waffle==0.11.1
