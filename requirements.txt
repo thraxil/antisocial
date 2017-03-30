@@ -32,7 +32,7 @@ six==1.10.0
 opml==0.5
 
 Pillow==4.0.0
-pytz==2016.10
+pytz==2017.2
 
 python-dateutil==2.6.0
 librabbitmq==1.6.1
