@@ -16,7 +16,7 @@ tornado==4.4.3
 BeautifulSoup==3.2.1
 cssselect==1.0.1
 lxml==3.7.3
-sure==1.4.4
+sure==1.4.5
 ipython==5.3.0
 
 rdflib==4.2.2
