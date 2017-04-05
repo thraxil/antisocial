@@ -95,7 +95,7 @@ django-jenkins==0.110.0
 django-smoketest==1.0.0
 django-extensions==1.7.8
 django-stagingcontext==0.1.0
-easy-thumbnails==2.3
+easy-thumbnails==2.4
 django-guardian==1.4.6
 django-userena==2.0.1
 django-picklefield==0.3.2
