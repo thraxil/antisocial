@@ -31,7 +31,7 @@ pylint==1.6.5
 six==1.10.0
 opml==0.5
 
-Pillow==4.0.0
+Pillow==4.1.0
 pytz==2017.2
 
 python-dateutil==2.6.0
@@ -95,8 +95,11 @@ django-jenkins==0.110.0
 django-smoketest==1.0.0
 django-extensions==1.7.8
 django-stagingcontext==0.1.0
+
 easy-thumbnails==2.4
-django-guardian==1.4.6
+
+django-guardian==1.4.8
+
 django-userena==2.0.1
 django-picklefield==0.3.2
 django-celery==3.2.1
