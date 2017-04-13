@@ -54,7 +54,7 @@ pycryptodome==3.4.5
 ecdsa==0.13
 sqlparse==0.2.3
 html2text==2016.9.19
-astroid==1.5.0
+astroid==1.5.1
 boto==2.46.1
 opbeat==3.5.2
 SPARQLWrapper==1.8.0
