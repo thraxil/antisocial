@@ -1,4 +1,7 @@
 Django==1.11
+
+pytz==2017.2
+
 httplib2==0.10.3
 feedparser==5.2.1
 Markdown==2.6.8
