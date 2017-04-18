@@ -15,7 +15,7 @@ pycodestyle==2.2.0
 enum34==1.1.6
 configparser==3.5.0
 flake8==3.3.0
-tornado==4.4.3
+tornado==4.5
 BeautifulSoup==3.2.1
 cssselect==1.0.1
 lxml==3.7.3
