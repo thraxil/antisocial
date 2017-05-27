@@ -29,7 +29,7 @@ ipdb==0.10.3
 
 coverage==4.4
 
-requests==2.16.2
+requests==2.16.3
 
 logilab-common==1.4.0
 logilab-astng==0.24.3
