@@ -20,7 +20,7 @@ BeautifulSoup==3.2.1
 cssselect==1.0.1
 lxml==3.8.0
 sure==1.4.6
-ipython==5.3.0
+ipython==6.1.0
 
 rdflib==4.2.2
 
