@@ -53,7 +53,7 @@ amqplib==1.0.2
 kombu==4.0.2
 pyparsing==2.2.0
 
-celery==3.1.24
+celery==4.0.2
 statsd==3.2.1
 gunicorn==19.7.1
 pycryptodome==3.4.6
