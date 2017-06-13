@@ -20,7 +20,7 @@ BeautifulSoup==3.2.1
 cssselect==1.0.1
 lxml==3.8.0
 sure==1.4.6
-ipython==6.1.0
+ipython==5.3.0 # pyup: <6.0.0
 
 rdflib==4.2.2
 
@@ -50,10 +50,10 @@ amqp==2.1.4
 
 amqplib==1.0.2
 
-kombu==4.0.2
+kombu==3.0.37 # pyup: <4.0.0
 pyparsing==2.2.0
 
-celery==4.0.2
+celery==3.1.24 # pyup: <4.0.0
 statsd==3.2.1
 gunicorn==19.7.1
 pycryptodome==3.4.6
