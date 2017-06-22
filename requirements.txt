@@ -82,7 +82,7 @@ path.py==10.3.1
 pbr==3.1.1
 pexpect==4.2.1
 pickleshare==0.7.4
-ptyprocess==0.5.1
+ptyprocess==0.5.2
 rcssmin==1.0.6
 rjsmin==1.0.12
 simplegeneric==0.8.1
