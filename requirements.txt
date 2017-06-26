@@ -33,7 +33,7 @@ requests==2.18.1
 
 logilab-common==1.4.0
 logilab-astng==0.24.3
-pylint==1.7.1
+pylint==1.7.2
 six==1.10.0
 opml==0.5
 
