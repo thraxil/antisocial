@@ -104,7 +104,7 @@ django-stagingcontext==0.1.0
 easy-thumbnails==2.4.1
 django-guardian==1.4.8
 django-userena==2.0.1
-django-picklefield==0.3.2
+django-picklefield==1.0.0
 django-celery==3.2.1
 django-statsd-mozilla==0.3.16
 django-markwhat==1.5.1
