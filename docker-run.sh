@@ -25,8 +25,6 @@ if [ "$1" == "shell" ]; then
 fi
 
 if [ "$1" == "worker" ]; then
-		pwd
-		more /ve/bin/celery
 		exec /ve/bin/celery worker -A $APP -l info
 fi
 
