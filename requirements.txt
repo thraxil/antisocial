@@ -40,7 +40,7 @@ opml==0.5
 Pillow==4.2.1
 pytz==2017.2
 
-python-dateutil==2.6.0
+python-dateutil==2.6.1
 anyjson==0.3.3
 billiard==3.5.0.2
 
