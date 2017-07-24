@@ -6,7 +6,7 @@ httplib2==0.10.3
 feedparser==5.2.1
 Markdown==2.6.8
 uuid==1.30
-psycopg2==2.7.2
+psycopg2==2.7.3
 versiontools==1.9.1
 pep8==1.7.0
 mccabe==0.6.1
