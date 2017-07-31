@@ -52,7 +52,7 @@ try {
         stage 'Checkout'
         checkout scm
         stage "Build"
-				sh "docker pull ${REPO}/${APP}:latest"
+        retry_backoff(5) { sh "docker pull ${REPO}/${APP}:latest" }				
         sh "make build" 
         stage "Docker Push"
         retry_backoff(5) { sh "docker push ${REPO}/${APP}:${TAG}" }
@@ -151,8 +151,8 @@ def create_restart_web_exec(int i, String host) {
         node {
             stage "Restart Gunicorn - "+i
             sh """
-ssh ${host} sudo stop ${APP} || true
-ssh ${host} sudo start ${APP}
+ssh ${host} sudo stop ${APP} || ssh ${host} sudo systemctl stop ${APP}.service || true
+ssh ${host} sudo start ${APP} || ssh ${host} sudo systemctl start ${APP}.service
 """
         }
     }
