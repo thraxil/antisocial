@@ -68,8 +68,9 @@ try {
         }
         parallel branches
 
+        def host = all_hosts[0]
+
         stage("Migrate") {
-            def host = all_hosts[0]
             sh "ssh ${host} /usr/local/bin/docker-runner ${APP} migrate"
         }
         stage("Collectstatic") {
