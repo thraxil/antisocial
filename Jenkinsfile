@@ -52,8 +52,8 @@ try {
         stage 'Checkout'
         checkout scm
         stage "Build"
-        retry_backoff(5) { sh "docker pull ${REPO}/${APP}:latest" }				
-        sh "make build" 
+        retry_backoff(5) { sh "docker pull ${REPO}/${APP}:latest" }
+        sh "make build"
         stage "Docker Push"
         retry_backoff(5) { sh "docker push ${REPO}/${APP}:${TAG}" }
     }
@@ -64,7 +64,7 @@ try {
             branches["pull-${i}"] = create_pull_exec(i, all_hosts[i])
         }
         parallel branches
-  
+
         stage "Migrate"
         def host = all_hosts[0]
         sh "ssh ${host} /usr/local/bin/docker-runner ${APP} migrate"
@@ -72,8 +72,8 @@ try {
         stage "Collectstatic"
         sh "ssh ${host} /usr/local/bin/docker-runner ${APP} collectstatic"
 
-				stage "Compress"
-				sh "ssh ${host} /usr/local/bin/docker-runner ${APP} compress"
+        stage "Compress"
+        sh "ssh ${host} /usr/local/bin/docker-runner ${APP} compress"
     }
 
     node {
@@ -133,7 +133,7 @@ try {
 // -------------------- helper functions ----------------------
 
 def create_pull_exec(int i, String host) {
-    cmd = { 
+    cmd = {
         node {
             stage "Docker Pull - "+i
             sh """
@@ -147,7 +147,7 @@ ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
 }
 
 def create_restart_web_exec(int i, String host) {
-    cmd = { 
+    cmd = {
         node {
             stage "Restart Gunicorn - "+i
             sh """
@@ -160,7 +160,7 @@ ssh ${host} sudo start ${APP} || ssh ${host} sudo systemctl start ${APP}.service
 }
 
 def create_restart_celery_exec(int i, String host) {
-    cmd = { 
+    cmd = {
         node {
             stage "Restart Worker - "+i
             sh """
@@ -173,7 +173,7 @@ ssh ${host} sudo start ${APP}-worker || ssh ${host} sudo systemctl start ${APP}-
 }
 
 def create_restart_beat_exec(int i, String host) {
-    cmd = { 
+    cmd = {
         node {
             stage "Restart Beat - "+i
             sh """
