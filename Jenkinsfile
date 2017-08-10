@@ -49,13 +49,16 @@ currentBuild.result = "SUCCESS"
 
 try {
     node {
-        stage 'Checkout'
-        checkout scm
-        stage "Build"
-        retry_backoff(5) { sh "docker pull ${REPO}/${APP}:latest" }
-        sh "make build"
-        stage "Docker Push"
-        retry_backoff(5) { sh "docker push ${REPO}/${APP}:${TAG}" }
+        stage('Checkout') {
+            checkout scm
+        }
+        stage("Build") {
+            retry_backoff(5) { sh "docker pull ${REPO}/${APP}:latest" }
+            sh "make build"
+        }
+        stage("Docker Push") {
+            retry_backoff(5) { sh "docker push ${REPO}/${APP}:${TAG}" }
+        }
     }
 
     node {
@@ -65,15 +68,16 @@ try {
         }
         parallel branches
 
-        stage "Migrate"
-        def host = all_hosts[0]
-        sh "ssh ${host} /usr/local/bin/docker-runner ${APP} migrate"
-
-        stage "Collectstatic"
-        sh "ssh ${host} /usr/local/bin/docker-runner ${APP} collectstatic"
-
-        stage "Compress"
-        sh "ssh ${host} /usr/local/bin/docker-runner ${APP} compress"
+        stage("Migrate") {
+            def host = all_hosts[0]
+            sh "ssh ${host} /usr/local/bin/docker-runner ${APP} migrate"
+        }
+        stage("Collectstatic") {
+            sh "ssh ${host} /usr/local/bin/docker-runner ${APP} collectstatic"
+        }
+        stage("Compress") {
+            sh "ssh ${host} /usr/local/bin/docker-runner ${APP} compress"
+        }
     }
 
     node {
@@ -102,13 +106,14 @@ try {
 
     if (opbeat) {
         node {
-            stage "Opbeat"
-            withCredentials([[$class: 'StringBinding', credentialsId : 'opbeat-secret', variable: 'OPBEAT_TOKEN', ]]) {
+            stage("Opbeat") {
+                withCredentials([[$class: 'StringBinding', credentialsId : 'opbeat-secret', variable: 'OPBEAT_TOKEN', ]]) {
                 sh '''curl https://intake.opbeat.com/api/v1/organizations/${OPBEAT_ORG}/apps/${OPBEAT_APP}/releases/ \
        -H "Authorization: Bearer ${OPBEAT_TOKEN}" \
        -d rev=`git log -n 1 --pretty=format:%H` \
        -d branch=`git rev-parse --abbrev-ref HEAD` \
        -d status=completed'''
+               }
             }
         }
     }
@@ -135,12 +140,13 @@ try {
 def create_pull_exec(int i, String host) {
     cmd = {
         node {
-            stage "Docker Pull - "+i
-            sh """
+            stage("Docker Pull - "+i) {
+                sh """
 ssh ${host} docker pull \${REPOSITORY}\$REPO/${APP}:\$TAG
 ssh ${host} cp /var/www/${APP}/TAG /var/www/${APP}/REVERT || true
 ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
 """
+            }
         }
     }
     return cmd
@@ -149,11 +155,12 @@ ssh ${host} "echo export TAG=\$TAG > /var/www/${APP}/TAG"
 def create_restart_web_exec(int i, String host) {
     cmd = {
         node {
-            stage "Restart Gunicorn - "+i
-            sh """
+            stage("Restart Gunicorn - "+i) {
+                sh """
 ssh ${host} sudo stop ${APP} || ssh ${host} sudo systemctl stop ${APP}.service || true
 ssh ${host} sudo start ${APP} || ssh ${host} sudo systemctl start ${APP}.service
 """
+            }
         }
     }
     return cmd
@@ -162,12 +169,13 @@ ssh ${host} sudo start ${APP} || ssh ${host} sudo systemctl start ${APP}.service
 def create_restart_celery_exec(int i, String host) {
     cmd = {
         node {
-            stage "Restart Worker - "+i
-            sh """
+            stage("Restart Worker - "+i) {
+                sh """
 ssh ${host} sudo stop ${APP}-worker || ssh ${host} sudo systemctl stop ${APP}-worker.service || true
 ssh ${host} sudo start ${APP}-worker || ssh ${host} sudo systemctl start ${APP}-worker.service
 """
             }
+        }
     }
     return cmd
 }
@@ -175,11 +183,12 @@ ssh ${host} sudo start ${APP}-worker || ssh ${host} sudo systemctl start ${APP}-
 def create_restart_beat_exec(int i, String host) {
     cmd = {
         node {
-            stage "Restart Beat - "+i
-            sh """
+            stage("Restart Beat - "+i) {
+                sh """
 ssh ${host} sudo stop ${APP}-beat || ssh ${host} sudo systemctl stop ${APP}-beat.service|| true
 ssh ${host} sudo start ${APP}-beat || ssh ${host} sudo systemctl start ${APP}-beat.service
 """
+            }
         }
     }
     return cmd
