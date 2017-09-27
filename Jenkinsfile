@@ -48,8 +48,8 @@ try {
     node {
         stage('Checkout') {
             checkout scm
-						TAG = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-						env.TAG = TAG
+            TAG = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+            env.TAG = TAG
         }
         stage("Build") {
             retry_backoff(5) { sh "docker pull ${REPO}/${APP}:latest" }
