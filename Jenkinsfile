@@ -158,8 +158,8 @@ def create_restart_web_exec(int i, String host) {
         node {
             stage("Restart Gunicorn - "+i) {
                 sh """
-ssh ${host} sudo stop ${APP} || ssh ${host} sudo systemctl stop ${APP}.service || true
-ssh ${host} sudo start ${APP} || ssh ${host} sudo systemctl start ${APP}.service
+ssh ${host} sudo systemctl stop ${APP}.service || true
+ssh ${host} sudo systemctl start ${APP}.service
 """
             }
         }
@@ -172,8 +172,8 @@ def create_restart_celery_exec(int i, String host) {
         node {
             stage("Restart Worker - "+i) {
                 sh """
-ssh ${host} sudo stop ${APP}-worker || ssh ${host} sudo systemctl stop ${APP}-worker.service || true
-ssh ${host} sudo start ${APP}-worker || ssh ${host} sudo systemctl start ${APP}-worker.service
+ssh ${host} sudo systemctl stop ${APP}-worker.service || true
+ssh ${host} sudo systemctl start ${APP}-worker.service
 """
             }
         }
@@ -186,8 +186,8 @@ def create_restart_beat_exec(int i, String host) {
         node {
             stage("Restart Beat - "+i) {
                 sh """
-ssh ${host} sudo stop ${APP}-beat || ssh ${host} sudo systemctl stop ${APP}-beat.service|| true
-ssh ${host} sudo start ${APP}-beat || ssh ${host} sudo systemctl start ${APP}-beat.service
+ssh ${host} sudo systemctl stop ${APP}-beat.service|| true
+ssh ${host} sudo systemctl start ${APP}-beat.service
 """
             }
         }
