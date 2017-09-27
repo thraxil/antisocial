@@ -4,9 +4,6 @@
 // java.lang.Object[]
 // staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods plus java.util.List java.lang.Object
 
-TAG = 'build-' + env.BUILD_NUMBER
-env.TAG = TAG
-
 // check for required parameters. assign them to the env for
 // convenience and make sure that an exception is raised if any
 // are missing as a side-effect
@@ -51,6 +48,8 @@ try {
     node {
         stage('Checkout') {
             checkout scm
+						TAG = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+						env.TAG = TAG
         }
         stage("Build") {
             retry_backoff(5) { sh "docker pull ${REPO}/${APP}:latest" }
