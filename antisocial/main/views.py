@@ -41,7 +41,7 @@ def entry_api(request, id):
     ).count()
     ue = get_object_or_404(UEntry, id=id)
     if request.method == "PUT":
-        d = loads(request.read())
+        d = loads(str(request.read()))
         ue.read = d['read']
         ue.save()
     d = ue.as_dict()
