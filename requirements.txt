@@ -5,7 +5,7 @@ pytz==2017.2
 httplib2==0.10.3
 feedparser==5.2.1
 Markdown==2.6.9
-uuid==1.30
+
 psycopg2==2.7.3.1
 versiontools==1.9.1
 pep8==1.7.0
