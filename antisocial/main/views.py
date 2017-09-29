@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.utils.encoding import force_text
 import zipfile
 import opml
 from json import dumps, loads
@@ -41,7 +42,7 @@ def entry_api(request, id):
     ).count()
     ue = get_object_or_404(UEntry, id=id)
     if request.method == "PUT":
-        d = loads(str(request.read()))
+        d = loads(force_text(request.read()))
         ue.read = d['read']
         ue.save()
     d = ue.as_dict()
