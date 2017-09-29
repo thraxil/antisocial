@@ -140,9 +140,9 @@ class Feed(models.Model):
                 published=published,
             )
             e.fanout()
-        except Exception, e:
+        except Exception as e:
             statsd.incr("create_entry_exception")
-            print str(e)
+            print(str(e))
 
     def get_absolute_url(self):
         return "/subscriptions/%d/" % self.id

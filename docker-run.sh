@@ -9,19 +9,19 @@ else
 fi
 
 if [ "$1" == "migrate" ]; then
-		exec /ve/bin/python manage.py migrate --noinput
+		exec /ve/bin/python3 manage.py migrate --noinput
 fi
 
 if [ "$1" == "collectstatic" ]; then
-		exec /ve/bin/python manage.py collectstatic --noinput
+		exec /ve/bin/python3 manage.py collectstatic --noinput
 fi
 
 if [ "$1" == "compress" ]; then
-		exec /ve/bin/python manage.py compress
+		exec /ve/bin/python3 manage.py compress
 fi
 
 if [ "$1" == "shell" ]; then
-		exec /ve/bin/python manage.py shell
+		exec /ve/bin/python3 manage.py shell
 fi
 
 if [ "$1" == "worker" ]; then
@@ -35,7 +35,7 @@ fi
 # run arbitrary commands
 if [ "$1" == "manage" ]; then
 		shift
-		exec /ve/bin/python manage.py "$@"
+		exec /ve/bin/python3 manage.py "$@"
 fi
 
 

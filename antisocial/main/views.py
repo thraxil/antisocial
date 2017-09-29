@@ -137,7 +137,7 @@ def import_feeds(request):
             filelist = openzip.infolist()
             for f in filelist:
                 (cnt, feed_urls) = add_file(f, openzip, cnt, feed_urls)
-    except Exception, e:
+    except Exception as e:
         return HttpResponse("error parsing file: %s" % str(e))
 
     add_feed_urls(feed_urls, request.user)
