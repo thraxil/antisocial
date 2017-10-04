@@ -53,7 +53,7 @@ gunicorn==19.7.1
 pycryptodome==3.4.7
 ecdsa==0.13
 sqlparse==0.2.4
-html2text==2016.9.19
+html2text==2017.10.4
 astroid==1.5.3
 boto==2.48.0
 opbeat==3.5.2
