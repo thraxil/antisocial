@@ -15,7 +15,7 @@ fetchEntries =
 
 fetchEntriesUrl : String
 fetchEntriesUrl =
-    "/api/elmentries/"
+    "/api/entries/"
 
 entriesDecoder : Decode.Decoder (List Entry)
 entriesDecoder =

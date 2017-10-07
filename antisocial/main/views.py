@@ -35,18 +35,6 @@ def entries(request):
         user=request.user,
         read=False,
     ).order_by("entry__published")
-    return HttpResponse(
-        dumps([ue.as_dict() for ue in unread_entries]),
-        content_type="application/json"
-    )
-
-
-@login_required
-def elm_entries(request):
-    unread_entries = UEntry.objects.select_related().filter(
-        user=request.user,
-        read=False,
-    ).order_by("entry__published")
     return JsonResponse(
         [ue.as_dict() for ue in unread_entries],
         safe=False
