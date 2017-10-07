@@ -13,7 +13,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', index),
-    url(r'^elm/$', elm),    
+    url(r'^elm/$', elm),
     url(r'^subscriptions/$', subscriptions),
     url(r'^subscriptions/(?P<id>\d+)/$', subscription),
     url(r'^subscriptions/(?P<id>\d+)/mark_read/$', subscription_mark_read),
