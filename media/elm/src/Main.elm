@@ -2,7 +2,8 @@ module Main exposing (..)
 
 import Commands exposing (fetchEntries)
 import Html exposing (program)
-import Msgs exposing (Msg)
+import Keyboard
+import Msgs exposing (Msg(..))
 import Models exposing (Model, initialModel)
 import Update exposing (update)
 import View exposing (view)
@@ -17,7 +18,8 @@ init =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Sub.batch
+        [ Keyboard.downs KeyMsg ]
 
 
 

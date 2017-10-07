@@ -5,14 +5,14 @@ import RemoteData exposing (WebData)
 type alias Model =
     { unread : Int
     , entries : WebData (List Entry)
-    , current : Maybe Int
+    , drop : Int
     }
 
 initialModel : Model
 initialModel =
     { unread = 0
     , entries = RemoteData.Loading
-    , current = Nothing
+    , drop = 0
     }
 
 type alias EntryId = Int

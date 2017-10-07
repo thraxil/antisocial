@@ -11,13 +11,13 @@ import RemoteData exposing (WebData)
 view : Model -> Html Msg
 view model =
     div []
-        [ page model.entries
+        [ page model.drop model.entries
         , unreadCounter model
         ]
 
 
-page : WebData (List Entry) -> Html Msg
-page response =
+page : Int -> WebData (List Entry) -> Html Msg
+page dropN response =
     case response of
         RemoteData.NotAsked ->
             text ""
@@ -26,7 +26,7 @@ page response =
             text "loading..."
 
         RemoteData.Success entries ->
-            Entries.List.view entries
+            Entries.List.view (List.drop dropN entries)
 
         RemoteData.Failure error ->
             text (toString error)
