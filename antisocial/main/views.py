@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.encoding import force_text
 import zipfile
@@ -22,6 +23,12 @@ def index(request):
         dict(unread_count=unread_count))
 
 
+def elm(request):
+    return render(
+        request, "main/elm.html",
+        dict())
+
+
 @login_required
 def entries(request):
     unread_entries = UEntry.objects.select_related().filter(
@@ -31,6 +38,18 @@ def entries(request):
     return HttpResponse(
         dumps([ue.as_dict() for ue in unread_entries]),
         content_type="application/json"
+    )
+
+
+@login_required
+def elm_entries(request):
+    unread_entries = UEntry.objects.select_related().filter(
+        user=request.user,
+        read=False,
+    ).order_by("entry__published")
+    return JsonResponse(
+        [ue.as_dict() for ue in unread_entries],
+        safe=False
     )
 
 

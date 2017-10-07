@@ -1,0 +1,39 @@
+{% load static %}
+{% load bootstrap3 %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Elm SPA example</title>
+    <style type="text/css">
+     .not-current {
+         color: #666;
+         padding: .3em;
+     }
+
+
+     .unread-counter {
+         position: fixed;
+         bottom: 0px;
+         right: 0px;
+         background-color: #fff;
+         padding: 1em;
+         font-size: 1.5em;
+         border: #ccc solid 1px;
+     }
+
+
+    </style>
+      {% bootstrap_css %}
+
+      <link href="{{STATIC_URL}}css/main.css" rel="stylesheet" type="text/css" />
+
+  </head>
+  <body>
+      <div class="container">
+          <div id="main"></div>
+      </div>
+    <script src="{% static '/dist/app.js' %}"></script>
+  </body>
+</html>
