@@ -23,6 +23,7 @@ def index(request):
         dict(unread_count=unread_count))
 
 
+@login_required
 def elm(request):
     return render(
         request, "main/elm.html",
