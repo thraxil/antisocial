@@ -1,5 +1,6 @@
 {% load static %}
 {% load bootstrap3 %}
+{% load compress %}
 
 <!DOCTYPE html>
 <html>
@@ -27,7 +28,9 @@
     </style>
       {% bootstrap_css %}
 
-      <link href="{{STATIC_URL}}css/main.css" rel="stylesheet" type="text/css" />
+    {% compress css %}
+    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet" type="text/css" />
+    {% endcompress %}
 
   </head>
   <body>
