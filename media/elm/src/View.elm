@@ -12,7 +12,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ page model
-        , unreadCounter model.fetched
+        , unreadCounter model.unreadCnt
         ]
 
 
@@ -24,13 +24,13 @@ page model =
         ]
                 
 
-unreadCounter : WebData (Fetched) -> Html Msg
-unreadCounter response =
-    case response of
-        RemoteData.Success data ->
+unreadCounter : Maybe Int -> Html Msg
+unreadCounter maybeCnt =
+    case maybeCnt of
+        Just unreadCnt ->
             div [ class "unread-counter" ]
-                [ text ("unread: " ++ toString(data.unread)) ]
+                [ text ("unread: " ++ toString(unreadCnt)) ]
 
-        _ ->
+        Nothing ->
             text "no count yet"
 

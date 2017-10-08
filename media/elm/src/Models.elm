@@ -12,6 +12,7 @@ type alias Model =
     , read : List Entry
     , current : Maybe Entry
     , unread : List Entry
+    , unreadCnt : Maybe Int
     }
 
 initialModel : Model
@@ -20,6 +21,7 @@ initialModel =
     , read = []
     , current = Nothing
     , unread = []
+    , unreadCnt = Nothing
     }
 
 type alias EntryId = Int

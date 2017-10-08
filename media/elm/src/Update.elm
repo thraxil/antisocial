@@ -26,7 +26,10 @@ update msg model =
                     _ -> -- don't care
                         ( model, Cmd.none )
 
-        Msgs.OnEntrySave _ ->
+        Msgs.OnEntrySave (Ok er ) ->
+            ( { model | unreadCnt = Just er.unread }, Cmd.none )
+
+        Msgs.OnEntrySave (Err error) ->
             ( model, Cmd.none )
 
 
@@ -46,6 +49,7 @@ modelFromResponse model response =
         , read = []
         , current = Nothing
         , unread = unread
+        , unreadCnt = Just (List.length unread)
         }
 
 
