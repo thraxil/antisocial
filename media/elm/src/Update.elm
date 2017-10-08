@@ -1,6 +1,6 @@
 module Update exposing (..)
 
-import Commands exposing (updateEntryCmd)
+import Commands exposing (updateEntryCmd, fetchEntries)
 import Msgs exposing (Msg(..))
 import Models exposing (Model, Fetched)
 import RemoteData exposing (WebData)
@@ -21,7 +21,7 @@ update msg model =
                          ( prevEntry model, Cmd.none )
 
                     82 -> -- r
-                         ( model, Cmd.none )
+                         ( model, fetchEntries )
                              
                     _ -> -- don't care
                         ( model, Cmd.none )
