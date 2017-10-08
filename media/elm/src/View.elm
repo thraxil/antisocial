@@ -11,18 +11,11 @@ import RemoteData exposing (WebData)
 view : Model -> Html Msg
 view model =
     div []
-        [ page model
+        [ Entries.List.currentRow model.current
+        , Entries.List.view model.unread              
         , unreadCounter model.unreadCnt
         ]
 
-
-page : Model -> Html Msg
-page model =
-    div []
-        [ Entries.List.currentRow model.current
-        , Entries.List.view model.unread
-        ]
-                
 
 unreadCounter : Maybe Int -> Html Msg
 unreadCounter maybeCnt =
