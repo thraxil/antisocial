@@ -43,6 +43,22 @@ def entries(request):
 
 
 @login_required
+def elmentries(request):
+    unread_entries = UEntry.objects.select_related().filter(
+        user=request.user,
+        read=False,
+    ).order_by("entry__published")
+    unread_count = UEntry.objects.filter(
+        user=request.user,
+        read=False).count()
+    return JsonResponse(
+        {
+            'unread': unread_count,
+            'entries': [ue.as_dict() for ue in unread_entries],
+        })
+
+
+@login_required
 def entry_api(request, id):
     unread_count = UEntry.objects.filter(
         user=request.user,

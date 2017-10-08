@@ -1,14 +1,15 @@
 module Update exposing (..)
 
 import Msgs exposing (Msg(..))
-import Models exposing (Model)
+import Models exposing (Model, Fetched)
+import RemoteData exposing (WebData)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Msgs.OnFetchEntries response ->
-            ( { model | entries = response }, Cmd.none )
+            ( modelFromResponse model response, Cmd.none )
 
         KeyMsg code ->
                 case code of
@@ -25,10 +26,71 @@ update msg model =
                         ( model, Cmd.none )
 
 
+modelFromResponse : Model -> WebData (Fetched) -> Model
+modelFromResponse model response =
+    let
+        unread =
+            case response of
+                RemoteData.Success data ->
+                    Maybe.withDefault [] (List.tail data.entries)
+
+                _ ->
+                    []
+                        
+    in                
+        { model | fetched = response
+        , read = []
+        , current = Nothing
+        , unread = unread
+        }
+
+
 nextEntry : Model -> Model
 nextEntry model =
-    { model | drop = model.drop + 1 }
+    let
+        read =
+            case model.current of
+                Just current ->
+                    model.read ++ (current :: [])
+
+                Nothing ->
+                    []
+
+        unread =
+            case List.tail model.unread of
+                Just entries ->
+                    entries
+
+                Nothing ->
+                    []
+                        
+    in
+        { model | read = read
+        , current = List.head model.unread
+        , unread = unread
+        }
+
 
 prevEntry : Model -> Model
 prevEntry model =
-    { model | drop = max 0 model.drop - 1 }
+    let
+        unread =
+            case model.current of
+                Just current ->
+                    current :: model.unread
+
+                Nothing ->
+                    model.unread
+
+        read =
+            case List.tail (List.reverse model.read) of
+                Just entries ->
+                    List.reverse entries
+
+                Nothing ->
+                    []
+    in
+        { model | read = read
+        , current = List.head (List.reverse model.read)
+        , unread = unread
+        }

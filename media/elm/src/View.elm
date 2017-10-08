@@ -3,7 +3,7 @@ module View exposing (..)
 import Entries.List
 import Html exposing (Html, div, text)
 import Html.Attributes exposing (class)
-import Models exposing (Model, Entry)
+import Models exposing (Model, Entry, Fetched)
 import Msgs exposing (Msg)
 import RemoteData exposing (WebData)
 
@@ -11,29 +11,26 @@ import RemoteData exposing (WebData)
 view : Model -> Html Msg
 view model =
     div []
-        [ page model.drop model.entries
-        , unreadCounter model
+        [ page model
+        , unreadCounter model.fetched
         ]
 
 
-page : Int -> WebData (List Entry) -> Html Msg
-page dropN response =
-    case response of
-        RemoteData.NotAsked ->
-            text ""
-
-        RemoteData.Loading ->
-            text "loading..."
-
-        RemoteData.Success entries ->
-            Entries.List.view (List.drop dropN entries)
-
-        RemoteData.Failure error ->
-            text (toString error)
+page : Model -> Html Msg
+page model =
+    div []
+        [ Entries.List.currentRow model.current
+        , Entries.List.view model.unread
+        ]
                 
 
-unreadCounter : Model -> Html Msg
-unreadCounter model =
-    div [ class "unread-counter" ]
-        [ text ("unread: " ++ toString(model.unread)) ]
+unreadCounter : WebData (Fetched) -> Html Msg
+unreadCounter response =
+    case response of
+        RemoteData.Success data ->
+            div [ class "unread-counter" ]
+                [ text ("unread: " ++ toString(data.unread)) ]
+
+        _ ->
+            text "no count yet"
 

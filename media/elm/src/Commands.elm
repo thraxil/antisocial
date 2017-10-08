@@ -4,7 +4,7 @@ import Http
 import Json.Decode as Decode
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 import Msgs exposing (Msg)
-import Models exposing (EntryId, Entry)
+import Models exposing (EntryId, Entry, Fetched)
 import RemoteData
 
 fetchEntries : Cmd Msg
@@ -15,11 +15,13 @@ fetchEntries =
 
 fetchEntriesUrl : String
 fetchEntriesUrl =
-    "/api/entries/"
+    "/api/elmentries/"
 
-entriesDecoder : Decode.Decoder (List Entry)
+entriesDecoder : Decode.Decoder (Fetched)
 entriesDecoder =
-    Decode.list entryDecoder
+    decode Fetched
+        |> required "unread" Decode.int
+        |> required "entries" (Decode.list entryDecoder)
 
 entryDecoder : Decode.Decoder Entry
 entryDecoder =
@@ -31,4 +33,3 @@ entryDecoder =
         |> required "published" Decode.string
         |> required "feed_title" Decode.string
         |> optional "read" Decode.bool False
-        |> optional "current" Decode.bool False

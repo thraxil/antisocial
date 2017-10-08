@@ -1,7 +1,8 @@
 module Entries.List exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, href, property)
+import Json.Encode
 import Msgs exposing (Msg)
 import Models exposing (Entry)
 
@@ -17,22 +18,41 @@ list entries =
     div []
         ( List.map entryRow entries )
 
-entryRow : Entry -> Html Msg
-entryRow entry =
-    case entry.current of
-        True ->
+
+currentRow : Maybe Entry -> Html Msg
+currentRow maybeEntry =
+    case maybeEntry of
+        Just entry ->
             div [ class "current" ]
-                [ a [ href entry.link ]
-                      [
-                       h2 [] [ text entry.title ]
+                [ div [ class "row" ]
+                      [ div [ class "span11 title lead"]
+                            [ a [ href entry.link ] [ text entry.title ]
+                            , span [ class "published pull-right" ] [ text entry.published ]
+                            ]
                       ]
-                , div [] [ text entry.description ]
+                , div [ class "row" ]
+                    [ div [ class "span10 feed-title"]
+                          [ text "from "
+                          , text entry.feed_title
+                          ]
+                    ]
+                , div [ class "row" ]
+                    [ div [class "span10"]
+                          [ span [ property "innerHTML" (Json.Encode.string entry.description)]
+                                []
+                          ]
+                    ]
                 ]
 
-        False ->
-            div [ class "row" ]
-                [ div [ class "span11 not-current title" ]
-                      [ text (entry.feed_title ++ ": " ++ entry.title)
-                      , span [ class "published pull-right" ] [ text entry.published ]
-                      ]
-                ]
+        Nothing ->
+            text ""
+            
+
+entryRow : Entry -> Html Msg
+entryRow entry =
+    div [ class "row" ]
+        [ div [ class "span11 not-current title" ]
+              [ text (entry.feed_title ++ ": " ++ entry.title)
+              , span [ class "published pull-right" ] [ text entry.published ]
+              ]
+        ]

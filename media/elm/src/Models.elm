@@ -2,17 +2,24 @@ module Models exposing (..)
 
 import RemoteData exposing (WebData)
 
-type alias Model =
+type alias Fetched =
     { unread : Int
-    , entries : WebData (List Entry)
-    , drop : Int
+    , entries : List Entry
+    }
+
+type alias Model =
+    { fetched : WebData (Fetched)
+    , read : List Entry
+    , current : Maybe Entry
+    , unread : List Entry
     }
 
 initialModel : Model
 initialModel =
-    { unread = 0
-    , entries = RemoteData.Loading
-    , drop = 0
+    { fetched = RemoteData.Loading
+    , read = []
+    , current = Nothing
+    , unread = []
     }
 
 type alias EntryId = Int
@@ -26,5 +33,4 @@ type alias Entry =
     , published : String
     , feed_title : String
     , read : Bool
-    , current : Bool
     }

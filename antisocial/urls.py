@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from antisocial.main.views import (
     index, subscriptions, subscription, subscription_mark_read, entries,
     unsubscribe, add_subscription, subscription_fetch, subscribe, entry_api,
-    import_feeds, elm
+    import_feeds, elm, elmentries
 )
 
 admin.autodiscover()
@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^subscriptions/import/$', import_feeds),
 
     url(r'api/entries/$', entries),
+    url(r'api/elmentries/$', elmentries),
     url(r'api/entry/(?P<id>\d+)/$', entry_api),
 
     url(r'^accounts/', include('userena.urls')),
