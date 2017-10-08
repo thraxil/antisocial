@@ -34,3 +34,6 @@ type alias Entry =
     , feed_title : String
     , read : Bool
     }
+
+type alias EntryUpdate =
+    { unread : Int }

@@ -1,5 +1,6 @@
 module Update exposing (..)
 
+import Commands exposing (updateEntryCmd)
 import Msgs exposing (Msg(..))
 import Models exposing (Model, Fetched)
 import RemoteData exposing (WebData)
@@ -14,7 +15,7 @@ update msg model =
         KeyMsg code ->
                 case code of
                     74 -> -- j
-                         ( nextEntry model, Cmd.none )
+                         ( nextEntry model, updateEntryCmd model )
 
                     75 -> -- k
                          ( prevEntry model, Cmd.none )
@@ -24,6 +25,9 @@ update msg model =
                              
                     _ -> -- don't care
                         ( model, Cmd.none )
+
+        Msgs.OnEntrySave _ ->
+            ( model, Cmd.none )
 
 
 modelFromResponse : Model -> WebData (Fetched) -> Model
