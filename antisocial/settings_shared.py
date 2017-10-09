@@ -49,3 +49,5 @@ GZIP_CONTENT_TYPES = (
     'application/x-javascript',
     'text/javascript'
 )
+COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
+AWS_IS_GZIPPED = True
