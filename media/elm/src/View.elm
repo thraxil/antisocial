@@ -1,6 +1,5 @@
 module View exposing (..)
 
-import Entries.List
 import Html exposing (..)
 import Html.Attributes exposing (class, href, property)
 import Json.Encode
@@ -12,7 +11,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ currentRow model.current
-        , Entries.List.view model.unread              
+        , unreadEntries model.unread              
         , unreadCounter model.unreadCnt
         ]
 
@@ -44,7 +43,23 @@ currentRow maybeEntry =
 
         Nothing ->
             text ""
-            
+
+
+unreadEntries : List Entry -> Html Msg
+unreadEntries entries =
+    div []
+        ( List.map entryRow entries )
+
+
+entryRow : Entry -> Html Msg
+entryRow entry =
+    div [ class "row" ]
+        [ div [ class "span11 not-current title" ]
+              [ text (entry.feed_title ++ ": " ++ entry.title)
+              , span [ class "published pull-right" ] [ text entry.published ]
+              ]
+        ]
+                
 
 unreadCounter : Maybe Int -> Html Msg
 unreadCounter maybeCnt =
