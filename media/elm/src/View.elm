@@ -22,7 +22,7 @@ unreadCounter maybeCnt =
     case maybeCnt of
         Just unreadCnt ->
             div [ class "unread-counter" ]
-                [ text ("unread: " ++ toString(unreadCnt)) ]
+                [ text (toString(unreadCnt) ++ " unread") ]
 
         Nothing ->
             text "no count yet"

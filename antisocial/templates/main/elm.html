@@ -1,13 +1,10 @@
+{% extends 'base.html' %}
 {% load static %}
 {% load bootstrap3 %}
 {% load compress %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Elm SPA example</title>
-    <style type="text/css">
+{% block css %}
+<style type="text/css">
      .not-current {
          color: #666;
          padding: .3em;
@@ -22,19 +19,11 @@
          padding: 1em;
          font-size: 1.5em;
          border: #ccc solid 1px;
-     }
+    }
+</style>
+{% endblock %}
 
-
-    </style>
-      {% bootstrap_css %}
-
-    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet" type="text/css" />
-
-  </head>
-  <body>
-      <div class="container">
-          <div id="main"></div>
-      </div>
+{% block content %}
+    <div id="main"></div>
     <script src="{{STATIC_URL}}dist/app.js"></script>
-  </body>
-</html>
+{% endblock %}

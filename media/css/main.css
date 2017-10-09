@@ -21,17 +21,8 @@ body > .container {
   min-height: 100%;
 }
 
-.title {
-	border-top: #000 solid 1px;
-  background-color: #eee;
-}
-
 .published {
 		color: #666;
-}
-
-.feed-title {
-
 }
 
 .current {
@@ -62,4 +53,29 @@ body > .container {
 	padding: 1em;
 	font-size: 1.5em;
 	border: #ccc solid 1px;
+}
+
+.title {
+	border-top: #000 solid 1px;
+  background-color: #eee;
+}
+
+.current .title {
+  background-color: #cff;
+}
+
+.lead {
+		padding-left: .5em;
+		margin-top: 0px;
+		margin-bottom: 0px;
+}
+
+.feed-title {
+		padding-left: .5em;
+		background-color: #eff;
+		border-bottom: #ccf solid 1px;
+}
+
+.body {
+		padding: .5em;
 }

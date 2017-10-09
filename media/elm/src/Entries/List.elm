@@ -23,7 +23,7 @@ currentRow : Maybe Entry -> Html Msg
 currentRow maybeEntry =
     case maybeEntry of
         Just entry ->
-            div [ class "current" ]
+            div [ class "current expanded" ]
                 [ div [ class "row" ]
                       [ div [ class "span11 title lead"]
                             [ a [ href entry.link ] [ text entry.title ]
@@ -37,7 +37,7 @@ currentRow maybeEntry =
                           ]
                     ]
                 , div [ class "row" ]
-                    [ div [class "span10"]
+                    [ div [class "span10 body"]
                           [ span [ property "innerHTML" (Json.Encode.string entry.description)]
                                 []
                           ]
