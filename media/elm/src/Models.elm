@@ -1,6 +1,5 @@
 module Models exposing (..)
 
-import RemoteData exposing (WebData)
 
 -- the data as returned from the backend
 type alias Fetched =
@@ -10,8 +9,7 @@ type alias Fetched =
 
 -- more useful structure for it.
 type alias Model =
-    { fetched : WebData (Fetched)
-    , read : List Entry
+    { read : List Entry
     , current : Maybe Entry
     , unread : List Entry
     , unreadCnt : Maybe Int
@@ -19,8 +17,7 @@ type alias Model =
 
 initialModel : Model
 initialModel =
-    { fetched = RemoteData.Loading
-    , read = []
+    { read = []
     , current = Nothing
     , unread = []
     , unreadCnt = Nothing

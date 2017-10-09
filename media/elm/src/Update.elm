@@ -45,8 +45,7 @@ modelFromResponse model response =
                     []
                         
     in                
-        { model | fetched = response
-        , read = []
+        { model | read = []
         , current = Nothing
         , unread = unread
         , unreadCnt = Just (List.length unread)
