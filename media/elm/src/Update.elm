@@ -54,35 +54,25 @@ modelFromResponse model response =
 
 nextEntry : Model -> Model
 nextEntry model =
-    let
-        read = 
-            case model.current of
-                Just current ->
-                    current :: model.read
-
-                Nothing ->
-                    []
-
-    in
-        { model | read = read
-        , current = List.head model.unread
-        , unread = Maybe.withDefault [] (List.tail model.unread)
-        }
+    { model | read = maybeCons model.current model.read
+    , current = List.head model.unread
+    , unread = Maybe.withDefault [] (List.tail model.unread)
+    }
 
 
 prevEntry : Model -> Model
 prevEntry model =
-    let
-        unread =
-            case model.current of
-                Just current ->
-                    current :: model.unread
+    { model | read = Maybe.withDefault [] (List.tail model.read)
+    , current = List.head model.read
+    , unread = maybeCons model.current model.unread
+    }
 
-                Nothing ->
-                    model.unread
 
-    in
-        { model | read = Maybe.withDefault [] (List.tail model.read)
-        , current = List.head model.read
-        , unread = unread
-        }
+maybeCons : Maybe a -> List a -> List a
+maybeCons maybeA listA =
+    case maybeA of
+        Just thing ->
+            thing :: listA
+
+        Nothing ->
+            listA
