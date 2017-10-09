@@ -56,7 +56,7 @@ modelFromResponse model response =
 nextEntry : Model -> Model
 nextEntry model =
     let
-        read =
+        read = 
             case model.current of
                 Just current ->
                     model.read ++ (current :: [])
@@ -64,13 +64,7 @@ nextEntry model =
                 Nothing ->
                     []
 
-        unread =
-            case List.tail model.unread of
-                Just entries ->
-                    entries
-
-                Nothing ->
-                    []
+        unread = Maybe.withDefault [] (List.tail model.unread)
                         
     in
         { model | read = read
@@ -90,13 +84,8 @@ prevEntry model =
                 Nothing ->
                     model.unread
 
-        read =
-            case List.tail (List.reverse model.read) of
-                Just entries ->
-                    List.reverse entries
+        read = List.reverse (Maybe.withDefault [] (List.tail (List.reverse model.read)))
 
-                Nothing ->
-                    []
     in
         { model | read = read
         , current = List.head (List.reverse model.read)
