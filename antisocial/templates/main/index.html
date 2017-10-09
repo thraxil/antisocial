@@ -4,6 +4,7 @@
 {% load compress %}
 
 {% block css %}
+    {% compress css %}
 <style type="text/css">
      .not-current {
          color: #666;
@@ -21,9 +22,12 @@
          border: #ccc solid 1px;
     }
 </style>
+{% endcompress %}
 {% endblock %}
 
 {% block content %}
     <div id="main"></div>
+    {% compress js %}
     <script src="{{STATIC_URL}}dist/app.js"></script>
+    {% endcompress %}
 {% endblock %}
