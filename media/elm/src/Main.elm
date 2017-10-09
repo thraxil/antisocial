@@ -21,8 +21,6 @@ subscriptions model =
     Sub.batch
         [ Keyboard.downs KeyMsg ]
 
-
-
 -- MAIN
 
 

@@ -8,21 +8,27 @@ import Msgs exposing (Msg)
 import Models exposing (EntryId, Entry, Fetched, EntryUpdate, Model)
 import RemoteData
 
+
+-- main fetch of all unread entries
+
 fetchEntries : Cmd Msg
 fetchEntries =
     Http.get fetchEntriesUrl entriesDecoder
         |> RemoteData.sendRequest
         |> Cmd.map Msgs.OnFetchEntries
 
+
 fetchEntriesUrl : String
 fetchEntriesUrl =
     "/api/elmentries/"
+
 
 entriesDecoder : Decode.Decoder (Fetched)
 entriesDecoder =
     decode Fetched
         |> required "unread" Decode.int
         |> required "entries" (Decode.list entryDecoder)
+
 
 entryDecoder : Decode.Decoder Entry
 entryDecoder =
@@ -33,7 +39,9 @@ entryDecoder =
         |> optional "description" Decode.string ""
         |> required "published" Decode.string
         |> required "feed_title" Decode.string
-        |> optional "read" Decode.bool False
+
+
+-- mark an entry as read, then update the unread count
 
 
 updateUrl : EntryId -> String

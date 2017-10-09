@@ -2,11 +2,13 @@ module Models exposing (..)
 
 import RemoteData exposing (WebData)
 
+-- the data as returned from the backend
 type alias Fetched =
     { unread : Int
     , entries : List Entry
     }
 
+-- more useful structure for it.
 type alias Model =
     { fetched : WebData (Fetched)
     , read : List Entry
@@ -24,8 +26,8 @@ initialModel =
     , unreadCnt = Nothing
     }
 
+-- the individual entries    
 type alias EntryId = Int
-
 
 type alias Entry =
     { id : EntryId
@@ -34,8 +36,8 @@ type alias Entry =
     , description : String
     , published : String
     , feed_title : String
-    , read : Bool
     }
 
+-- the simple data that is returned when we mark an entry as read
 type alias EntryUpdate =
     { unread : Int }

@@ -14,13 +14,13 @@ update msg model =
 
         KeyMsg code ->
                 case code of
-                    74 -> -- j
+                    74 -> -- j (next)
                          ( nextEntry model, updateEntryCmd model )
 
-                    75 -> -- k
+                    75 -> -- k (prev)
                          ( prevEntry model, Cmd.none )
 
-                    82 -> -- r
+                    82 -> -- r (refresh the list of entries)
                          ( model, fetchEntries )
                              
                     _ -> -- don't care
