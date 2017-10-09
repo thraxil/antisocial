@@ -12,38 +12,15 @@ from antisocial.main.models import Feed, Subscription, UEntry
 import antisocial.main.tasks as tasks
 
 
-def index(request):
-    unread_count = 0
-    if not request.user.is_anonymous():
-        unread_count = UEntry.objects.filter(
-            user=request.user,
-            read=False).count()
-    return render(
-        request, 'main/index.html',
-        dict(unread_count=unread_count))
-
-
 @login_required
-def elm(request):
+def index(request):
     return render(
-        request, "main/elm.html",
+        request, "main/index.html",
         dict())
 
 
 @login_required
 def entries(request):
-    unread_entries = UEntry.objects.select_related().filter(
-        user=request.user,
-        read=False,
-    ).order_by("entry__published")
-    return JsonResponse(
-        [ue.as_dict() for ue in unread_entries],
-        safe=False
-    )
-
-
-@login_required
-def elmentries(request):
     unread_entries = UEntry.objects.select_related().filter(
         user=request.user,
         read=False,

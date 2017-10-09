@@ -1,66 +1,29 @@
 {% extends 'base.html' %}
-{% load markup %}
+{% load static %}
+{% load bootstrap3 %}
 {% load compress %}
 
-{% block js %}
-{% if not request.user.is_anonymous %}
+{% block css %}
+<style type="text/css">
+     .not-current {
+         color: #666;
+         padding: .3em;
+     }
 
-    <script
-    {% if debug %}
-    data-main="{{STATIC_URL}}js/src/main.js"
-    {% else %}
-    data-main="{{STATIC_URL}}js/main-built.js"
-    {% endif %}
-    src="{{STATIC_URL}}js/libs/require/require.js"></script>
 
-<script id="entry-template" type="script/template">
-<div class="entry <%= current ? 'current' : 'not-current' %>" id="ue-<%= id %>">
-		<div class="expanded">
-			  <div class="row">
-				    <div class="col-md-12 title lead">
-					      <a href="<%= link %>"><%= title %></a>
-					      <span class="published pull-right">
-						        <%= published %>
-					      </span>
-				    </div>
-			  </div>
-
-			  <div class="row">
-				    <div class="col-md-12 feed-title">
-					      from <a href="/subscriptions/<%= feed_id %>/"><%= feed_title %></a>
-				    </div>
-			  </div>
-
-			  <div class="row">
-				    <div class="col-md-12">
-					      <%= description %>
-				    </div>
-			  </div>
-		</div>
-
-		<div class="collapsed">
-			  <div class="row">
-				    <div class="col-md-12 title">
-					      <%= feed_title %>: <b><%= title %></b>
-					      <span class="published pull-right">
-						        <%= published %>
-					      </span>
-				    </div>
-			  </div>
-		</div>
-</div>
-</script>
-
-{% endif %}
+     .unread-counter {
+         position: fixed;
+         bottom: 0px;
+         right: 0px;
+         background-color: #fff;
+         padding: 1em;
+         font-size: 1.5em;
+         border: #ccc solid 1px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-{% if not request.user.is_anonymous %}
-
-<div id="unread-counter"><span id="unread-count-var">{{unread_count}}</span> unread</div>
-<div id="entries-container"></div>
-
-{% else %}
-<p>Please login or sign up</p>
-{% endif %}
+    <div id="main"></div>
+    <script src="{{STATIC_URL}}dist/app.js"></script>
 {% endblock %}
