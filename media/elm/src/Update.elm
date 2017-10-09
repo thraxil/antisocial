@@ -2,7 +2,7 @@ module Update exposing (..)
 
 import Commands exposing (updateEntryCmd, fetchEntries)
 import Msgs exposing (Msg(..))
-import Models exposing (Model, Fetched)
+import Models exposing (Model, Fetched, Entry)
 import RemoteData exposing (WebData)
 
 
@@ -37,19 +37,23 @@ modelFromResponse : Model -> WebData (Fetched) -> Model
 modelFromResponse model response =
     let
         unread =
-            case response of
-                RemoteData.Success data ->
-                    Maybe.withDefault [] (List.tail data.entries)
-
-                _ ->
-                    []
-                        
-    in                
+            entriesOrEmpty response
+    in
         { model | read = []
         , current = Nothing
         , unread = unread
         , unreadCnt = Just (List.length unread)
         }
+
+
+entriesOrEmpty : WebData (Fetched) -> List Entry
+entriesOrEmpty response =
+    case response of
+        RemoteData.Success data ->
+            data.entries
+
+        _ ->
+            []
 
 
 nextEntry : Model -> Model
