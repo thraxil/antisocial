@@ -59,12 +59,13 @@ nextEntry model =
         read = 
             case model.current of
                 Just current ->
-                    model.read ++ (current :: [])
+                    current :: model.read
 
                 Nothing ->
                     []
 
-        unread = Maybe.withDefault [] (List.tail model.unread)
+        unread =
+            Maybe.withDefault [] (List.tail model.unread)
                         
     in
         { model | read = read
@@ -84,10 +85,11 @@ prevEntry model =
                 Nothing ->
                     model.unread
 
-        read = List.reverse (Maybe.withDefault [] (List.tail (List.reverse model.read)))
+        read =
+            Maybe.withDefault [] (List.tail model.read)
 
     in
         { model | read = read
-        , current = List.head (List.reverse model.read)
+        , current = List.head model.read
         , unread = unread
         }
