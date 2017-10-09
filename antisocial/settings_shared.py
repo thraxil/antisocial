@@ -42,3 +42,10 @@ LOGOUT_URL = '/accounts/signout/'
 
 BROKER_URL = "amqp://guest:guest@localhost:5672//"
 CELERYD_CONCURRENCY = 4
+
+GZIP_CONTENT_TYPES = (
+    'text/css',
+    'application/javascript',
+    'application/x-javascript',
+    'text/javascript'
+)
