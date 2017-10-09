@@ -12,7 +12,6 @@ from antisocial.main.models import Feed, Subscription, UEntry
 import antisocial.main.tasks as tasks
 
 
-@login_required
 def index(request):
     return render(
         request, "main/index.html",
