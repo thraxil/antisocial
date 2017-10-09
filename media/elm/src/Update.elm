@@ -64,13 +64,10 @@ nextEntry model =
                 Nothing ->
                     []
 
-        unread =
-            Maybe.withDefault [] (List.tail model.unread)
-                        
     in
         { model | read = read
         , current = List.head model.unread
-        , unread = unread
+        , unread = Maybe.withDefault [] (List.tail model.unread)
         }
 
 
@@ -85,11 +82,8 @@ prevEntry model =
                 Nothing ->
                     model.unread
 
-        read =
-            Maybe.withDefault [] (List.tail model.read)
-
     in
-        { model | read = read
+        { model | read = Maybe.withDefault [] (List.tail model.read)
         , current = List.head model.read
         , unread = unread
         }
