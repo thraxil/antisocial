@@ -48,18 +48,18 @@ currentRow maybeEntry =
 unreadEntries : List Entry -> Html Msg
 unreadEntries entries =
     div []
-        ( List.map entryRow entries )
+        ( List.indexedMap entryRow (List.take 10 entries) )
 
 
-entryRow : Entry -> Html Msg
-entryRow entry =
+entryRow : Int -> Entry -> Html Msg
+entryRow idx entry =
     div [ class "row" ]
-        [ div [ class "span11 not-current title" ]
+        [ div [ class ("span11 not-current title opac-" ++ toString(idx)) ]
               [ text (entry.feed_title ++ ": " ++ entry.title)
               , span [ class "published pull-right" ] [ text entry.published ]
               ]
         ]
-                
+
 
 unreadCounter : Maybe Int -> Html Msg
 unreadCounter maybeCnt =

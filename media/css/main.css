@@ -79,3 +79,14 @@ body > .container {
 .body {
 		padding: 1em;
 }
+
+.opac-0 { opacity: 1.0; }
+.opac-1 { opacity: 0.9; }
+.opac-2 { opacity: 0.8; }
+.opac-3 { opacity: 0.7; }
+.opac-4 { opacity: 0.6; }
+.opac-5 { opacity: 0.5; }
+.opac-6 { opacity: 0.4; }
+.opac-7 { opacity: 0.3; }
+.opac-8 { opacity: 0.2; }
+.opac-9 { opacity: 0.1; }
