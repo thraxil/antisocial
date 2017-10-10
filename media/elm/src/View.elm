@@ -1,7 +1,7 @@
 module View exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, href, property)
+import Html.Attributes exposing (class, href, property, id)
 import Json.Encode
 import Models exposing (Model, Entry, Fetched)
 import Msgs exposing (Msg)
@@ -22,7 +22,8 @@ currentRow maybeEntry =
         Just entry ->
             div [ class "current expanded" ]
                 [ div [ class "row" ]
-                      [ div [ class "span11 title lead"]
+                      [ div [ class "span11 title lead"
+                            , id ("entry-" ++ toString(entry.id)) ]
                             [ a [ href entry.link ] [ text entry.title ]
                             , span [ class "published pull-right" ] [ text entry.published ]
                             ]
