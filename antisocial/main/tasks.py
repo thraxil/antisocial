@@ -114,7 +114,7 @@ def initial_fetch(url, user):
     socket.setdefaulttimeout(5)
     try:
         d = feedparser.parse(url)
-    except:
+    except:  # noqa: E722
         socket.setdefaulttimeout(None)
         return
     guid = get_feed_guid(d.feed, url)
