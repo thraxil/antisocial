@@ -111,7 +111,7 @@ class Feed(models.Model):
         self.last_fetched = now
         try:
             self.try_fetch()
-        except:
+        except:  # noqa: E722
             self.fetch_failed()
         self.schedule_next_fetch()
 
