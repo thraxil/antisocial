@@ -88,7 +88,7 @@ django-appconf==1.0.2
 django-compressor==2.2
 django-bootstrap3==9.1.0
 django-bootstrap-form==3.3
-django-debug-toolbar==1.9
+django-debug-toolbar==1.9.1
 django-waffle==0.12.0
 django-jenkins==0.110.0
 django-smoketest==1.1.0
