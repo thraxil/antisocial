@@ -25,8 +25,8 @@ urlpatterns = [
     url(r'api/entries/$', entries),
     url(r'api/entry/(?P<id>\d+)/$', entry_api),
 
-    url(r'^accounts/', include('userena.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+
     url(r'smoketest/', include('smoketest.urls')),
     url(r'^stats/$', TemplateView.as_view(template_name="stats.html")),
     url(r'^uploads/(?P<path>.*)$', django.views.static.serve,

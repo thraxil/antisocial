@@ -160,7 +160,7 @@ def extract_published(entry):
 
 
 class Entry(models.Model):
-    feed = models.ForeignKey(Feed)
+    feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
     guid = models.CharField(max_length=256, db_index=True)
     title = models.CharField(max_length=256)
     link = models.URLField()
@@ -178,8 +178,8 @@ class Entry(models.Model):
 
 
 class Subscription(models.Model):
-    feed = models.ForeignKey(Feed)
-    user = models.ForeignKey(User)
+    feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def all_entries(self):
         return UEntry.objects.filter(
@@ -196,8 +196,8 @@ class Subscription(models.Model):
 
 
 class UEntry(models.Model):
-    entry = models.ForeignKey(Entry)
-    user = models.ForeignKey(User)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     read = models.BooleanField(default=False)
 
     def as_dict(self):
