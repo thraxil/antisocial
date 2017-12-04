@@ -11,14 +11,12 @@ locals().update(common(app='antisocial', base=base))
 ALLOWED_HOSTS += ['.thraxil.org']  # noqa
 
 INSTALLED_APPS += [  # noqa
-    'userena',
     'guardian',
     'easy_thumbnails',
     'bootstrap3',
     'bootstrapform',
 
     'antisocial.main',
-    'antisocial.profile',
 ]
 
 # project specific settings
@@ -28,13 +26,11 @@ PROJECT_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'userena.backends.UserenaAuthenticationBackend',
     'guardian.backends.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 ANONYMOUS_USER_ID = -1
-AUTH_PROFILE_MODULE = 'profile.Profile'
 
 LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
 LOGIN_URL = '/accounts/signin/'
