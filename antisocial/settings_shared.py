@@ -8,7 +8,7 @@ locals().update(common(app='antisocial', base=base))
 
 # extended common settings. remember to '# noqa' them.
 
-ALLOWED_HOSTS += ['.thraxil.org']  # noqa
+ALLOWED_HOSTS += ['.thraxil.org', '127.0.0.1']  # noqa
 
 INSTALLED_APPS += [  # noqa
     'guardian',

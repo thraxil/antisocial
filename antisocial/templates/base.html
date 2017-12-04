@@ -41,16 +41,14 @@
       {% block topnavbarrightitems %}{% endblock %}
 {% block usernav %}
   {% if request.user.is_anonymous %}
-    <p class="navbar-text"><a href="/accounts/signin/?next=/" class="btn btn-success">login</a>
-			or
-			<a href="/accounts/signup/" class="btn btn-success">signup</a></p>
+    <p class="navbar-text"><a href="/accounts/login/?next=/" class="btn btn-success">login</a>
   {% else %}
       <p class="navbar-text">logged in as <a href="/accounts/{{request.user.username}}/">{% if request.user.first_name %}
 				{{request.user.first_name}} {{request.user.last_name}}
 			{% else %}
 				{{ request.user.username }}
 			{% endif %}</a>
-      <a href="/accounts/signout/" class="btn btn-inverse">logout</a></p>
+      <a href="/accounts/logout/" class="btn btn-inverse">logout</a></p>
   {% endif %}
 {% endblock %}
       </ul>
