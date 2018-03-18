@@ -41,6 +41,15 @@ try {
     opbeat = false
 }
 
+def sentry = true
+
+try {
+    env.SENTRY_URL = SENTRY_URL
+} catch (sentryErr) {
+    println "sentry not configured"
+    sentry = false
+}
+
 def err = null
 currentBuild.result = "SUCCESS"
 
@@ -114,6 +123,18 @@ try {
        -d branch=`git rev-parse --abbrev-ref HEAD` \
        -d status=completed'''
                }
+            }
+        }
+    }
+    if (sentry) {
+        node {
+            stage("Sentry") {
+                sh '''COMMIT=$(git log -n 1 --pretty=format:'%H')
+  curl ${SENTRY_URL} \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d "{\\\"version\\\": \\\"${COMMIT}\\\"}"
+   '''
             }
         }
     }
