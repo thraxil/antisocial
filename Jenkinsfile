@@ -30,17 +30,6 @@ try {
 
 def all_hosts = hosts + celery_hosts + beat_hosts as Set
 
-def opbeat = true
-
-try {
-    env.OPBEAT_ORG = OPBEAT_ORG
-    env.OPBEAT_APP = OPBEAT_APP
-    // OPBEAT_TOKEN comes out of credential store
-} catch (opbeatErr) {
-    println "opbeat not configured"
-    opbeat = false
-}
-
 def sentry = true
 
 try {
@@ -113,19 +102,6 @@ try {
         parallel branches
     }
 
-    if (opbeat) {
-        node {
-            stage("Opbeat") {
-                withCredentials([[$class: 'StringBinding', credentialsId : 'opbeat-secret', variable: 'OPBEAT_TOKEN', ]]) {
-                sh '''curl https://intake.opbeat.com/api/v1/organizations/${OPBEAT_ORG}/apps/${OPBEAT_APP}/releases/ \
-       -H "Authorization: Bearer ${OPBEAT_TOKEN}" \
-       -d rev=`git log -n 1 --pretty=format:%H` \
-       -d branch=`git rev-parse --abbrev-ref HEAD` \
-       -d status=completed'''
-               }
-            }
-        }
-    }
     if (sentry) {
         node {
             stage("Sentry") {

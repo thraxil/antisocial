@@ -59,7 +59,6 @@ astroid==1.6.2
 html2text==2018.1.9
 
 boto==2.48.0
-opbeat==3.6.1
 raven==6.6.0
 SPARQLWrapper==1.8.1
 argparse==1.4.0
