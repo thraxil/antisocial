@@ -15,7 +15,6 @@ INSTALLED_APPS += [  # noqa
     'easy_thumbnails',
     'bootstrap3',
     'bootstrapform',
-    'raven.contrib.django.raven_compat',
 
     'antisocial.main',
 ]

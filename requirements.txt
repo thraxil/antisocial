@@ -105,4 +105,4 @@ django-markwhat==1.6.0
 django-storages==1.6.5
 django-cacheds3storage==0.1.2
 
-thraxilsettings==3.0.0
+thraxilsettings==3.1.0
