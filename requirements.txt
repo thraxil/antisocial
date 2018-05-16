@@ -18,7 +18,7 @@ flake8==3.5.0
 
 cssselect==1.0.3
 lxml==4.2.1
-sure==1.4.9
+sure==1.4.11
 
 rdflib==4.2.2
 
