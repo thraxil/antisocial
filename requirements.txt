@@ -50,7 +50,7 @@ pyparsing==2.2.0
 celery==4.2.0
 statsd==3.2.2
 gunicorn==19.8.1
-pycryptodome==3.6.2
+pycryptodome==3.6.3
 ecdsa==0.13
 sqlparse==0.2.4
 
