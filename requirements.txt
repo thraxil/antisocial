@@ -1,6 +1,6 @@
 Django==2.0.6
 
-pytz==2018.3
+pytz==2018.5
 
 httplib2==0.11.3
 feedparser==5.2.1
@@ -33,7 +33,7 @@ six==1.11.0
 opml==0.5
 
 Pillow==5.1.0
-pytz==2018.3
+pytz==2018.5
 
 python-dateutil==2.7.3
 anyjson==0.3.3
