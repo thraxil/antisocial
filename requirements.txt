@@ -48,7 +48,7 @@ kombu==4.2.1
 pyparsing==2.2.0
 
 celery==4.2.1
-statsd==3.2.2
+statsd==3.3.0
 gunicorn==19.8.1
 pycryptodome==3.6.6
 ecdsa==0.13
