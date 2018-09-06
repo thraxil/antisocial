@@ -101,7 +101,7 @@ django-guardian==1.4.9
 django-userena==2.0.1
 django-picklefield==1.1.0
 django-statsd-mozilla==0.4.0
-django-markwhat==1.6.0
+django-markwhat==1.6.1
 django-storages==1.7
 django-cacheds3storage==0.1.2
 
