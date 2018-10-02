@@ -32,7 +32,7 @@ pylint==2.1.1
 six==1.11.0
 opml==0.5
 
-Pillow==5.2.0
+Pillow==5.3.0
 pytz==2018.3
 
 python-dateutil==2.7.3
