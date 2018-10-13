@@ -78,8 +78,10 @@ keepalive==0.5
 lazy-object-proxy==1.3.1
 mock==2.0.0
 nose==1.3.7
+
+pbr==4.3.0
+
 path.py==11.5.0
-pbr==4.2.0
 
 pickleshare==0.7.5
 ptyprocess==0.6.0
