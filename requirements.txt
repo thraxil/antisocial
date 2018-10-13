@@ -65,8 +65,11 @@ argparse==1.4.0
 backports-abc==0.5
 backports.ssl-match-hostname==3.5.0.1
 certifi==2018.8.24
+
+decorator==4.3.0
+
 colorama==0.4.0
-decorator==4.2.1
+
 funcsigs==1.0.2
 html5lib==1.0.1
 ipython-genutils==0.2.0
