@@ -24,7 +24,7 @@ rdflib==4.2.2
 
 coverage==4.5.2
 
-requests==2.20.1
+requests==2.21.0
 
 logilab-common==1.4.2
 logilab-astng==0.24.3
