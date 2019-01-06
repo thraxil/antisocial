@@ -39,7 +39,7 @@ python-dateutil==2.7.5
 anyjson==0.3.3
 billiard==3.5.0.5
 
-vine==1.1.4
+vine==1.2.0
 amqp==2.3.2
 
 amqplib==1.0.2
