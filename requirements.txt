@@ -33,7 +33,7 @@ six==1.12.0
 opml==0.5
 
 Pillow==5.4.1
-pytz==2018.7
+pytz==2018.9
 
 python-dateutil==2.7.5
 anyjson==0.3.3
