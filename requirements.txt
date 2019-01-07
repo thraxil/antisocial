@@ -1,23 +1,23 @@
-Django==2.1.4
+Django==2.1.5
 
 pytz==2018.7
 
 httplib2==0.12.0
 feedparser==5.2.1
-Markdown==3.0
+Markdown==3.0.1
 
 psycopg2-binary==2.7.6.1
 versiontools==1.9.1
 pep8==1.7.1
 mccabe==0.6.1
 pyflakes==2.0.0
-pycodestyle==2.3.1
+pycodestyle==2.4.0
 enum34==1.1.6
 configparser==3.5.0
-flake8==3.5.0
+flake8==3.6.0
 
 cssselect==1.0.3
-lxml==4.2.5
+lxml==4.3.0
 sure==1.4.11
 
 rdflib==4.2.2
@@ -32,14 +32,14 @@ pylint==2.2.2
 six==1.12.0
 opml==0.5
 
-Pillow==5.4.0
+Pillow==5.4.1
 pytz==2018.7
 
 python-dateutil==2.7.5
 anyjson==0.3.3
 billiard==3.5.0.5
 
-vine==1.1.4
+vine==1.2.0
 amqp==2.3.2
 
 amqplib==1.0.2
