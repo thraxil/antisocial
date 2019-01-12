@@ -63,7 +63,7 @@ raven==6.10.0
 SPARQLWrapper==1.8.2
 argparse==1.4.0
 backports-abc==0.5
-backports.ssl-match-hostname==3.5.0.1
+backports.ssl-match-hostname==3.7.0.1
 certifi==2018.11.29
 
 decorator==4.3.2
