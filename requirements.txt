@@ -45,7 +45,7 @@ amqp==2.3.2
 amqplib==1.0.2
 
 kombu==4.2.2.post1
-pyparsing==2.3.0
+pyparsing==2.3.1
 
 celery==4.2.1
 statsd==3.3.0
