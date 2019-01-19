@@ -90,7 +90,7 @@ rjsmin==1.0.12
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
 traitlets==4.3.2
-wrapt==1.10.11
+wrapt==1.11.1
 
 django-appconf==1.0.2
 django-compressor==2.2
