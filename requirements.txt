@@ -52,7 +52,7 @@ statsd==3.3.0
 gunicorn==19.9.0
 pycryptodome==3.7.3
 ecdsa==0.13
-sqlparse==0.2.4
+sqlparse==0.3.0
 
 astroid==2.1.0
 
