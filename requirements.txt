@@ -15,7 +15,7 @@ pyflakes==2.1.1
 pycodestyle==2.5.0
 
 enum34==1.1.6
-configparser==3.7.3
+configparser==3.7.4
 flake8==3.7.7
 
 cssselect==1.0.3
