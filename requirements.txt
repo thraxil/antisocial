@@ -4,7 +4,7 @@ pytz==2018.9
 
 httplib2==0.12.1
 feedparser==5.2.1
-Markdown==3.0
+Markdown==3.1
 
 psycopg2-binary==2.7.7
 versiontools==1.9.1
