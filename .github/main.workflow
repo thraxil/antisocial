@@ -10,12 +10,12 @@ action "branch cleanup" {
 
 workflow "run tests" {
   on = "push"
-  resolves = ["docker push"]
+  resolves = ["sentry release"]
 }
 
 action "Build docker image" {
   uses = "actions/docker/cli@master"
-  args = "build -t thraxil/antisocial ."
+  args = "build -t thraxil/antisocial:$GITHUB_SHA ."
 }
 
 action "Deploy branch filter" {
@@ -33,5 +33,32 @@ action "docker login" {
 action "docker push" {
   needs = ["docker login"]
   uses = "actions/docker/cli@master"
-  args = ["push", "thraxil/antisocial"]
+  args = ["push", "thraxil/antisocial:$GITHUB_SHA"]
+}
+
+action "deploy" {
+  needs = "docker push"
+  uses = "thraxil/django-deploy-action@master"
+  secrets = [
+     "PRIVATE_KEY",
+     "KNOWN_HOSTS",
+     "WEB_HOSTS",
+  ]
+  env = {
+    SSH_USER = "anders"
+    APP = "antisocial"
+  }
+}
+
+action "sentry release" {
+  needs = ["deploy"]
+  uses = "juankaram/sentry-release@master"
+  secrets = [
+    "SENTRY_AUTH_TOKEN"
+  ]
+  env = {
+    SENTRY_ORG = "thraxil"
+    SENTRY_PROJECT = "antisocial"
+    ENVIRONMENT = "production"
+  }
 }
