@@ -104,7 +104,7 @@ django-waffle==0.16.0
 django-jenkins==0.110.0
 django-smoketest==1.1.0
 
-django-guardian==1.5.1
+django-guardian==2.0.0
 
 easy-thumbnails==2.6
 
