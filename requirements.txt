@@ -1,12 +1,12 @@
-Django==2.2.1
+Django==2.2.2
 
 pytz==2019.1
 
-httplib2==0.12.3
+httplib2==0.13.0
 feedparser==5.2.1
-Markdown==3.0.1 # pyup: <3.1
+Markdown==3.1.1 # pyup: <3.1
 
-psycopg2-binary==2.8.2
+psycopg2-binary==2.8.3
 versiontools==1.9.1
 pep8==1.7.1
 mccabe==0.6.1
@@ -15,18 +15,18 @@ pyflakes==2.1.1
 pycodestyle==2.5.0
 
 enum34==1.1.6
-configparser==3.7.4
+configparser==3.8.0
 flake8==3.7.7
 
 cssselect==1.0.3
-lxml==4.3.3
+lxml==4.3.4
 sure==1.4.11
 
 rdflib==4.2.2
 
 coverage==4.5.3
 
-requests==2.21.0
+requests==2.22.0
 
 logilab-common==1.4.2
 logilab-astng==0.24.3
@@ -43,17 +43,17 @@ anyjson==0.3.3
 billiard==3.6.0.0
 
 vine==1.3.0
-amqp==2.4.2
+amqp==2.5.0
 
 amqplib==1.0.2
 
-kombu==4.5.0
+kombu==4.6.3
 pyparsing==2.4.0
 
 celery==4.3.0
 statsd==3.3.0
 gunicorn==19.9.0
-pycryptodome==3.8.1
+pycryptodome==3.8.2
 ecdsa==0.13.2
 sqlparse==0.3.0
 
@@ -67,7 +67,7 @@ SPARQLWrapper==1.8.4
 argparse==1.4.0
 backports-abc==0.5
 backports.ssl-match-hostname==3.7.0.1
-certifi==2019.3.9
+certifi==2019.6.16
 
 decorator==4.4.0
 
@@ -79,24 +79,24 @@ ipython-genutils==0.2.0
 isodate==0.6.0
 keepalive==0.5
 lazy-object-proxy==1.4.1
-mock==2.0.0
+mock==3.0.5
 nose==1.3.7
 
-pbr==5.2.0
+pbr==5.3.0
 
 path.py==12.0.1
 
 pickleshare==0.7.5
 ptyprocess==0.6.0
 rcssmin==1.0.6
-rjsmin==1.0.12
+rjsmin==1.1.0
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
 traitlets==4.3.2
-wrapt==1.11.1
+wrapt==1.11.2
 
 django-appconf==1.0.3
-django-compressor==2.2
+django-compressor==2.3
 django-bootstrap3==11.0.0
 django-bootstrap-form==3.4
 django-debug-toolbar==1.11
@@ -104,7 +104,7 @@ django-waffle==0.16.0
 django-jenkins==0.110.0
 django-smoketest==1.1.0
 
-django-guardian==1.5.1
+django-guardian==2.0.0
 
 easy-thumbnails==2.6
 
@@ -116,6 +116,6 @@ django-markwhat==1.6.1
 
 django-storages==1.7.1
 
-django-cacheds3storage==0.1.2
+django-cacheds3storage==0.2.0
 
 thraxilsettings==3.1.1
