@@ -1,0 +1,40 @@
+on: push
+name: run tests
+jobs:
+  buildDockerImage:
+    name: Build docker image
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Build docker image
+      uses: actions/docker/cli@master
+      with:
+        args: build -t thraxil/antisocial:${{ github.sha }} .
+    - name: Deploy branch filter
+      uses: actions/bin/filter@master
+      with:
+        args: branch master
+    - name: docker login
+      uses: actions/docker/login@master
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    - name: docker push
+      uses: actions/docker/cli@master
+      with:
+        args: push thraxil/antisocial:${{ github.sha }}
+    - name: deploy
+      uses: thraxil/django-deploy-action@master
+      env:
+        APP: antisocial
+        KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        SSH_USER: anders
+        WEB_HOSTS: ${{ secrets.WEB_HOSTS }}
+    - name: sentry release
+      uses: juankaram/sentry-release@master
+      env:
+        ENVIRONMENT: production
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: thraxil
+        SENTRY_PROJECT: antisocial
