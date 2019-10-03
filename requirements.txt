@@ -95,7 +95,7 @@ rcssmin==1.0.6
 rjsmin==1.0.12
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
-traitlets==4.3.2
+traitlets==4.3.3
 wrapt==1.11.2
 
 django-appconf==1.0.3
