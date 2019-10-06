@@ -29,6 +29,8 @@ jobs:
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         SSH_USER: anders
         WEB_HOSTS: ${{ secrets.WEB_HOSTS }}
+        CELERY_HOSTS: ${{ secrets.CELERY_HOSTS }}
+        BEAT_HOSTS: ${{ secrets.BEAT_HOSTS }}
     - name: sentry release
       uses: juankaram/sentry-release@master
       env:
