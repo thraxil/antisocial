@@ -54,7 +54,7 @@ celery==4.3.0
 statsd==3.3.0
 gunicorn==19.9.0
 pycryptodome==3.9.0
-ecdsa==0.13.2
+ecdsa==0.13.3
 sqlparse==0.3.0
 
 astroid==2.3.1
