@@ -11,10 +11,7 @@ jobs:
     - name: Build docker image
       run: docker build -t thraxil/antisocial:${{ github.sha }} .
     - name: docker login
-      run: docker login
-      env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      run: docker login -u ${{ secrets.DOCKER_PASSWORD }} -p ${{ secrets.DOCKER_USERNAME }}
     - name: docker push
       run: docker push thraxil/antisocial:${{ github.sha }}
     - name: deploy
