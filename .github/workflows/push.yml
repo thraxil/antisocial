@@ -7,6 +7,4 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Build docker image
-      uses: actions/docker/cli@master
-      with:
-        args: build -t thraxil/antisocial:${{ github.sha }} .
+      run: docker build -t thraxil/antisocial:${{ github.sha }} .

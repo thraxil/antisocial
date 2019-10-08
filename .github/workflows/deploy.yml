@@ -9,18 +9,14 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Build docker image
-      uses: actions/docker/cli@master
-      with:
-        args: build -t thraxil/antisocial:${{ github.sha }} .
+      run: docker build -t thraxil/antisocial:${{ github.sha }} .
     - name: docker login
-      uses: actions/docker/login@master
+      run: docker login
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
     - name: docker push
-      uses: actions/docker/cli@master
-      with:
-        args: push thraxil/antisocial:${{ github.sha }}
+      run: docker push thraxil/antisocial:${{ github.sha }}
     - name: deploy
       uses: thraxil/django-deploy-action@master
       env:
