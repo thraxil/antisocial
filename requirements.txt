@@ -57,7 +57,7 @@ pycryptodome==3.9.1
 ecdsa==0.14.1
 sqlparse==0.3.0
 
-astroid==2.3.2
+astroid==2.3.3
 
 html2text==2019.9.26
 
