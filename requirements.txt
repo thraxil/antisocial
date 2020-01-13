@@ -24,7 +24,7 @@ sure==1.4.11
 
 rdflib==4.2.2
 
-coverage==4.5.4
+coverage==5.0.3
 
 requests==2.22.0
 
