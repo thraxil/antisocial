@@ -59,7 +59,7 @@ sqlparse==0.3.0
 
 astroid==2.3.3
 
-html2text==2019.9.26
+html2text==2020.1.16
 
 boto==2.49.0
 raven==6.10.0
