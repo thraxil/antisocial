@@ -1,4 +1,4 @@
-FROM thraxil/django.base:2018-08-14-ea2e508c8685
+FROM thraxil/django.base:2020-01-20-46ffcccd02f7
 COPY package.json /node/
 RUN cd /node && npm install && touch /node/node_modules/sentinal
 COPY requirements.txt /app/requirements.txt
