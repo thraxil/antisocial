@@ -19,6 +19,10 @@ INSTALLED_APPS += [  # noqa
     'antisocial.main',
 ]
 
+MIDDLEWARE += [  # noqa
+    'beeline.middleware.django.HoneyMiddleware',
+]
+
 # project specific settings
 
 PROJECT_APPS = [
@@ -47,3 +51,7 @@ GZIP_CONTENT_TYPES = (
 )
 COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 AWS_IS_GZIPPED = True
+
+# default off
+HONEYCOMB_WRITEKEY = None
+HONEYCOMB_DATASET = None

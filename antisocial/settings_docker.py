@@ -19,3 +19,6 @@ locals().update(
 
 CELERY_BROKER_URL = os.environ['BROKER_URL']
 BROKER_URL = os.environ['BROKER_URL']
+
+HONEYCOMB_WRITEKEY = os.environ.get('HONEYCOMB_WRITEKEY')
+HONEYCOMB_DATASET = os.environ.get('HONEYCOMB_DATASET')
