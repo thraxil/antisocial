@@ -19,7 +19,6 @@ from django.conf import settings
 
 @worker_process_init.connect
 def initialize_honeycomb(**kwargs):
-    print(f'initialize_honeycomb()')
     if settings.HONEYCOMB_WRITEKEY and settings.HONEYCOMB_DATASET:
         logging.info(f'beeline initialization in process pid {os.getpid()}')
         beeline.init(
@@ -28,7 +27,7 @@ def initialize_honeycomb(**kwargs):
             service_name='celery'
         )
     else:
-        print(f'no honeycomb settings, so skip initializing them')
+        logging.info(f'no honeycomb settings, so skip initializing them')
 
 
 @task_prerun.connect
