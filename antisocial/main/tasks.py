@@ -33,7 +33,6 @@ def initialize_honeycomb(**kwargs):
 
 @task_prerun.connect
 def start_celery_trace(task_id, task, args, kwargs, **rest_args):
-    print('start_celery_trace()')
     queue_name = task.request.delivery_info.get("exchange", None)
     task.request.trace = beeline.start_trace(
         context={
