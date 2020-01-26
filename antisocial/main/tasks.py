@@ -47,21 +47,23 @@ def start_celery_trace(task_id, task, args, kwargs, **rest_args):
 
 @task_postrun.connect
 def end_celery_trace(task, state, **kwargs):
-    beeline.add_field("celery.status", state)
+    beeline.add_context_field("celery.status", state)
     beeline.finish_trace(task.request.trace)
 
 
 @task(ignore_result=True, time_limit=10, soft_time_limit=6)
 def process_feed(feed_id):
-    statsd.incr("process_feed")
-    f = Feed.objects.get(id=feed_id)
-    try:
-        f.fetch()
-        beeline.add_field("fetch_success", True)
-    except SoftTimeLimitExceeded:
-        f.fetch_failed()
-        beeline.add_field("fetch_success", False)
-        beeline.add_field("soft_time_limit_exceeded", True)
+    with beeline.tracer(name="process_feed"):
+        statsd.incr("process_feed")
+        f = Feed.objects.get(id=feed_id)
+        beeline.add_context({'feed_title': f.title})
+        try:
+            f.fetch()
+            beeline.add_context_field("fetch_success", True)
+        except SoftTimeLimitExceeded:
+            f.fetch_failed()
+            beeline.add_context_field("fetch_success", False)
+            beeline.add_context_field("soft_time_limit_exceeded", True)
 
 
 @periodic_task(run_every=crontab(hour="*", minute="*", day_of_week="*"))
@@ -87,27 +89,28 @@ def schedule_feeds():
     not just ones in the two minute window.
 
     """
-    print("schedule_feeds()")
-    statsd.incr("schedule_feeds")
-    now = datetime.utcnow().replace(tzinfo=utc)
-    if now.minute == 0:
-        for f in Feed.objects.filter(
-                next_fetch__lt=now).order_by("next_fetch"):
-            process_feed.apply_async(
-                args=[f.id], time_limit=10, soft_time_limit=6)
-    else:
-        for f in Feed.objects.filter(
-            next_fetch__lt=now,
-            next_fetch__gt=(
-                now - timedelta(minutes=5))).order_by("next_fetch"):
-            process_feed.apply_async(
-                args=[f.id], time_limit=10, soft_time_limit=6)
+    with beeline.tracer(name="schedule_feeds"):
+        statsd.incr("schedule_feeds")
+        now = datetime.utcnow().replace(tzinfo=utc)
+        if now.minute == 0:
+            beeline.add_context_field('hourly_catchup', True)
+            for f in Feed.objects.filter(
+                    next_fetch__lt=now).order_by("next_fetch"):
+                process_feed.apply_async(
+                    args=[f.id], time_limit=10, soft_time_limit=6)
+        else:
+            for f in Feed.objects.filter(
+                    next_fetch__lt=now,
+                    next_fetch__gt=(
+                        now - timedelta(minutes=5))).order_by("next_fetch"):
+                process_feed.apply_async(
+                    args=[f.id], time_limit=10, soft_time_limit=6)
 
 
 @periodic_task(run_every=crontab(hour="*", minute="*/5", day_of_week="*"))
 def expunge_uentries():
-    statsd.incr("expunge_uentries")
     """ clear out all the uentries that have been read """
+    statsd.incr("expunge_uentries")
     UEntry.objects.filter(read=True).delete()
 
 

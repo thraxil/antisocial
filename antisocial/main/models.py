@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import beeline
 import feedparser
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
@@ -31,6 +32,7 @@ class Feed(models.Model):
             )
             # TODO: backfill entries
 
+    @beeline.traced(name="schedule_next_fetch")
     def schedule_next_fetch(self):
         # hours to back off for failing feeds
         BACKOFF_SCHEDULE = [1, 2, 5, 10, 20, 50, 100]
@@ -44,22 +46,28 @@ class Feed(models.Model):
         self.next_fetch = now + delta
         self.save()
 
+    @beeline.traced(name="fetch_failed")
     def fetch_failed(self):
         statsd.incr("fetch_failed")
         now = datetime.utcnow().replace(tzinfo=utc)
         self.last_failed = now
         self.backoff = self.backoff + 1
         self.save()
+        beeline.add_context_field('backoff', self.backoff)
 
+    @beeline.traced(name="validate_fetch")
     def validate_fetch(self, d):
         if 'status' in d and d.status == 404:
+            beeline.add_context_field('d_status', "404")
             self.fetch_failed()
             return False
         if 'status' in d and d.status == 410:
             # 410 == GONE
+            beeline.add_context_field('d_status', "410")
             self.fetch_failed()
             return False
         if 'entries' not in d:
+            beeline.add_context_field('no_entries', True)
             self.fetch_failed()
             return False
         return True
@@ -69,6 +77,7 @@ class Feed(models.Model):
         if guid != self.guid:
             self.guid = guid[:256]
 
+    @beeline.traced(name="try_fetch")
     def try_fetch(self):
         statsd.incr("try_fetch")
         d = feedparser.parse(self.url, etag=self.etag,
@@ -96,10 +105,12 @@ class Feed(models.Model):
         if 'etag' in d:
             self.etag = d.etag
 
+    @beeline.traced(name="update_entries")
     def update_entries(self, d):
         for entry in d.entries:
             self.update_entry(entry)
 
+    @beeline.traced(name="fetch")
     def fetch(self):
         statsd.incr("fetch")
         now = datetime.utcnow().replace(tzinfo=utc)
@@ -115,16 +126,21 @@ class Feed(models.Model):
             self.fetch_failed()
         self.schedule_next_fetch()
 
+    @beeline.traced(name="update_entry")
     def update_entry(self, entry):
         statsd.incr("update_entry")
         guid = get_entry_guid(entry)
         if not guid:
             # no guid? can't do anything with it
+            beeline.add_context_field("no_guid", True)
             return
+        beeline.add_context_field("guid", guid)
         r = self.entry_set.filter(guid=guid[:256])
         if r.count() > 0:
             # already have this one, so nothing to do
+            beeline.add_context_field("seen_entry", True)
             return
+        beeline.add_context_field("seen_entry", False)
         published = extract_published(entry)
         try:
             statsd.incr("create_entry")
@@ -168,10 +184,12 @@ class Entry(models.Model):
     author = models.CharField(max_length=256)
     published = models.DateTimeField()
 
+    @beeline.traced(name="fanout")
     def fanout(self):
         """ new entry. spread it to subscribers """
         for s in self.feed.subscription_set.all():
             statsd.incr("create_uentry")
+            beeline.add_rollup_field("uentries_created", 1)
             UEntry.objects.create(
                 entry=self,
                 user=s.user)
