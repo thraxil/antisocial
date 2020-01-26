@@ -49,7 +49,6 @@ def start_celery_trace(task_id, task, args, kwargs, **rest_args):
 
 @task_postrun.connect
 def end_celery_trace(task, state, **kwargs):
-    print('end_celery_trace()')
     beeline.add_field("celery.status", state)
     beeline.finish_trace(task.request.trace)
 
