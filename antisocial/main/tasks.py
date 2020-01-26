@@ -6,10 +6,47 @@ from datetime import datetime
 from datetime import timedelta
 from django.utils.timezone import utc
 from django_statsd.clients import statsd
+import beeline
 import feedparser
+import logging
+import os
 import socket
 from .models import Feed, UEntry
 from .utils import get_feed_guid
+from celery.signals import worker_process_init, task_prerun, task_postrun
+from django.conf import settings
+
+
+@worker_process_init.connect
+def initialize_honeycomb(**kwargs):
+    if settings.HONEYCOMB_WRITEKEY and settings.HONEYCOMB_DATASET:
+        logging.info(f'beeline initialization in process pid {os.getpid()}')
+        beeline.init(
+            writekey=settings.HONEYCOMB_WRITEKEY,
+            dataset=settings.HONEYCOMB_DATASET,
+            service_name='celery'
+        )
+
+
+@task_prerun.connect
+def start_celery_trace(task_id, task, args, kwargs, **rest_args):
+    queue_name = task.request.delivery_info.get("exchange", None)
+    task.request.trace = beeline.start_trace(
+        context={
+            "name": "celery",
+            "celery.task_id": task_id,
+            "celery.args": args,
+            "celery.kwargs": kwargs,
+            "celery.task_name": task.name,
+            "celery.queue": queue_name,
+        }
+    )
+
+
+@task_postrun.connect
+def end_celery_trace(task, state, **kwargs):
+    beeline.add_field("celery.status", state)
+    beeline.finish_trace(task.request.trace)
 
 
 @task(ignore_result=True, time_limit=10, soft_time_limit=6)
