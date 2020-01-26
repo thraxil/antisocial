@@ -19,6 +19,7 @@ from django.conf import settings
 
 @worker_process_init.connect
 def initialize_honeycomb(**kwargs):
+    logging.info(f'initialize_honeycomb()')
     if settings.HONEYCOMB_WRITEKEY and settings.HONEYCOMB_DATASET:
         logging.info(f'beeline initialization in process pid {os.getpid()}')
         beeline.init(
@@ -26,10 +27,13 @@ def initialize_honeycomb(**kwargs):
             dataset=settings.HONEYCOMB_DATASET,
             service_name='celery'
         )
+    else:
+        logging.info(f'no honeycomb settings, so skip initializing them')
 
 
 @task_prerun.connect
 def start_celery_trace(task_id, task, args, kwargs, **rest_args):
+    logging.info('start_celery_trace()')
     queue_name = task.request.delivery_info.get("exchange", None)
     task.request.trace = beeline.start_trace(
         context={
@@ -45,6 +49,7 @@ def start_celery_trace(task_id, task, args, kwargs, **rest_args):
 
 @task_postrun.connect
 def end_celery_trace(task, state, **kwargs):
+    logging.info('end_celery_trace()')
     beeline.add_field("celery.status", state)
     beeline.finish_trace(task.request.trace)
 
