@@ -25,7 +25,7 @@ if [ "$1" == "shell" ]; then
 fi
 
 if [ "$1" == "worker" ]; then
-    exec /ve/bin/celery worker -A $APP -l info
+    exec /ve/bin/celery worker -A $APP -l info -E
 fi
 
 if [ "$1" == "beat" ]; then
