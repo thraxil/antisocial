@@ -57,8 +57,11 @@ def process_feed(feed_id):
     f = Feed.objects.get(id=feed_id)
     try:
         f.fetch()
+        beeline.add_field("fetch_success", True)
     except SoftTimeLimitExceeded:
         f.fetch_failed()
+        beeline.add_field("fetch_success", False)
+        beeline.add_field("soft_time_limit_exceeded", True)
 
 
 @periodic_task(run_every=crontab(hour="*", minute="*", day_of_week="*"))
