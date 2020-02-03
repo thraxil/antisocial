@@ -127,7 +127,7 @@ django-statsd-mozilla==0.4.0
 
 django-markwhat==1.6.2
 
-django-storages==1.8
+django-storages==1.9
 
 django-cacheds3storage==0.2.1
 
