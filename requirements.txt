@@ -14,7 +14,7 @@ mccabe==0.6.1
 pyflakes==2.1.1
 pycodestyle==2.5.0
 
-enum34==1.1.8
+enum34==1.1.9
 configparser==4.0.2
 flake8==3.7.9
 
