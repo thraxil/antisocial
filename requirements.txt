@@ -22,7 +22,7 @@ cssselect==1.1.0
 lxml==4.5.0
 sure==1.4.11
 
-rdflib==4.2.2
+rdflib==5.0.0
 
 coverage==5.1
 
