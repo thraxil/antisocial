@@ -1,4 +1,4 @@
-Django==3.0.5
+Django==3.0.6
 
 pytz==2020.1
 
