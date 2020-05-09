@@ -129,6 +129,6 @@ django-markwhat==1.6.2
 
 django-storages==1.8
 
-thraxilsettings==3.2.0
+thraxilsettings==3.2.1
 
 honeycomb-beeline==2.12.1
