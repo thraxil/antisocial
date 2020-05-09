@@ -27,7 +27,7 @@ def initialize_honeycomb(**kwargs):
             service_name='celery'
         )
     else:
-        logging.info(f'no honeycomb settings, so skip initializing them')
+        logging.info('no honeycomb settings, so skip initializing them')
 
 
 @task_prerun.connect
