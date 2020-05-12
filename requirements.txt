@@ -16,7 +16,7 @@ pycodestyle==2.5.0
 
 enum34==1.1.10
 configparser==5.0.0
-flake8==3.7.9
+flake8==3.8.1
 
 cssselect==1.1.0
 lxml==4.5.0
