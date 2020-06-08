@@ -117,7 +117,7 @@ django-debug-toolbar==2.2
 django-jenkins==0.110.0
 django-smoketest==1.1.2
 
-django-guardian==2.2.0
+django-guardian==2.3.0
 
 easy-thumbnails==2.7
 
