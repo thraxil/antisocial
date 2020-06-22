@@ -110,7 +110,7 @@ django-compressor==2.4
 
 django-bootstrap-form==3.4
 
-django-waffle==0.20.0
+django-waffle==1.0.0
 
 django-debug-toolbar==2.2
 
