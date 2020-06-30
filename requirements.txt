@@ -34,7 +34,7 @@ pylint==2.5.3
 six==1.15.0
 opml==0.5
 
-Pillow==7.1.2
+Pillow==7.2.0
 
 pytz==2020.1
 
