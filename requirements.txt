@@ -131,4 +131,4 @@ django-storages==1.9.1
 
 thraxilsettings==3.2.2
 
-honeycomb-beeline==2.12.1
+honeycomb-beeline==2.12.2
