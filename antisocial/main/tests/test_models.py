@@ -1,6 +1,7 @@
 from django.test import TestCase
 from antisocial.main.models import Feed, Entry, extract_published
 from datetime import datetime, timedelta
+from django.utils.timezone import utc
 
 
 def feed_factory():
@@ -8,9 +9,9 @@ def feed_factory():
         url="http://example.com/",
         guid="1234",
         title="test feed",
-        last_fetched=datetime.now(),
-        last_failed=datetime.now(),
-        next_fetch=datetime.now() + timedelta(hours=1)
+        last_fetched=datetime.utcnow().replace(tzinfo=utc),
+        last_failed=datetime.utcnow().replace(tzinfo=utc),
+        next_fetch=datetime.utcnow().replace(tzinfo=utc) + timedelta(hours=1)
     )
 
 
@@ -21,7 +22,7 @@ def entry_factory(f):
         title="test entry",
         link="http://example.com/entry",
         author="test author",
-        published=datetime.now(),
+        published=datetime.utcnow().replace(tzinfo=utc),
     )
 
 
