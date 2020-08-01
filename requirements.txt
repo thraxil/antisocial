@@ -132,3 +132,11 @@ django-storages==1.9.1
 thraxilsettings==3.2.2
 
 honeycomb-beeline==2.12.2
+
+# transitive deps
+
+asgiref==3.2.10
+chardet==3.0.4 # requests
+idna==2.10 # requests
+libhoney==1.9.0 # honeycomb-beeline
+urllib3==1.25.10 # requests
