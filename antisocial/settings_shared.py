@@ -51,6 +51,7 @@ GZIP_CONTENT_TYPES = (
 )
 COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 AWS_IS_GZIPPED = True
+AWS_DEFAULT_ACL = 'public-read'
 
 # default off
 HONEYCOMB_WRITEKEY = None
