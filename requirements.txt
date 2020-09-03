@@ -28,7 +28,7 @@ coverage==5.2.1
 
 requests==2.24.0
 
-logilab-common==1.7.2
+logilab-common==1.7.3
 
 pylint==2.6.0
 six==1.15.0
