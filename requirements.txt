@@ -3,7 +3,7 @@ Django==3.1.1
 pytz==2020.1
 
 httplib2==0.18.1
-feedparser==6.0.0
+feedparser==6.0.1
 Markdown==3.0.1 # pyup: <3.1
 
 psycopg2-binary==2.8.6
