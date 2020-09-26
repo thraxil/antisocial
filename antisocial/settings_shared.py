@@ -11,8 +11,6 @@ locals().update(common(app='antisocial', base=base))
 ALLOWED_HOSTS += ['.thraxil.org', '127.0.0.1']  # noqa
 
 INSTALLED_APPS += [  # noqa
-    'guardian',
-    'easy_thumbnails',
     'bootstrap3',
     'bootstrapform',
 
@@ -30,7 +28,6 @@ PROJECT_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'guardian.backends.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 

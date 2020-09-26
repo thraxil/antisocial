@@ -3,7 +3,8 @@ Django==3.1.1
 pytz==2020.1
 
 httplib2==0.18.1
-feedparser==6.0.1
+sgmllib3k==1.0.0
+feedparser==5.2.1
 Markdown==3.0.1 # pyup: <3.1
 
 psycopg2-binary==2.8.6
@@ -117,11 +118,6 @@ django-debug-toolbar==3.1.1
 django-jenkins==0.110.0
 django-smoketest==1.1.2
 
-django-guardian==2.3.0
-
-easy-thumbnails==2.7
-
-django-userena==2.0.1
 django-picklefield==3.0.1
 django-statsd-mozilla==0.4.0
 
