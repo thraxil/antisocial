@@ -131,7 +131,7 @@ honeycomb-beeline==2.13.1
 
 # transitive deps
 
-asgiref==3.2.10
+asgiref==3.3.0
 chardet==3.0.4 # requests
 idna==2.10 # requests
 libhoney==1.10.0 # honeycomb-beeline
