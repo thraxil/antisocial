@@ -72,7 +72,7 @@ SPARQLWrapper==1.8.5
 argparse==1.4.0
 backports-abc==0.5
 backports.ssl-match-hostname==3.7.0.1
-certifi==2020.11.8
+certifi==2020.12.5
 
 decorator==4.4.2
 
