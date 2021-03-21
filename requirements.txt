@@ -20,7 +20,7 @@ configparser==5.0.2
 flake8==3.9.0
 
 cssselect==1.1.0
-lxml==4.6.2
+lxml==4.6.3
 sure==1.4.11
 
 rdflib==5.0.0
