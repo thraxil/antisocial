@@ -12,7 +12,7 @@ versiontools==1.9.1
 pep8==1.7.1
 mccabe==0.6.1
 
-pyflakes==2.3.0
+pyflakes==2.3.1
 pycodestyle==2.6.0
 
 enum34==1.1.10
