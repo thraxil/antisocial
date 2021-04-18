@@ -107,7 +107,7 @@ django-appconf==1.0.4
 
 django-bootstrap3==15.0.0
 
-django-compressor==2.4
+django-compressor==2.4.1
 
 django-bootstrap-form==3.4
 
