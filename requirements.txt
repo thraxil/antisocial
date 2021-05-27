@@ -135,4 +135,4 @@ asgiref==3.3.4
 chardet==4.0.0 # requests
 idna==3.1 # requests
 libhoney==1.10.0 # honeycomb-beeline
-urllib3==1.26.4 # requests
+urllib3==1.26.5 # requests
