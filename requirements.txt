@@ -58,7 +58,7 @@ statsd==3.3.0
 gunicorn==20.1.0
 
 pycryptodome==3.10.1
-ecdsa==0.16.1
+ecdsa==0.17.0
 
 sqlparse==0.4.1
 
