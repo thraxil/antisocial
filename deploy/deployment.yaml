@@ -1,0 +1,118 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: antisocial-worker
+  labels:
+    app: antisocial-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: antisocial-worker
+  template:
+    metadata:
+      labels:
+        app: antisocial-worker
+    spec:
+      volumes:
+        - name: config-volume
+          secret:
+            secretName: antisocial-config
+      initContainers:
+        - image: <IMAGE>
+          name: migrate
+          command: [ "/run.sh", "migrate" ]
+          envFrom:
+            - secretRef:
+                name: antisocial-secret
+            - configMapRef:
+                name: antisocial-config
+        - image: <IMAGE>
+          name: collectstatic
+          command: [ "/run.sh", "collectstatic" ]
+          envFrom:
+            - secretRef:
+                name: antisocial-secret
+            - configMapRef:
+                name: antisocial-config
+        - image: <IMAGE>
+          name: compress
+          command: [ "/run.sh", "compress" ]
+          envFrom:
+            - secretRef:
+                name: antisocial-secret
+            - configMapRef:
+                name: antisocial-config
+      containers:
+        - image: <IMAGE>
+          name: antisocial
+          command: [ "/run.sh", "worker" ]
+          envFrom:
+            - secretRef:
+                name: antisocial-secret
+            - configMapRef:
+                name: antisocial-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: antisocial-beat
+  labels:
+    app: antisocial-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: antisocial-beat
+  template:
+    metadata:
+      labels:
+        app: antisocial-beat
+    spec:
+      volumes:
+        - name: config-volume
+          secret:
+            secretName: antisocial-config
+      containers:
+        - image: <IMAGE>
+          name: antisocial
+          command: [ "/run.sh", "beat" ]
+          envFrom:
+            - secretRef:
+                name: antisocial-secret
+            - configMapRef:
+                name: antisocial-config
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: antisocial-app
+  labels:
+    app: antisocial
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: antisocial
+  template:
+    metadata:
+      labels:
+        app: antisocial
+    spec:
+      volumes:
+        - name: config-volume
+          secret:
+            secretName: antisocial-config
+      containers:
+        - image: <IMAGE>
+          name: antisocial
+          envFrom:
+            - secretRef:
+                name: antisocial-secret
+            - configMapRef:
+                name: antisocial-config
+          ports:
+            - containerPort: 8000
+              name: gunicorn

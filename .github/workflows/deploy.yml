@@ -8,25 +8,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+
     - name: Build docker image
       run: docker build -t thraxil/antisocial:${{ github.sha }} .
+
     - name: docker login
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
     - name: docker push
       run: docker push thraxil/antisocial:${{ github.sha }}
-    - name: deploy
-      uses: thraxil/django-deploy-action@master
-      env:
-        APP: antisocial
-        KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
-        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        SSH_USER: anders
-        WEB_HOSTS: ${{ secrets.WEB_HOSTS }}
-        CELERY_HOSTS: ${{ secrets.CELERY_HOSTS }}
-        BEAT_HOSTS: ${{ secrets.BEAT_HOSTS }}
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Update deployment file
+      run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<IMAGE>|thraxil/antisocial:'${TAG}'|' $GITHUB_WORKSPACE/deploy/deployment.yaml
+
+    - name: Save DigitalOcean kubeconfig with short-lived credentials
+      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-1-20-2-do-0-nyc1-1622379350500
+
+    - name: Deploy to DigitalOcean Kubernetes
+      run: kubectl apply -f $GITHUB_WORKSPACE/deploy/deployment.yaml
+
+    - name: Verify deployment
+      run: kubectl rollout status deployment/antisocial-app
+
     - name: sentry release
       uses: juankaram/sentry-release@master
       env:
