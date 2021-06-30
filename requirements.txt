@@ -61,7 +61,7 @@ ecdsa==0.17.0
 
 sqlparse==0.4.1
 
-astroid==2.6.1
+astroid==2.6.2
 
 html2text==2020.1.16
 
