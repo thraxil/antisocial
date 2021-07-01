@@ -30,7 +30,7 @@ requests==2.25.1
 
 logilab-common==1.8.1
 
-pylint==2.9.1
+pylint==2.9.2
 six==1.16.0
 opml==0.5
 
