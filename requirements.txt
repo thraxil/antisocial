@@ -59,7 +59,7 @@ gunicorn==20.1.0
 pycryptodome==3.10.1
 ecdsa==0.17.0
 
-sqlparse==0.4.1
+sqlparse==0.4.2
 
 astroid==2.7.3
 
