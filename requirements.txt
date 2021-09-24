@@ -102,7 +102,7 @@ singledispatch==3.7.0
 traitlets==4.3.3
 wrapt==1.12.1
 
-django-appconf==1.0.4
+django-appconf==1.0.5
 
 django-bootstrap3==15.0.0
 
