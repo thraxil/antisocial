@@ -22,7 +22,7 @@ flake8==3.9.2
 cssselect==1.1.0
 lxml==4.6.3
 
-rdflib==5.0.0
+rdflib==6.0.2
 
 coverage==6.0.1
 
