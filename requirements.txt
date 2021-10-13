@@ -132,6 +132,6 @@ honeycomb-beeline==2.17.1
 
 asgiref==3.4.1
 chardet==4.0.0 # requests
-idna==3.2 # requests
+idna==3.3 # requests
 libhoney==1.10.0 # honeycomb-beeline
 urllib3==1.26.7 # requests
