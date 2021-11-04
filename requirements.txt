@@ -104,7 +104,7 @@ wrapt==1.13.3
 
 django-appconf==1.0.5
 
-django-bootstrap3==15.0.0
+django-bootstrap3==21.1
 
 django-compressor==2.4.1
 
