@@ -47,7 +47,7 @@ amqp==5.0.6
 
 amqplib==1.0.2
 
-pyparsing==3.0.5
+pyparsing==3.0.6
 
 kombu==4.6.11
 
