@@ -65,7 +65,7 @@ astroid==2.8.5
 
 html2text==2020.1.16
 
-boto3==1.20.7
+boto3==1.20.8
 raven==6.10.0
 SPARQLWrapper==1.8.5
 argparse==1.4.0
