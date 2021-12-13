@@ -80,7 +80,7 @@ colorama==0.4.4
 funcsigs==1.0.2
 html5lib==1.1
 ipython-genutils==0.2.0
-isodate==0.6.0
+isodate==0.6.1
 keepalive==0.5
 
 mock==4.0.3
