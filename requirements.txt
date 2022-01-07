@@ -73,7 +73,7 @@ backports-abc==0.5
 backports.ssl-match-hostname==3.7.0.1
 certifi==2021.10.8
 
-decorator==5.1.0
+decorator==5.1.1
 
 colorama==0.4.4
 
