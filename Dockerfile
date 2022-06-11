@@ -1,4 +1,4 @@
-FROM thraxil/django.base:2020-01-20-46ffcccd02f7
+FROM thraxil/django.base:2022-06-11-1117f68671b75
 COPY docker-run.sh /run.sh
 COPY package.json /node/
 RUN cd /node && npm install && touch /node/node_modules/sentinal
