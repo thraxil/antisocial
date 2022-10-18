@@ -21,27 +21,27 @@ jobs:
     - name: docker push
       run: docker push thraxil/antisocial:${{ github.sha }}
 
-    - name: Install doctl
-      uses: digitalocean/action-doctl@v2
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    # - name: Install doctl
+    #   uses: digitalocean/action-doctl@v2
+    #   with:
+    #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-    - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<IMAGE>|thraxil/antisocial:'${TAG}'|' $GITHUB_WORKSPACE/deploy/deployment.yaml
+    # - name: Update deployment file
+    #   run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<IMAGE>|thraxil/antisocial:'${TAG}'|' $GITHUB_WORKSPACE/deploy/deployment.yaml
 
-    - name: Save DigitalOcean kubeconfig with short-lived credentials
-      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-1-20-2-do-0-nyc1-1622379350500
+    # - name: Save DigitalOcean kubeconfig with short-lived credentials
+    #   run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-1-20-2-do-0-nyc1-1622379350500
 
-    - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/deploy/deployment.yaml
+    # - name: Deploy to DigitalOcean Kubernetes
+    #   run: kubectl apply -f $GITHUB_WORKSPACE/deploy/deployment.yaml
 
-    - name: Verify deployment
-      run: kubectl rollout status deployment/antisocial-app
+    # - name: Verify deployment
+    #   run: kubectl rollout status deployment/antisocial-app
 
-    - name: sentry release
-      uses: juankaram/sentry-release@master
-      env:
-        ENVIRONMENT: production
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: thraxil
-        SENTRY_PROJECT: antisocial
+    # - name: sentry release
+    #   uses: juankaram/sentry-release@master
+    #   env:
+    #     ENVIRONMENT: production
+    #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    #     SENTRY_ORG: thraxil
+    #     SENTRY_PROJECT: antisocial
