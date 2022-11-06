@@ -51,7 +51,6 @@ pyparsing==3.0.8
 kombu==4.6.11
 
 celery==4.4.7
-statsd==3.3.0
 
 gunicorn==20.1.0
 
@@ -116,13 +115,12 @@ django-jenkins==0.110.0
 django-smoketest==1.2.0
 
 django-picklefield==3.1
-django-statsd-mozilla==0.4.0
 
 django-markwhat==1.6.2
 
 django-storages==1.13.1
 
-thraxilsettings==3.3.1
+thraxilsettings==4.0.0
 
 honeycomb-beeline==3.4.2
 

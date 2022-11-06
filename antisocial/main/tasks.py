@@ -5,7 +5,6 @@ from celery.task.schedules import crontab
 from datetime import datetime
 from datetime import timedelta
 from django.utils.timezone import utc
-from django_statsd.clients import statsd
 import beeline
 import feedparser
 import logging
@@ -54,7 +53,6 @@ def end_celery_trace(task, state, **kwargs):
 @task(ignore_result=True, time_limit=10, soft_time_limit=6)
 def process_feed(feed_id):
     with beeline.tracer(name="process_feed"):
-        statsd.incr("process_feed")
         f = Feed.objects.get(id=feed_id)
         beeline.add_context({'feed_title': f.title})
         try:
@@ -90,7 +88,6 @@ def schedule_feeds():
 
     """
     with beeline.tracer(name="schedule_feeds"):
-        statsd.incr("schedule_feeds")
         now = datetime.utcnow().replace(tzinfo=utc)
         if now.minute == 0:
             beeline.add_context_field('hourly_catchup', True)
@@ -110,7 +107,6 @@ def schedule_feeds():
 @periodic_task(run_every=crontab(hour="*", minute="*/5", day_of_week="*"))
 def expunge_uentries():
     """ clear out all the uentries that have been read """
-    statsd.incr("expunge_uentries")
     UEntry.objects.filter(read=True).delete()
 
 
@@ -127,7 +123,6 @@ def remove_duplicate_feeds():
     for f in Feed.objects.all().order_by("-last_fetched"):
         if f.guid in guids:
             # we've seen it before, so it's a duplicate
-            statsd.incr("duplicate_feeds")
             duplicates.append(f)
         guids.add(f.guid)
     for f in duplicates:
@@ -142,7 +137,6 @@ BLACKLIST = [
 
 @task(ignore_result=True)
 def add_feed(url, user=None):
-    statsd.incr("add_feed")
     if url in BLACKLIST:
         return
     r = Feed.objects.filter(url=url[:200])

@@ -2,7 +2,6 @@ import django.views.static
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
-from django.views.generic import TemplateView
 from antisocial.main.views import (
     index, subscriptions, subscription, subscription_mark_read, entries,
     unsubscribe, add_subscription, subscription_fetch, subscribe, entry_api,
@@ -28,7 +27,6 @@ urlpatterns = [
     url(r'^accounts/', include('django.contrib.auth.urls')),
 
     url(r'smoketest/', include('smoketest.urls')),
-    url(r'^stats/$', TemplateView.as_view(template_name="stats.html")),
     url(r'^uploads/(?P<path>.*)$', django.views.static.serve,
         {'document_root': settings.MEDIA_ROOT}),
 ]
