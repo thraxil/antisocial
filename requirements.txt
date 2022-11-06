@@ -51,7 +51,7 @@ pyparsing==3.0.8
 kombu==4.6.11
 
 celery==4.4.7
-statsd==3.3.0
+statsd==4.0.0
 
 gunicorn==20.1.0
 
