@@ -54,7 +54,7 @@ celery==4.4.7
 
 gunicorn==20.1.0
 
-pycryptodome==3.14.1
+pycryptodome==3.16.0
 ecdsa==0.18.0
 
 sqlparse==0.4.3
