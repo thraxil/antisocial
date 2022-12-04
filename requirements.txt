@@ -109,7 +109,7 @@ django-bootstrap-form==3.4
 
 django-waffle==3.0.0
 
-django-debug-toolbar==3.7.0
+django-debug-toolbar==3.8.1
 
 django-jenkins==0.110.0
 django-smoketest==1.2.0
