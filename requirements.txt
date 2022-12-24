@@ -118,7 +118,7 @@ django-picklefield==3.1
 
 django-markwhat==1.6.2
 
-django-storages==1.13.1
+django-storages==1.13.2
 
 thraxilsettings==4.0.1
 
