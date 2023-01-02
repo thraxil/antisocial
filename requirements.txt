@@ -95,7 +95,7 @@ ptyprocess==0.7.0
 rcssmin==1.1.0
 rjsmin==1.2.0
 simplegeneric==0.8.1
-singledispatch==3.7.0
+singledispatch==4.0.0
 traitlets==5.7.1
 wrapt==1.14.1
 
