@@ -24,7 +24,7 @@ lxml==4.9.2
 
 rdflib==6.2.0
 
-coverage==7.0.1
+coverage==7.0.2
 
 requests==2.28.1
 
