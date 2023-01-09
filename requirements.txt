@@ -80,7 +80,7 @@ html5lib==1.1
 ipython-genutils==0.2.0
 isodate==0.6.1
 
-mock==5.0.0
+mock==5.0.1
 
 lazy-object-proxy==1.9.0
 
