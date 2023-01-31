@@ -7,8 +7,6 @@ PIP ?= $(VE)/bin/pip3
 SENTINAL ?= $(VE)/sentinal
 WHEEL_VERSION ?= 0.30.0
 REQUIREMENTS ?= requirements.txt
-VIRTUALENV ?= virtualenv.py
-SUPPORT_DIR ?= requirements/virtualenv_support/
 WHEELHOUSE ?= wheelhouse
 TAG ?= latest
 
