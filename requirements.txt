@@ -126,6 +126,7 @@ honeycomb-beeline==3.5.1
 
 # transitive deps
 
+statsd==4.0.1 # honeycomb-beeline
 asgiref==3.4.1
 chardet==5.1.0 # requests
 idna==3.4 # requests
