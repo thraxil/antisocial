@@ -30,7 +30,6 @@ requests==2.28.2
 
 logilab-common==1.9.7
 
-pylint==2.15.10
 six==1.16.0
 opml==0.5
 
@@ -58,8 +57,6 @@ pycryptodome==3.17
 ecdsa==0.18.0
 
 sqlparse==0.4.3
-
-astroid==2.14.1
 
 html2text==2020.1.16
 
