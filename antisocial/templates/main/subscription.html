@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load markup %}
 {% block content %}
 
 <h2>{{feed.title}}</h2>
@@ -63,7 +62,7 @@
 	<div class="span2">{{entry.published}}</div>
 
 	<div class="span10">
-		{{entry.description|markdown}}
+		{{entry.description}}
 	</div>
 </div>
 {% endif %}

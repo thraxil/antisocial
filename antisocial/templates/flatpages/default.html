@@ -8,9 +8,6 @@
 {% endcomment %}
 
 
-{% load markup %}
-{% load thumbnail %}
-
 {% block title %}{{ flatpage.title }}{% endblock %}
 
 {% block usernav %}
@@ -81,5 +78,5 @@
 {% endblock %}
 
 {% block content %}
-{{ flatpage.content}}<!-- temporary removal of |markdown -->
+{{ flatpage.content}}
 {% endblock %}
