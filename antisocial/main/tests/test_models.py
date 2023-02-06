@@ -1,7 +1,9 @@
-from django.test import TestCase
-from antisocial.main.models import Feed, Entry, extract_published
 from datetime import datetime, timedelta
+
+from django.test import TestCase
 from django.utils.timezone import utc
+
+from antisocial.main.models import Entry, Feed, extract_published
 
 
 def feed_factory():
@@ -11,7 +13,7 @@ def feed_factory():
         title="test feed",
         last_fetched=datetime.utcnow().replace(tzinfo=utc),
         last_failed=datetime.utcnow().replace(tzinfo=utc),
-        next_fetch=datetime.utcnow().replace(tzinfo=utc) + timedelta(hours=1)
+        next_fetch=datetime.utcnow().replace(tzinfo=utc) + timedelta(hours=1),
     )
 
 
@@ -59,15 +61,15 @@ class TestFeed(TestCase):
 
     def test_update_etag(self):
         f = feed_factory()
-        d = DictObj(etag='new one')
+        d = DictObj(etag="new one")
         f.update_etag(d)
-        self.assertEqual(f.etag, 'new one')
+        self.assertEqual(f.etag, "new one")
 
     def test_update_modified(self):
         f = feed_factory()
-        d = DictObj(modified='new one')
+        d = DictObj(modified="new one")
         f.update_modified(d)
-        self.assertEqual(f.modified, 'new one')
+        self.assertEqual(f.modified, "new one")
 
     def test_update_entry_already_exists(self):
         f = feed_factory()

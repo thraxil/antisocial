@@ -1,38 +1,40 @@
 import django.views.static
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.conf import settings
-from antisocial.main.views import (
-    index, subscriptions, subscription, subscription_mark_read, entries,
-    unsubscribe, add_subscription, subscription_fetch, subscribe, entry_api,
-    import_feeds
-)
+
+from antisocial.main.views import (add_subscription, entries, entry_api,
+                                   import_feeds, index, subscribe,
+                                   subscription, subscription_fetch,
+                                   subscription_mark_read, subscriptions,
+                                   unsubscribe)
 
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', index),
-    url(r'^subscriptions/$', subscriptions),
-    url(r'^subscriptions/(?P<id>\d+)/$', subscription),
-    url(r'^subscriptions/(?P<id>\d+)/mark_read/$', subscription_mark_read),
-    url(r'^subscriptions/(?P<id>\d+)/fetch/$', subscription_fetch),
-    url(r'^subscriptions/(?P<id>\d+)/unsubscribe/$', unsubscribe),
-    url(r'^subscriptions/(?P<id>\d+)/subscribe/$', subscribe),
-    url(r'^subscriptions/add/$', add_subscription),
-    url(r'^subscriptions/import/$', import_feeds),
-
-    url(r'api/entries/$', entries),
-    url(r'api/entry/(?P<id>\d+)/$', entry_api),
-
-    url(r'^accounts/', include('django.contrib.auth.urls')),
-
-    url(r'smoketest/', include('smoketest.urls')),
-    url(r'^uploads/(?P<path>.*)$', django.views.static.serve,
-        {'document_root': settings.MEDIA_ROOT}),
+    url(r"^$", index),
+    url(r"^subscriptions/$", subscriptions),
+    url(r"^subscriptions/(?P<id>\d+)/$", subscription),
+    url(r"^subscriptions/(?P<id>\d+)/mark_read/$", subscription_mark_read),
+    url(r"^subscriptions/(?P<id>\d+)/fetch/$", subscription_fetch),
+    url(r"^subscriptions/(?P<id>\d+)/unsubscribe/$", unsubscribe),
+    url(r"^subscriptions/(?P<id>\d+)/subscribe/$", subscribe),
+    url(r"^subscriptions/add/$", add_subscription),
+    url(r"^subscriptions/import/$", import_feeds),
+    url(r"api/entries/$", entries),
+    url(r"api/entry/(?P<id>\d+)/$", entry_api),
+    url(r"^accounts/", include("django.contrib.auth.urls")),
+    url(r"smoketest/", include("smoketest.urls")),
+    url(
+        r"^uploads/(?P<path>.*)$",
+        django.views.static.serve,
+        {"document_root": settings.MEDIA_ROOT},
+    ),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        url(r"^__debug__/", include(debug_toolbar.urls)),
     ]

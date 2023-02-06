@@ -1,1 +1,1 @@
-default_app_config = 'antisocial.main.apps.MainConfig'
+default_app_config = "antisocial.main.apps.MainConfig"

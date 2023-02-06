@@ -1,12 +1,14 @@
-from django.db import models
-from django.contrib.auth.models import User
+import random
+from datetime import datetime, timedelta
+from time import mktime
+
 import beeline
 import feedparser
-from datetime import datetime, timedelta
+from django.contrib.auth.models import User
+from django.db import models
 from django.utils.timezone import utc
-import random
-from time import mktime
-from .utils import get_feed_guid, get_entry_guid
+
+from .utils import get_entry_guid, get_feed_guid
 
 
 class Feed(models.Model):
@@ -36,10 +38,11 @@ class Feed(models.Model):
         # hours to back off for failing feeds
         BACKOFF_SCHEDULE = [1, 2, 5, 10, 20, 50, 100]
         # exponentially back off failing feeds
-        backoff = BACKOFF_SCHEDULE[min(self.backoff,
-                                       len(BACKOFF_SCHEDULE) - 1)]
+        backoff = BACKOFF_SCHEDULE[
+            min(self.backoff, len(BACKOFF_SCHEDULE) - 1)
+        ]
         # avoid thundering herd
-        skew = random.randint(0, 60)
+        skew = random.randint(0, 60)  # nosec
         delta = timedelta(hours=backoff, minutes=skew)
         now = datetime.utcnow().replace(tzinfo=utc)
         self.next_fetch = now + delta
@@ -51,21 +54,21 @@ class Feed(models.Model):
         self.last_failed = now
         self.backoff = self.backoff + 1
         self.save()
-        beeline.add_context_field('backoff', self.backoff)
+        beeline.add_context_field("backoff", self.backoff)
 
     @beeline.traced(name="validate_fetch")
     def validate_fetch(self, d):
-        if 'status' in d and d.status == 404:
-            beeline.add_context_field('d_status', "404")
+        if "status" in d and d.status == 404:
+            beeline.add_context_field("d_status", "404")
             self.fetch_failed()
             return False
-        if 'status' in d and d.status == 410:
+        if "status" in d and d.status == 410:
             # 410 == GONE
-            beeline.add_context_field('d_status', "410")
+            beeline.add_context_field("d_status", "410")
             self.fetch_failed()
             return False
-        if 'entries' not in d:
-            beeline.add_context_field('no_entries', True)
+        if "entries" not in d:
+            beeline.add_context_field("no_entries", True)
             self.fetch_failed()
             return False
         return True
@@ -77,9 +80,8 @@ class Feed(models.Model):
 
     @beeline.traced(name="try_fetch")
     def try_fetch(self):
-        d = feedparser.parse(self.url, etag=self.etag,
-                             modified=self.modified)
-        if 'title' in d.feed and d.feed.title != self.title:
+        d = feedparser.parse(self.url, etag=self.etag, modified=self.modified)
+        if "title" in d.feed and d.feed.title != self.title:
             self.title = d.feed.title[:256]
         if not self.validate_fetch(d):
             return
@@ -88,18 +90,18 @@ class Feed(models.Model):
         self.backoff = 0
         self.update_etag(d)
         self.update_modified(d)
-        if 'status' in d and d.status == 301:
+        if "status" in d and d.status == 301:
             self.url = d.href[:200]
         self.save()
-        if 'entries' in d:
+        if "entries" in d:
             self.update_entries(d)
 
     def update_modified(self, d):
-        if 'modified' in d:
+        if "modified" in d:
             self.modified = d.modified
 
     def update_etag(self, d):
-        if 'etag' in d:
+        if "etag" in d:
             self.etag = d.etag
 
     @beeline.traced(name="update_entries")
@@ -141,12 +143,10 @@ class Feed(models.Model):
             e = Entry.objects.create(
                 feed=self,
                 guid=guid[:256],
-                link=entry.get('link', u"")[:200],
-                title=entry.get('title', u"no title")[:256],
-                description=entry.get(
-                    'description',
-                    entry.get('summary', u"")),
-                author=entry.get('author', u"")[:256],
+                link=entry.get("link", "")[:200],
+                title=entry.get("title", "no title")[:256],
+                description=entry.get("description", entry.get("summary", "")),
+                author=entry.get("author", "")[:256],
                 published=published,
             )
             e.fanout()
@@ -159,12 +159,14 @@ class Feed(models.Model):
 
 def extract_published(entry):
     published = datetime.utcnow().replace(tzinfo=utc)
-    if 'published_parsed' in entry:
+    if "published_parsed" in entry:
         published = datetime.fromtimestamp(
-            mktime(entry.published_parsed)).replace(tzinfo=utc)
-    elif 'updated_parsed' in entry:
+            mktime(entry.published_parsed)
+        ).replace(tzinfo=utc)
+    elif "updated_parsed" in entry:
         published = datetime.fromtimestamp(
-            mktime(entry.updated_parsed)).replace(tzinfo=utc)
+            mktime(entry.updated_parsed)
+        ).replace(tzinfo=utc)
     return published
 
 
@@ -179,12 +181,10 @@ class Entry(models.Model):
 
     @beeline.traced(name="fanout")
     def fanout(self):
-        """ new entry. spread it to subscribers """
+        """new entry. spread it to subscribers"""
         for s in self.feed.subscription_set.all():
             beeline.add_rollup_field("uentries_created", 1)
-            UEntry.objects.create(
-                entry=self,
-                user=s.user)
+            UEntry.objects.create(entry=self, user=s.user)
 
 
 class Subscription(models.Model):

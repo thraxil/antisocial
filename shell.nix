@@ -3,6 +3,8 @@
 pkgs.mkShell {
   buildInputs = [
     pkgs.python310
+    pkgs.python310.pkgs.tox
+    pkgs.python310.pkgs.psycopg2
   ];
 
   shellHook = ''

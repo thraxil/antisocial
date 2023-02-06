@@ -1,32 +1,33 @@
-from celery import task
-from celery.decorators import periodic_task
-from celery.exceptions import SoftTimeLimitExceeded
-from celery.task.schedules import crontab
-from datetime import datetime
-from datetime import timedelta
-from django.utils.timezone import utc
-import beeline
-import feedparser
 import logging
 import os
 import socket
+from datetime import datetime, timedelta
+
+import beeline
+import feedparser
+from celery import task
+from celery.decorators import periodic_task
+from celery.exceptions import SoftTimeLimitExceeded
+from celery.signals import task_postrun, task_prerun, worker_process_init
+from celery.task.schedules import crontab
+from django.conf import settings
+from django.utils.timezone import utc
+
 from .models import Feed, UEntry
 from .utils import get_feed_guid
-from celery.signals import worker_process_init, task_prerun, task_postrun
-from django.conf import settings
 
 
 @worker_process_init.connect
 def initialize_honeycomb(**kwargs):
     if settings.HONEYCOMB_WRITEKEY and settings.HONEYCOMB_DATASET:
-        logging.info(f'beeline initialization in process pid {os.getpid()}')
+        logging.info(f"beeline initialization in process pid {os.getpid()}")
         beeline.init(
             writekey=settings.HONEYCOMB_WRITEKEY,
             dataset=settings.HONEYCOMB_DATASET,
-            service_name='celery'
+            service_name="celery",
         )
     else:
-        logging.info('no honeycomb settings, so skip initializing them')
+        logging.info("no honeycomb settings, so skip initializing them")
 
 
 @task_prerun.connect
@@ -54,7 +55,7 @@ def end_celery_trace(task, state, **kwargs):
 def process_feed(feed_id):
     with beeline.tracer(name="process_feed"):
         f = Feed.objects.get(id=feed_id)
-        beeline.add_context({'feed_title': f.title})
+        beeline.add_context({"feed_title": f.title})
         try:
             f.fetch()
             beeline.add_context_field("fetch_success", True)
@@ -66,7 +67,7 @@ def process_feed(feed_id):
 
 @periodic_task(run_every=crontab(hour="*", minute="*", day_of_week="*"))
 def schedule_feeds():
-    """ find all the feeds that are scheduled for fetching
+    """find all the feeds that are scheduled for fetching
     and add them to the queue
 
     sometimes the celery worker dies, but celery-beat is still
@@ -90,23 +91,25 @@ def schedule_feeds():
     with beeline.tracer(name="schedule_feeds"):
         now = datetime.utcnow().replace(tzinfo=utc)
         if now.minute == 0:
-            beeline.add_context_field('hourly_catchup', True)
-            for f in Feed.objects.filter(
-                    next_fetch__lt=now).order_by("next_fetch"):
+            beeline.add_context_field("hourly_catchup", True)
+            for f in Feed.objects.filter(next_fetch__lt=now).order_by(
+                "next_fetch"
+            ):
                 process_feed.apply_async(
-                    args=[f.id], time_limit=10, soft_time_limit=6)
+                    args=[f.id], time_limit=10, soft_time_limit=6
+                )
         else:
             for f in Feed.objects.filter(
-                    next_fetch__lt=now,
-                    next_fetch__gt=(
-                        now - timedelta(minutes=5))).order_by("next_fetch"):
+                next_fetch__lt=now, next_fetch__gt=(now - timedelta(minutes=5))
+            ).order_by("next_fetch"):
                 process_feed.apply_async(
-                    args=[f.id], time_limit=10, soft_time_limit=6)
+                    args=[f.id], time_limit=10, soft_time_limit=6
+                )
 
 
 @periodic_task(run_every=crontab(hour="*", minute="*/5", day_of_week="*"))
 def expunge_uentries():
-    """ clear out all the uentries that have been read """
+    """clear out all the uentries that have been read"""
     UEntry.objects.filter(read=True).delete()
 
 
@@ -131,7 +134,7 @@ def remove_duplicate_feeds():
 
 # feeds known to segfault feedparser
 BLACKLIST = [
-    'http://www.metrokitty.com/rss/rss.xml',
+    "http://www.metrokitty.com/rss/rss.xml",
 ]
 
 
@@ -157,13 +160,13 @@ def initial_fetch(url, user):
         socket.setdefaulttimeout(None)
         return
     guid = get_feed_guid(d.feed, url)
-    if 'href' in d:
+    if "href" in d:
         url = d.href[:200]
     socket.setdefaulttimeout(None)
     now = datetime.utcnow().replace(tzinfo=utc)
     f = Feed.objects.create(
         url=url[:200],
-        title=d.feed.get('title', 'no title for feed'),
+        title=d.feed.get("title", "no title for feed"),
         guid=guid[:256],
         last_fetched=now,
         next_fetch=now,
