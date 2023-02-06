@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 import antisocial.main.tasks as tasks
 from antisocial.main.models import Feed, Subscription, UEntry
@@ -39,7 +39,7 @@ def entries(request):
 def entry_api(request, id):
     ue = get_object_or_404(UEntry, id=id)
     if request.method == "PUT":
-        d = loads(force_text(request.read()))
+        d = loads(force_str(request.read()))
         ue.read = d["read"]
         ue.save()
     d = ue.as_dict()

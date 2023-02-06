@@ -52,3 +52,5 @@ AWS_DEFAULT_ACL = "public-read"
 # default off
 HONEYCOMB_WRITEKEY = None
 HONEYCOMB_DATASET = None
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

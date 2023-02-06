@@ -1,7 +1,7 @@
 import django.views.static
 from django.conf import settings
-from django.conf.urls import include, url
 from django.contrib import admin
+from django.urls import include, re_path
 
 from antisocial.main.views import (add_subscription, entries, entry_api,
                                    import_feeds, index, subscribe,
@@ -12,20 +12,20 @@ from antisocial.main.views import (add_subscription, entries, entry_api,
 admin.autodiscover()
 
 urlpatterns = [
-    url(r"^$", index),
-    url(r"^subscriptions/$", subscriptions),
-    url(r"^subscriptions/(?P<id>\d+)/$", subscription),
-    url(r"^subscriptions/(?P<id>\d+)/mark_read/$", subscription_mark_read),
-    url(r"^subscriptions/(?P<id>\d+)/fetch/$", subscription_fetch),
-    url(r"^subscriptions/(?P<id>\d+)/unsubscribe/$", unsubscribe),
-    url(r"^subscriptions/(?P<id>\d+)/subscribe/$", subscribe),
-    url(r"^subscriptions/add/$", add_subscription),
-    url(r"^subscriptions/import/$", import_feeds),
-    url(r"api/entries/$", entries),
-    url(r"api/entry/(?P<id>\d+)/$", entry_api),
-    url(r"^accounts/", include("django.contrib.auth.urls")),
-    url(r"smoketest/", include("smoketest.urls")),
-    url(
+    re_path(r"^$", index),
+    re_path(r"^subscriptions/$", subscriptions),
+    re_path(r"^subscriptions/(?P<id>\d+)/$", subscription),
+    re_path(r"^subscriptions/(?P<id>\d+)/mark_read/$", subscription_mark_read),
+    re_path(r"^subscriptions/(?P<id>\d+)/fetch/$", subscription_fetch),
+    re_path(r"^subscriptions/(?P<id>\d+)/unsubscribe/$", unsubscribe),
+    re_path(r"^subscriptions/(?P<id>\d+)/subscribe/$", subscribe),
+    re_path(r"^subscriptions/add/$", add_subscription),
+    re_path(r"^subscriptions/import/$", import_feeds),
+    re_path(r"api/entries/$", entries),
+    re_path(r"api/entry/(?P<id>\d+)/$", entry_api),
+    re_path(r"^accounts/", include("django.contrib.auth.urls")),
+    re_path(r"smoketest/", include("smoketest.urls")),
+    re_path(
         r"^uploads/(?P<path>.*)$",
         django.views.static.serve,
         {"document_root": settings.MEDIA_ROOT},
@@ -36,5 +36,5 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [
-        url(r"^__debug__/", include(debug_toolbar.urls)),
+        re_path(r"^__debug__/", include(debug_toolbar.urls)),
     ]
