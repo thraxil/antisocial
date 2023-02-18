@@ -60,7 +60,7 @@ sqlparse==0.4.3
 
 html2text==2020.1.16
 
-boto3==1.26.73
+boto3==1.26.74
 raven==6.10.0
 SPARQLWrapper==1.8.5
 argparse==1.4.0
