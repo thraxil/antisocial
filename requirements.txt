@@ -7,7 +7,7 @@ sgmllib3k==1.0.0
 feedparser==6.0.10
 Markdown==3.0.1 # pyup: <3.1
 
-psycopg2-binary==2.9.5
+psycopg2-binary==2.9.6
 versiontools==1.9.1
 pep8==1.7.1
 mccabe==0.7.0
