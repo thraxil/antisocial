@@ -1,7 +1,8 @@
 FROM thraxil/django.base:2022-09-11-fd03dfc6c7a5
 COPY docker-run.sh /run.sh
 COPY package.json /node/
-RUN cd /node && npm install && touch /node/node_modules/sentinal
+WORKDIR /node 
+RUN  npm install && touch /node/node_modules/sentinal
 COPY requirements.txt /app/requirements.txt
 RUN /ve/bin/pip3 install -r /app/requirements.txt && touch /ve/sentinal
 WORKDIR /app
