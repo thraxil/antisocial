@@ -116,7 +116,7 @@ django-storages==1.13.2
 
 thraxilsettings==5.1.0
 
-honeycomb-beeline==3.5.1
+honeycomb-beeline==3.5.2
 
 # transitive deps
 
