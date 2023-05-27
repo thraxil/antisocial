@@ -121,7 +121,7 @@ honeycomb-beeline==3.5.2
 # transitive deps
 
 statsd==3.3.0 # pyup: <4.0.0
-asgiref==3.7.0
+asgiref==3.7.2
 chardet==5.1.0 # requests
 idna==3.4 # requests
 libhoney==2.3.0 # honeycomb-beeline
