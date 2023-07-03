@@ -1,4 +1,4 @@
-Django==4.2.1
+Django==4.2.3
 
 pytz==2023.2
 
