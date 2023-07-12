@@ -28,7 +28,7 @@ coverage==7.2.7
 
 requests==2.31.0
 
-logilab-common==1.9.7
+logilab-common==1.10.0
 
 six==1.16.0
 opml==0.5
