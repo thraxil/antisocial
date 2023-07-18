@@ -51,7 +51,7 @@ kombu==4.6.11
 
 celery==4.4.7 # pyup: <5.0.0
 
-gunicorn==20.1.0
+gunicorn==21.1.0
 
 pycryptodome==3.18.0
 ecdsa==0.18.0
