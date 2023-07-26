@@ -104,7 +104,7 @@ django-compressor==4.0
 
 django-bootstrap-form==3.4
 
-django-waffle==3.0.0
+django-waffle==4.0.0
 
 django-debug-toolbar==3.8.1
 
