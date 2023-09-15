@@ -33,7 +33,7 @@ logilab-common==1.10.0
 six==1.16.0
 opml==0.5
 
-Pillow==10.0.0
+Pillow==10.0.1
 
 pytz==2023.3.post1
 
