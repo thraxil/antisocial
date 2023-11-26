@@ -123,6 +123,6 @@ honeycomb-beeline==3.5.2
 statsd==3.3.0 # pyup: <4.0.0
 asgiref==3.7.2
 chardet==5.1.0 # requests
-idna==3.5 # requests
+idna==3.6 # requests
 libhoney==2.3.0 # honeycomb-beeline
 urllib3==2.0.7 # requests
