@@ -1,4 +1,4 @@
-Django==4.2.7
+Django==5.0
 
 pytz==2023.3.post1
 
